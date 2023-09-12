@@ -1,0 +1,108 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "canast",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings-double"
+		},
+		{
+			"include": "#strings-single"
+		},
+		{
+			"include" : "#number-literals"
+		}
+	],
+	"repository": {
+
+		"keywords": {
+			"patterns": [
+				{
+					"name": "entity.name.tag.canast",
+					"match": "\\b(not comptime|comptime|type|kind|target|to|nid|params|refs|subtype|length|line|location)(\\*+|\\b)"
+				},
+				{
+					"name": "keyword.control.canast",
+					"match": "\\b(const|if|while|return|import|assert|not|is|as|and|or|else|break|continue|loop|choose)\\b"
+				},
+				{
+					"name": "storage.type.canast",
+					"match": "\\b(bool|byte|ubyte|short|ushort|int|uint|long|ulong|float|half|double|void|struct|enum)(\\*+|\\b)"
+				},
+				{
+					"name": "keyword.control.canast",
+					"match": "\\b(Assert|Binary|Break|Call|Case|Continue|Dot|Enum|Func|Import|NodeRef|Null|Number|Project|ProjectId|Return|Scope|Struct|TypeRef|Unary|Union|Unit|UnresolvedType|Var)(\\*+|\\b)"
+				},
+				{
+					"name" : "error.canast",
+					"match": "\\b(unresolved)\\b"
+				},
+				{
+					"name" : "storage.modifier.canast",
+					"match": "\\b(pub|extern|returns)\\b"
+				},
+				{
+					"name" : "support.function.canast",
+					"match" : "@[_\\w]+\\b"
+				},
+				{
+					"name" : "entity.name.tag.canast",
+					"match" : "\\[\\[.*\\]\\]"
+				},
+				{
+					"name": "constant.numeric",
+					"match": "\\b(true|false|null)(\\**|\\b)"
+				},
+				{
+					"name": "entity.other.this.canast",
+					"match": "\\b(this)(\\**|\\b)"
+				}
+			]
+		},
+		"strings-double": {
+			"name": "string.quoted.double.canast",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.canast",
+					"match": "\\\\."
+				}
+			]
+		},
+		"strings-single": {
+			"name": "string.quoted.single.canast",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.canast",
+					"match": "\\\\."
+				}
+			]
+		},
+		"number-literals": {
+			"patterns": [
+				{
+					"name"  : "constant.numeric.float",
+					"match" : "\\b([\\d_]+\\.[\\d_]+(f|d|h)?)\\b"
+				},
+				{
+					"name"  : "constant.numeric",
+					"match" : "\\b[\\d_]+\\b"
+				},
+				{
+					"name"  : "constant.numeric.binary",
+					"match" : "\\b0b[0-1_]+\\b"
+				},
+				{
+					"name"  : "constant.numeric.hex",
+					"match" : "\\b0x[\\d_a-fA-F]+\\b"
+				}
+			]
+		}
+	},
+	"scopeName": "source.canast"
+}

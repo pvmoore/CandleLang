@@ -1,0 +1,144 @@
+module candle.ast.Node;
+
+import candle.all;
+
+abstract class Node {
+public:
+    Node[] children;
+    Node parent;
+    uint id;
+
+    final int numChildren() { return children.length.as!int; }
+    final bool hasChildren() { return children.length > 0; }
+
+    abstract NKind nkind();
+    abstract Type type();
+    abstract bool isResolved();
+
+    final void add(Node n) {
+        n.detach();
+        n.parent = this;
+        children ~= n;
+    }
+    final void insertAt(int index, Node n) {
+        n.detach();
+        n.parent = this;
+        children.insertAt(index, n);
+    }
+    final void replaceWith(Node other) {
+        assert(other.parent is null);
+        assert(parent !is null);
+        int ourIndex = parent.indexOf(this);
+        parent.insertAt(ourIndex, other);
+        this.detach();
+    }
+    final void moveToIndex(int index, Node ch) {
+        int i = indexOf(ch);
+        if(i!=index) {
+            ch.detach();
+            insertAt(index, ch);
+        }
+    }
+    final void detach() {
+        if(parent) {
+            int i = parent.indexOf(this);
+            parent.children.removeAt(i);
+            parent = null;
+        }
+    }
+    final int indexOf(Node n) {
+        foreach(i, ch; children) {
+            if(ch is n) return i.as!int;
+        }
+        assert(false);
+    }
+    final int index() {
+        assert(parent);
+        return parent.indexOf(this);
+    }
+    final Node next() {
+        if(!parent) return null;
+        int i = parent.indexOf(this);
+        if(i+1 < parent.numChildren()) return parent.children[i+1];
+        return parent.next();
+    }
+    final Node prev() {
+        if(!parent) return null;
+        int i = parent.indexOf(this);
+        if(i>0) return parent.children[i-1];
+        return parent;
+    }
+    /** Similar to prev() but will return null if this is the first child */
+    final Node prevSibling() {
+        if(!parent) return null;
+        int i = parent.indexOf(this);
+        if(i>0) return parent.children[i-1];
+        return null;
+    }
+    final Node first() {
+        if(!hasChildren()) return null;
+        return children[0];
+    }
+    final Node last() {
+        if(!hasChildren()) return null;
+        return children[$-1];
+    }
+    T findFirstChildOf(T)() {
+        foreach(ch; children) if(ch.isA!T) return ch.as!T;
+        return null;
+    }
+    Unit getUnit() {
+        if(this.isA!Unit) return this.as!Unit;
+        assert(parent);
+        return parent.getUnit();
+    }
+    Project getProject() {
+        if(this.isA!Project) return this.as!Project;
+        assert(parent);
+        return parent.getProject();
+    }
+    bool hasAncestor(T)() {
+        if(!parent) return false;
+        if(parent.isA!T) return true;
+        return parent.hasAncestor!T;
+    }
+    T getAncestor(T)() {
+        if(!parent) return null;
+        if(parent.isA!T) return parent.as!T;
+        return parent.getAncestor!T;
+    }
+
+    final void dump(string indent = "") {
+        log("%s%s", indent, this);
+        foreach(ch; children) {
+            ch.dump(indent ~ "  ");
+        }
+    }
+    final string dumpToString(string indent = "") {
+        string s = "%s%s\n".format(indent, this);
+        foreach(ch; children) {
+            s ~= ch.dumpToString(indent ~ "  ");
+        }
+        return s;
+    }
+protected:
+
+
+
+private:
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+enum NKind {
+    PROJECT, UNIT, NODE_REF,
+
+    BINARY, CALL, CHAR, DOT, ID, NULL, NUMBER, PARENS, PROJECT_ID, SCOPE, STRING, UNARY,
+
+    VAR, RETURN,
+
+    ARRAY, ENUM, FUNC, POINTER, PRIMITIVE, STRUCT, TYPE_REF, UNION
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+bool areResolved(T)(T[] nodes) if(is(T:Node)) {
+    foreach(n; nodes) if(!n.isResolved()) return false;
+    return true;
+}

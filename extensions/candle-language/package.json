@@ -1,0 +1,33 @@
+{
+    "name": "candle-lang",
+    "displayName": "Candle",
+    "description": "Candle language syntax highlighting support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.38.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "candle",
+                "aliases": [
+                    "Candle"
+                ],
+                "extensions": [
+                    ".can"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "candle",
+                "scopeName": "source.candle",
+                "path": "./syntaxes/candle.tmLanguage.json"
+            }
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+// std
+
+extern int putchar(int);
+
+pub void putChar(int ch) {
+    putchar(ch);
+}
+
+pub struct PlumPublic {
+    int a;
+}
+struct PlumPrivate {
+    int a;
+}

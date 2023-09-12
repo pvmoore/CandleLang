@@ -1,0 +1,33 @@
+{
+    "name": "candle-ast-lang",
+    "displayName": "PPL6-ast",
+    "description": "PPL6 AST syntax highlighting support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.38.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "canast",
+                "aliases": [
+                    "canast"
+                ],
+                "extensions": [
+                    ".canast"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "canast",
+                "scopeName": "source.canast",
+                "path": "./syntaxes/canast.tmLanguage.json"
+            }
+        ]
+    }
+}

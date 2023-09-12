@@ -1,0 +1,85 @@
+Unit test (Project test)
+  Struct Apple, pub
+    Var a
+      int
+  Struct Peach
+    Var a
+      int
+  Var foo
+    float
+    1 (int)
+  Func putchar, 1 params, extern
+    int
+    Var (unnamed)
+      int
+  Func main, 0 params
+    int
+    Scope 
+      Var a
+        int
+        6 (int)
+      Var b
+        *
+          int
+        Null (*)
+      Call putchar -> [Func putchar]
+        'a' -> 97 (int)
+      Dot
+        ProjectId -> Project 'std', '_extern/std/'
+        Call putChar -> [Func std::putChar]
+          'b' -> 98 (int)
+      Call doSomething -> [Func doSomething]
+        Null (*)
+        Null (**)
+      Call doSomethingElse -> [Func doSomethingElse]
+      Return
+        0 (int)
+  Func doSomethingElse, 0 params
+    void
+    Scope 
+  Func doSomething, 2 params, pub
+    void
+    Var a
+      *
+        int
+    Var b
+      **
+        float
+    Scope 
+      Var c
+        bool
+        Unary !
+          true (bool)
+      Var d
+        int
+        'a' -> 97 (int)
+      Var e
+        long
+        255 (long)
+      Var f
+        float
+        Id foo -> [Var foo]
+      Var y
+        int
+        Binary +
+          1 (int)
+          Binary /
+            2 (int)
+            3 (int)
+      Var z
+        int
+        Binary +
+          Binary /
+            1 (int)
+            2 (int)
+          3 (int)
+      Var g
+        float
+        1 (double)
+      Var g2
+        float
+        1.3 (float)
+      Var apple
+        TypeRef -> Struct Apple, pub
+      Var plum
+        TypeRef -> Struct PlumPublic, pub, Project std

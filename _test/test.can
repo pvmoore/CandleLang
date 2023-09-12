@@ -1,0 +1,119 @@
+
+
+extern int putchar(int);
+
+int main() {
+    int a = 6;
+
+
+    int* b = null;
+
+
+    putchar('a');
+
+
+    std.putChar('b');
+
+    doSomething(null, null);
+    doSomethingElse();
+
+    return 0;
+}
+
+// private local function
+void doSomethingElse() {
+
+}
+
+// public local function
+pub void doSomething(int* a, float** b) {
+    bool c = !true;
+
+    int d = 'a';
+    long e = 0xff;
+    float f = foo;
+
+    int y = 1 + 2 / 3;
+    int z = 1 / 2 + 3;
+    float g = 1.0;
+    float g2 = 1.3f;
+
+    Apple apple;
+
+    std.PlumPublic plum;
+    //PlumPublic plum;
+    //PlumPrivate plum2;
+    //std.PlumPrivate plum2;
+
+
+}
+
+// all variables are private
+float foo = 1;
+
+// public local struct
+pub struct Apple {
+    int a;
+}
+
+// private local struct
+struct Peach {
+    int a;
+}
+
+
+//
+////////////////////////////////////////
+// Different syntax idea
+////////////////////////////////////////
+//
+
+/*
+Apple struct = {
+    a int
+}
+Apple struct(int) = {
+    a int
+}
+
+Pear struct(int)
+
+foo (a int -> void) = {
+
+}
+
+bar = (a int -> int) { return 1 }
+
+Blah int
+
+a bool = true
+*/
+
+//
+////////////////////////////////////////
+//
+
+
+
+/*
+void foo() {
+
+    int value = 4;
+    int* ptr;
+
+    int(int) bar = (a) {
+        ptr += 1;
+        return a + value;
+    };
+}
+
+// generates
+int lambda_1(ubyte* closure, int a) {
+    int value = @valueOf((int*)closure);
+    int** ptr = (int**)(closure+8);
+
+    (*ptr) += 1;
+
+    return a + value;
+}
+*/
