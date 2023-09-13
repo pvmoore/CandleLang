@@ -25,7 +25,7 @@ public:
     this(BuildProperties props, Directory directory) {
         this.props = props;
         this.directory = directory;
-        loadProjectYml();
+        loadProjectJson5();
         addUnits();
         projects[name] = this;
     }
@@ -86,27 +86,32 @@ public:
 private:
     static Project[string] projects;
 
-    /**
-     * name: test
-     * dependencies:
-     *   std: "extern/std"
+    /** 
+     * {
+     *   name: "test",
+     *   dependencies: {
+     *     std: "_extern/std"
+     *   }
+     * } 
      */
-    void loadProjectYml() {
-        import dy = dyaml;
+    bool loadProjectJson5() {
+        auto projectFile = Filepath(directory, Filename("project.json5"));
+        if(!projectFile.exists()) return false;
 
-        auto projectFile = Filepath(directory, Filename("project.yml"));
-        dy.Node root = dy.Loader.fromFile(projectFile.value).load();
+        auto root = JSON5.fromFile(projectFile.value);
+        if(root.hasKey("name")) {
+            this.name = root["name"].toString();
+        }
 
-        this.name = root["name"].as!string;
-
-        if(root.containsKey("dependencies")) {
-            foreach(dy.Node it; root["dependencies"].mappingKeys()) {
-                auto key = it.as!string.toLower();
-                auto value = root["dependencies"][key].as!string;
-
+        if(auto dependencies = root["dependencies"]) {
+            foreach(k,v; dependencies.byKeyValue()) {
+                auto key = k.toLower();
+                auto value = v.toString();
                 this.dependencies[key] = Directory(value);
             }
         }
+
+        return true;
     }
     string[] unitFilenames() {
         import std.file;

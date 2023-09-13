@@ -3,6 +3,7 @@ module candle.all;
 public:
 
 import common;
+import resources.json5;
 
 import std.format       : format;
 import std.algorithm    : all, map, filter;

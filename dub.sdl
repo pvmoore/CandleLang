@@ -19,4 +19,4 @@ configuration "library" {
 }
 
 dependency "common" version="~master"
-dependency "dyaml" version="~>0.9.2"
+dependency "resources" version="~master"
