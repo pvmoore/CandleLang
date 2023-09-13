@@ -14,7 +14,7 @@ Unit test (Project test)
       int
   Func main, 0 params
     int
-    Scope 
+    Scope
       Var a
         int
         6 (int)
@@ -36,7 +36,7 @@ Unit test (Project test)
         0 (int)
   Func doSomethingElse, 0 params
     void
-    Scope 
+    Scope
   Func doSomething, 2 params, pub
     void
     Var a
@@ -45,7 +45,7 @@ Unit test (Project test)
     Var b
       **
         float
-    Scope 
+    Scope
       Var c
         bool
         Unary !

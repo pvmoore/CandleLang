@@ -14,7 +14,6 @@ logs/
 *.lib
 *.pdb
 
-images/*
-models/*
-
-imgui.ini
+*.obj
+*.exe
+*.canast
