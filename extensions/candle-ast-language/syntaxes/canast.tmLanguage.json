@@ -33,7 +33,7 @@
 				},
 				{
 					"name": "keyword.control.canast",
-					"match": "\\b(Assert|Binary|Break|Call|Case|Continue|Dot|Enum|Func|Import|NodeRef|Null|Number|Project|ProjectId|Return|Scope|Struct|TypeRef|Unary|Union|Unit|UnresolvedType|Var)(\\*+|\\b)"
+					"match": "\\b(Assert|Binary|Break|Call|Case|Continue|Dot|Enum|Func|Id|Import|NodeRef|Null|Number|Project|ProjectId|Return|Scope|Struct|TypeRef|Unary|Union|Unit|UnresolvedType|Var)(\\*+|\\b)"
 				},
 				{
 					"name" : "error.canast",

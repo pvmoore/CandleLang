@@ -14,7 +14,7 @@ public:
     override int precedence() { return 0; }
     override bool isResolved() { return true; }
     override string toString() {
-        return "Scope ";
+        return "Scope";
     }
 private:
 }

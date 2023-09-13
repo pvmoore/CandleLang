@@ -1,6 +1,7 @@
 module candle._5emit.EmitProject;
 
 import candle.all;
+import candle._5emit.emit_utils;
 
 final class EmitProject {
 public:
@@ -10,6 +11,8 @@ public:
         this.headerBuf = new StringBuffer();
     }
     void emit() {
+
+        writeCommonHeader(project);
 
         buf = sourceBuf;
 
@@ -63,27 +66,10 @@ private:
         return n.isPublic ? "%s_%s".format(n.getProject().name, n.name) : n.name;
     }
 
-    void emitCommonHeaderItems() {
-        buf.add("// ============== Common typedefs\n");
-        buf.add("#ifndef CANDLE_COMMON_TYPEDEFS_H\n");
-        buf.add("#define CANDLE_COMMON_TYPEDEFS_H\n\n");
-        buf.add("typedef unsigned char bool;\n");
-        buf.add("typedef unsigned char ubyte;\n");
-        buf.add("typedef signed char byte;\n");
-        buf.add("typedef unsigned short ushort;\n");
-        buf.add("typedef unsigned int uint;\n");
-        buf.add("typedef unsigned long long ulong;\n");
-        buf.add("#define true 1\n");
-        buf.add("#define false 0\n");
-        buf.add("#define null 0\n\n");
-        buf.add("#endif // CANDLE_COMMON_TYPEDEFS_H\n\n");
-        buf.add("// ============== Publics\n\n");
-    }
-
     void emitHeader() {
         buf.add("#ifndef %s_H\n", project.name);
         buf.add("#define %s_H\n\n", project.name);
-        emitCommonHeaderItems();
+        buf.add("#include \"candle_common.h\"\n\n");
         foreach(u; project.getUnits()) {
             foreach(s; u.getStructs()) {
                 if(s.isPublic) {
