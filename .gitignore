@@ -13,8 +13,7 @@ logs/
 *.exe
 *.lib
 *.pdb
-
 *.obj
-*.exe
+*.asm
 
 _target/ast/
