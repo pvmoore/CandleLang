@@ -16,4 +16,5 @@ logs/
 
 *.obj
 *.exe
-*.canast
+
+_target/ast/
