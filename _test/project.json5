@@ -1,0 +1,7 @@
+{
+    name: "test",
+    dependencies: {
+        std: "_extern/std"
+    }
+}  
+
