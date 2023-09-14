@@ -16,8 +16,8 @@ public:
 
     Type valueType() { return first().as!Type; }
 
-    override NKind nkind() { return NKind.POINTER; }
-    override TypeKind tkind() { return valueType().tkind(); }
+    override ENode nkind() { return ENode.POINTER; }
+    override EType tkind() { return valueType().tkind(); }
     override bool isResolved() { return valueType.isResolved(); }
     override Type type() { return this; }
     override bool exactlyMatches(Type otherType) {

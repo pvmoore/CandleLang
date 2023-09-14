@@ -13,7 +13,7 @@ void parseExpr(Node parent, Tokens t) {
 private:
 
 void lhs(Node parent, Tokens t) {
-    switch(t.kind()) with(TKind) {
+    switch(t.kind()) with(EToken) {
         case NUMBER: parseNumber(parent, t); return;
         case CHAR: parseChar(parent, t); return;
         case STRING: parseString(parent, t); return;
@@ -28,7 +28,7 @@ void lhs(Node parent, Tokens t) {
                 default: break;
             }
 
-            if(t.kind(1) == TKind.LBRACKET) {
+            if(t.kind(1) == EToken.LBRACKET) {
                 parseCall(parent, t);
                 return;
             }
@@ -43,7 +43,7 @@ void lhs(Node parent, Tokens t) {
 
 void rhs(Node parent, Tokens t) {
     while(!t.eof()) {
-        switch(t.kind()) with(TKind) {
+        switch(t.kind()) with(EToken) {
             case NONE:
             case SEMICOLON:
             case RCURLY:
@@ -88,7 +88,7 @@ void rhs(Node parent, Tokens t) {
             }
             case DOT: {
                 Dot dot = makeNode!Dot;
-                t.skip(TKind.DOT);
+                t.skip(EToken.DOT);
                 parent = attachAndRead(parent, dot, t, true);
                 break;
             }
@@ -160,7 +160,7 @@ void parseString(Node parent, Tokens t) {
     parent.add(str);
 
     // Gather all sequential strings into one
-    while(t.isKind(TKind.STRING)) {
+    while(t.isKind(EToken.STRING)) {
         str.stringValue ~= t.value()[1..$-1]; t.next();
     }
 }
@@ -195,19 +195,19 @@ void parseCall(Node parent, Tokens t) {
 
     call.name = t.value(); t.next();
 
-    t.skip(TKind.LBRACKET);
+    t.skip(EToken.LBRACKET);
 
-    bool hasArgs = !t.isKind(TKind.RBRACKET);
+    bool hasArgs = !t.isKind(EToken.RBRACKET);
 
     if(hasArgs) {
 
         Parens p = makeNode!Parens;
         call.add(p);
 
-        while(!t.isKind(TKind.RBRACKET)) {
+        while(!t.isKind(EToken.RBRACKET)) {
             parseExpr(p, t);
 
-            if(t.isKind(TKind.COMMA)) {
+            if(t.isKind(EToken.COMMA)) {
                 t.next();
             }
         }
@@ -217,9 +217,9 @@ void parseCall(Node parent, Tokens t) {
             call.add(p.first());
         }
     }
-    t.skip(TKind.RBRACKET);
+    t.skip(EToken.RBRACKET);
 
-    if(t.isKind(TKind.SEMICOLON)) {
+    if(t.isKind(EToken.SEMICOLON)) {
         call.isStmt = true;
     }
 }
@@ -228,9 +228,9 @@ void parseParens(Node parent, Tokens t) {
     Parens p = makeNode!Parens;
     parent.add(p);
 
-    t.skip(TKind.LBRACKET);
+    t.skip(EToken.LBRACKET);
 
     parseExpr(p, t);
 
-    t.skip(TKind.RBRACKET);
+    t.skip(EToken.RBRACKET);
 }

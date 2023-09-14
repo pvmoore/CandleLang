@@ -92,7 +92,7 @@ private:
 
     void emit(Node n) {
         logEmit("emit %s", n.nkind());
-        switch(n.nkind()) with(NKind) {
+        switch(n.nkind()) with(ENode) {
             case BINARY: emit(n.as!Binary); break;
             case CALL: emit(n.as!Call); break;
             case CHAR: emit(n.as!Char); break;
@@ -172,7 +172,7 @@ private:
     }
     void emit(Number n) {
         add(n.value.toString());
-        switch(n.value.kind) with(TypeKind) {
+        switch(n.value.kind) with(EType) {
             case FLOAT: add("f"); break;
             case LONG: add("LL"); break;
             case ULONG: add("ULL"); break;
@@ -184,7 +184,7 @@ private:
         add("*".repeat(n.depth));
     }
     void emit(Primitive n) {
-        switch(n.tkind()) with(TypeKind) {
+        switch(n.tkind()) with(EType) {
             case BOOL: buf.add("bool"); break;
             case UBYTE: buf.add("ubyte"); break;
             case BYTE: buf.add("byte"); break;
@@ -263,7 +263,7 @@ private:
         }
     }
     void emit(TypeRef n) {
-        switch(n.decorated.tkind()) with(TypeKind) {
+        switch(n.decorated.tkind()) with(EType) {
             case STRUCT:
                 add("%s".format(getName(n.decorated.as!Struct)));
                 break;

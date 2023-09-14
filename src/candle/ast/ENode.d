@@ -1,0 +1,13 @@
+module candle.ast.ENode;
+
+import candle.all;
+
+enum ENode {
+    PROJECT, UNIT, NODE_REF,
+
+    BINARY, CALL, CHAR, DOT, ID, NULL, NUMBER, PARENS, PROJECT_ID, SCOPE, STRING, UNARY,
+
+    VAR, RETURN,
+
+    ARRAY, ENUM, FUNC, POINTER, PRIMITIVE, STRUCT, TYPE_REF, UNION
+}

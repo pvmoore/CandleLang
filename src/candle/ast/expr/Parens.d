@@ -11,7 +11,7 @@ public:
 
     Expr expr() { return first().as!Expr; }
 
-    override NKind nkind() { return NKind.PARENS; }
+    override ENode nkind() { return ENode.PARENS; }
     override Type type() { return expr.type(); }
     override int precedence() { return 0; }
     override bool isResolved() { return true; }

@@ -26,7 +26,7 @@ private:
 
     void resolve(Node n) {
         logResolve("resolve %s", n);
-        switch(n.nkind()) with(NKind) {
+        switch(n.nkind()) with(ENode) {
             case BINARY: resolve(n.as!Binary); break;
             case CALL: resolve(n.as!Call); break;
             case CHAR: resolve(n.as!Char); break;
@@ -169,7 +169,7 @@ private:
      */
     Type resolveTypeFromParent(Node n) {
         Type t = null;
-        switch(n.parent.nkind()) with(NKind) {
+        switch(n.parent.nkind()) with(ENode) {
             case VAR: t = n.parent.type(); break;
             case CALL: {
                 // We are an argument. We need the call to be resolved before we know what our Type is

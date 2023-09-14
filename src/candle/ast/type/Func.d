@@ -20,8 +20,8 @@ public:
     Type[] paramTypes() { return params().map!(it=>it.type()).array(); }
     Scope body_() { return children[$-1].as!Scope; }
 
-    override NKind nkind() { return NKind.FUNC; }
-    override TypeKind tkind() { return TypeKind.FUNC; }
+    override ENode nkind() { return ENode.FUNC; }
+    override EType tkind() { return EType.FUNC; }
     override bool isResolved() { return returnType().isResolved() && params().areResolved(); }
     override Type type() { return this; }
     override bool exactlyMatches(Type otherType) {

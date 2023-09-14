@@ -11,7 +11,7 @@ public:
     final int numChildren() { return children.length.as!int; }
     final bool hasChildren() { return children.length > 0; }
 
-    abstract NKind nkind();
+    abstract ENode nkind();
     abstract Type type();
     abstract bool isResolved();
 
@@ -127,16 +127,7 @@ protected:
 
 private:
 }
-//──────────────────────────────────────────────────────────────────────────────────────────────────
-enum NKind {
-    PROJECT, UNIT, NODE_REF,
 
-    BINARY, CALL, CHAR, DOT, ID, NULL, NUMBER, PARENS, PROJECT_ID, SCOPE, STRING, UNARY,
-
-    VAR, RETURN,
-
-    ARRAY, ENUM, FUNC, POINTER, PRIMITIVE, STRUCT, TYPE_REF, UNION
-}
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 bool areResolved(T)(T[] nodes) if(is(T:Node)) {
     foreach(n; nodes) if(!n.isResolved()) return false;

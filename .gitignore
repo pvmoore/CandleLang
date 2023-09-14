@@ -17,3 +17,4 @@ logs/
 *.asm
 
 _target/ast/
+_target/build/

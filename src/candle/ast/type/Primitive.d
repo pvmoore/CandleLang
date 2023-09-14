@@ -7,11 +7,11 @@ import candle.all;
  */
 final class Primitive : Node, Type {
 public:
-    this(TypeKind k) {
+    this(EType k) {
         this._kind = k;
     }
-    override NKind nkind() { return NKind.PRIMITIVE; }
-    override TypeKind tkind() { return _kind; }
+    override ENode nkind() { return ENode.PRIMITIVE; }
+    override EType tkind() { return _kind; }
     override bool isResolved() { return true; }
     override Type type() { return this; }
 
@@ -51,5 +51,5 @@ public:
         return "%s".format(tkind()).toLower();
     }
 private:
-    TypeKind _kind;
+    EType _kind;
 }

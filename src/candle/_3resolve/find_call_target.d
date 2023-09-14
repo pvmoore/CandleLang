@@ -79,7 +79,7 @@ Target findCallTarget(Call call, Node prev) {
     throwIf(!prev.isResolved());
 
     logResolve("findCallTarget %s (member)", call.name);
-    switch(prev.nkind()) with(NKind) {
+    switch(prev.nkind()) with(ENode) {
         case PROJECT_ID: {
             ProjectId pid = prev.as!ProjectId;
             Project project = pid.project;

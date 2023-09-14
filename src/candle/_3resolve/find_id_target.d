@@ -92,7 +92,7 @@ Target findIdTarget(Id id) {
  */
 Target findIdTarget(Id id, Node prev) {
     logResolve("findIdTarget %s (member)", id.name);
-    switch(prev.nkind()) with(NKind) {
+    switch(prev.nkind()) with(ENode) {
         case PROJECT_ID: {
             ProjectId pid = prev.as!ProjectId;
             Project project = pid.project;

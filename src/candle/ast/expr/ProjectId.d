@@ -10,7 +10,7 @@ public:
     string name;
     Project project;
 
-    override NKind nkind() { return NKind.PROJECT_ID; }
+    override ENode nkind() { return ENode.PROJECT_ID; }
     override Type type() { return TYPE_VOID; }
     override int precedence() { return 0; }
     override bool isResolved() { return project !is null; }

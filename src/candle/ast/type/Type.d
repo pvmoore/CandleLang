@@ -3,35 +3,12 @@ module candle.ast.type.Type;
 import candle.all;
 
 interface Type {
-    TypeKind tkind();
+    EType tkind();
     bool isResolved();
     bool canImplicitlyConvertTo(Type other);
     bool exactlyMatches(Type other);
 }
 
-enum TypeKind {
-    UNKNOWN,
-
-    // PrimitiveTypes
-    BOOL,
-    UBYTE,
-    BYTE,
-    USHORT,
-    SHORT,
-    UINT,
-    INT,
-    ULONG,
-    LONG,
-    FLOAT,
-    DOUBLE,
-    VOID,
-
-    STRUCT,
-    UNION,
-    FUNC,
-    ARRAY,
-    ENUM
-}
 Type copy(Type t) {
     // todo
     return t;
@@ -43,16 +20,16 @@ bool isValue(Type t) {
     return !isPtr(t);
 }
 bool isBool(Type t) {
-    return t.tkind() == TypeKind.BOOL;
+    return t.tkind() == EType.BOOL;
 }
 bool isVoid(Type t) {
-    return t.tkind() == TypeKind.VOID;
+    return t.tkind() == EType.VOID;
 }
 bool isUnknown(Type t) {
-    return t.tkind() == TypeKind.UNKNOWN;
+    return t.tkind() == EType.UNKNOWN;
 }
 bool isInteger(Type t) {
-    switch(t.tkind()) with(TypeKind) {
+    switch(t.tkind()) with(EType) {
         case UBYTE: case BYTE:
         case USHORT: case SHORT:
         case UINT: case INT:
@@ -62,7 +39,7 @@ bool isInteger(Type t) {
     }
 }
 bool isReal(Type t) {
-    switch(t.tkind()) with(TypeKind) {
+    switch(t.tkind()) with(EType) {
         case FLOAT: case DOUBLE:
             return true;
         default: return false;
@@ -72,17 +49,17 @@ bool isVoidValue(Type t) {
     return t.isVoid() && t.isValue();
 }
 bool isStruct(Type t) {
-    return t.tkind() == TypeKind.STRUCT;
+    return t.tkind() == EType.STRUCT;
 }
 bool isArray(Type t) {
-    return t.tkind() == TypeKind.ARRAY;
+    return t.tkind() == EType.ARRAY;
 }
 bool isFunc(Type t) {
-    return t.tkind() == TypeKind.FUNC;
+    return t.tkind() == EType.FUNC;
 }
 int size(Type t) {
     if(t.isA!Pointer) return 8;
-    final switch(t.tkind())with(TypeKind) {
+    final switch(t.tkind())with(EType) {
         case VOID: return 0;
         case BOOL: case BYTE: case UBYTE: return 1;
         case SHORT: case USHORT: return 2;

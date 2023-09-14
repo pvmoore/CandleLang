@@ -10,18 +10,18 @@ void parseType(Node parent, Tokens t) {
     Node type;
 
     switch(value) {
-        case "bool": type = makeNode!Primitive(TypeKind.BOOL); break;
-        case "byte": type = makeNode!Primitive(TypeKind.BYTE); break;
-        case "ubyte": type = makeNode!Primitive(TypeKind.UBYTE); break;
-        case "short": type = makeNode!Primitive(TypeKind.SHORT); break;
-        case "ushort": type = makeNode!Primitive(TypeKind.USHORT); break;
-        case "int": type = makeNode!Primitive(TypeKind.INT); break;
-        case "uint": type = makeNode!Primitive(TypeKind.UINT); break;
-        case "long": type = makeNode!Primitive(TypeKind.LONG); break;
-        case "ulong": type = makeNode!Primitive(TypeKind.ULONG); break;
-        case "float": type = makeNode!Primitive(TypeKind.FLOAT); break;
-        case "double": type = makeNode!Primitive(TypeKind.DOUBLE); break;
-        case "void": type = makeNode!Primitive(TypeKind.VOID); break;
+        case "bool": type = makeNode!Primitive(EType.BOOL); break;
+        case "byte": type = makeNode!Primitive(EType.BYTE); break;
+        case "ubyte": type = makeNode!Primitive(EType.UBYTE); break;
+        case "short": type = makeNode!Primitive(EType.SHORT); break;
+        case "ushort": type = makeNode!Primitive(EType.USHORT); break;
+        case "int": type = makeNode!Primitive(EType.INT); break;
+        case "uint": type = makeNode!Primitive(EType.UINT); break;
+        case "long": type = makeNode!Primitive(EType.LONG); break;
+        case "ulong": type = makeNode!Primitive(EType.ULONG); break;
+        case "float": type = makeNode!Primitive(EType.FLOAT); break;
+        case "double": type = makeNode!Primitive(EType.DOUBLE); break;
+        case "void": type = makeNode!Primitive(EType.VOID); break;
         default: break;
     }
 
@@ -33,12 +33,12 @@ void parseType(Node parent, Tokens t) {
         Project typeProject = project;
         bool isExternal = false;
 
-        bool isProjectId = t.isKind(TKind.ID) && project.isProjectName(value);
+        bool isProjectId = t.isKind(EToken.ID) && project.isProjectName(value);
         if(isProjectId) {
             typeProject = project.getProject(value);
             isExternal = true;
             t.next();
-            t.skip(TKind.DOT);
+            t.skip(EToken.DOT);
             value = t.value();
         }
 
@@ -57,11 +57,11 @@ void parseType(Node parent, Tokens t) {
     logParse("  type = %s", type);
 
     // Pointer
-    if(t.isKind(TKind.STAR)) {
+    if(t.isKind(EToken.STAR)) {
         Pointer ptr = makeNode!Pointer();
         ptr.add(type);
 
-        while(t.isKind(TKind.STAR)) {
+        while(t.isKind(EToken.STAR)) {
             ptr.depth++;
             t.next();
         }

@@ -10,7 +10,7 @@ public:
     string name;
     Target target;
 
-    override NKind nkind() { return NKind.ID; }
+    override ENode nkind() { return ENode.ID; }
     override Type type() { return target ? target.type() : TYPE_UNKNOWN; }
     override int precedence() { return 0; }
     override bool isResolved() { return target !is null; }

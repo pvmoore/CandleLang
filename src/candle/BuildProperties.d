@@ -18,18 +18,19 @@ public:
         targetDirectory = Directory("target/");
     }
     void load() {
-        // Ensure the target directory exists
-        if(!targetDirectory.exists()) {
-            targetDirectory.create();
-        } else {
-            // Clean it?
-        }
+        ensureDirectoryExists(targetDirectory);
+        ensureDirectoryExists(targetDirectory.add(Directory("build")));
+
         if(dumpAst) {
-            auto astDirectory = targetDirectory.add(Directory("ast"));
-            if(!astDirectory.exists()) {
-                astDirectory.create();
-            }
+            ensureDirectoryExists(targetDirectory.add(Directory("ast")));
         }
     }
 private:
+    void ensureDirectoryExists(Directory dir) {
+        if(!dir.exists()) {
+            dir.create();
+        } else {
+            // Clean it?
+        }
+    }
 }

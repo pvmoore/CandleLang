@@ -22,98 +22,98 @@ public:
                         addToken();
                         skipMultiLineComment();
                     } else if(peek(1)=='=') {
-                        addToken(TKind.SLASH_EQ);
+                        addToken(EToken.SLASH_EQ);
                     } else {
-                        addToken(TKind.SLASH);
+                        addToken(EToken.SLASH);
                     }
                     break;
                 case '<':
                     if(peek(1)=='<' && peek(2)=='=') {
-                        addToken(TKind.LT_LT_EQ);
+                        addToken(EToken.LT_LT_EQ);
                     } else if(peek(1)=='<') {
-                        addToken(TKind.LT_LT);
+                        addToken(EToken.LT_LT);
                     } else if(peek(1)=='=') {
-                        addToken(TKind.LT_EQ);
+                        addToken(EToken.LT_EQ);
                     } else {
-                        addToken(TKind.LT);
+                        addToken(EToken.LT);
                     }
                     break;
                 case '>':
                     if(peek(1)=='>' && peek(2)=='=') {
-                        addToken(TKind.GT_GT_EQ);
+                        addToken(EToken.GT_GT_EQ);
                     } else if(peek(1)=='>') {
-                        addToken(TKind.GT_GT);
+                        addToken(EToken.GT_GT);
                     } else if(peek(1)=='=') {
-                        addToken(TKind.GT_EQ);
+                        addToken(EToken.GT_EQ);
                     } else {
-                        addToken(TKind.GT);
+                        addToken(EToken.GT);
                     }
                     break;
                 case '!':
                     if(peek(1)=='=') {
-                        addToken(TKind.EXCLAIM_EQ);
+                        addToken(EToken.EXCLAIM_EQ);
                     } else {
-                        addToken(TKind.EXCLAIM);
+                        addToken(EToken.EXCLAIM);
                     }
                     break;
                 case '=':
                     if(peek(1)=='=') {
-                        addToken(TKind.EQ_EQ);
+                        addToken(EToken.EQ_EQ);
                     } else {
-                        addToken(TKind.EQ);
+                        addToken(EToken.EQ);
                     }
                     break;
                 case '*':
                     if(peek(1)=='=') {
-                        addToken(TKind.STAR_EQ);
+                        addToken(EToken.STAR_EQ);
                     } else {
-                        addToken(TKind.STAR);
+                        addToken(EToken.STAR);
                     }
                     break;
                 case '+':
                     if(peek(1)=='=') {
-                        addToken(TKind.PLUS_EQ);
+                        addToken(EToken.PLUS_EQ);
                     } else {
-                        addToken(TKind.PLUS);
+                        addToken(EToken.PLUS);
                     }
                     break;
                 case '-':
                     if(peek(1)=='=') {
-                        addToken(TKind.MINUS_EQ);
+                        addToken(EToken.MINUS_EQ);
                     } else {
-                        addToken(TKind.MINUS);
+                        addToken(EToken.MINUS);
                     }
                     break;
                 case '%':
                     if(peek(1)=='=') {
-                        addToken(TKind.PERCENT_EQ);
+                        addToken(EToken.PERCENT_EQ);
                     } else {
-                        addToken(TKind.PERCENT);
+                        addToken(EToken.PERCENT);
                     }
                     break;
                 case '&':
                     if(peek(1)=='&') {
-                        addToken(TKind.AMP_AMP);
+                        addToken(EToken.AMP_AMP);
                     } else if(peek(1)=='=') {
-                        addToken(TKind.AMP_EQ);
+                        addToken(EToken.AMP_EQ);
                     } else {
-                        addToken(TKind.AMP);
+                        addToken(EToken.AMP);
                     }
                     break;
                 case '|':
                     if(peek(1)=='|') {
-                        addToken(TKind.PIPE_PIPE);
+                        addToken(EToken.PIPE_PIPE);
                     } else if(peek(1)=='=') {
-                        addToken(TKind.PIPE_EQ);
+                        addToken(EToken.PIPE_EQ);
                     } else {
-                        addToken(TKind.PIPE);
+                        addToken(EToken.PIPE);
                     }
                     break;
                 case '^':
                     if(peek(1)=='=') {
-                        addToken(TKind.HAT_EQ);
+                        addToken(EToken.HAT_EQ);
                     } else {
-                        addToken(TKind.HAT);
+                        addToken(EToken.HAT);
                     }
                     break;
                 case '\'':
@@ -126,26 +126,26 @@ public:
                     break;
                 case '.':
                     if(peek(1)=='.' && peek(2)=='.') {
-                        addToken(TKind.ELIPSIS);
+                        addToken(EToken.ELIPSIS);
                     } else if(isDigit(peek(-1)) || isDigit(peek(1))) {
                         // float literal
                         pos++;
                     } else {
-                        addToken(TKind.DOT);
+                        addToken(EToken.DOT);
                     }
                     break;
-                case '@': addToken(TKind.AT); break;
-                case '~': addToken(TKind.TILDE); break;
-                case '?': addToken(TKind.QMARK); break;
-                case ',': addToken(TKind.COMMA); break;
-                case ';': addToken(TKind.SEMICOLON); break;
-                case ':': addToken(TKind.COLON); break;
-                case '(': addToken(TKind.LBRACKET); break;
-                case ')': addToken(TKind.RBRACKET); break;
-                case '{': addToken(TKind.LCURLY); break;
-                case '}': addToken(TKind.RCURLY); break;
-                case '[': addToken(TKind.LSQUARE); break;
-                case ']': addToken(TKind.RSQUARE); break;
+                case '@': addToken(EToken.AT); break;
+                case '~': addToken(EToken.TILDE); break;
+                case '?': addToken(EToken.QMARK); break;
+                case ',': addToken(EToken.COMMA); break;
+                case ';': addToken(EToken.SEMICOLON); break;
+                case ':': addToken(EToken.COLON); break;
+                case '(': addToken(EToken.LBRACKET); break;
+                case ')': addToken(EToken.RBRACKET); break;
+                case '{': addToken(EToken.LCURLY); break;
+                case '}': addToken(EToken.RCURLY); break;
+                case '[': addToken(EToken.LSQUARE); break;
+                case ']': addToken(EToken.RSQUARE); break;
                 default:
                     pos++;
                     break;
@@ -243,23 +243,23 @@ private:
             }
         }
     }
-    TKind determineKind(string s) {
-        if(s.length==0) return TKind.ID;
-        if(s[0]=='\'' || s.startsWith("L'")) return TKind.CHAR;
-        if(s[0]=='"' || s.startsWith("L\"")) return TKind.STRING;
-        if(isDigit(s[0])) return TKind.NUMBER;
-        if(s.length>1 && s[0]=='-' && isDigit(s[1])) return TKind.NUMBER;
-        if(s.length>1 && s[0]=='.' && isDigit(s[1])) return TKind.NUMBER;
-        return TKind.ID;
+    EToken determineKind(string s) {
+        if(s.length==0) return EToken.ID;
+        if(s[0]=='\'' || s.startsWith("L'")) return EToken.CHAR;
+        if(s[0]=='"' || s.startsWith("L\"")) return EToken.STRING;
+        if(isDigit(s[0])) return EToken.NUMBER;
+        if(s.length>1 && s[0]=='-' && isDigit(s[1])) return EToken.NUMBER;
+        if(s.length>1 && s[0]=='.' && isDigit(s[1])) return EToken.NUMBER;
+        return EToken.ID;
     }
-    void addToken(TKind k = TKind.NONE) {
+    void addToken(EToken k = EToken.NONE) {
         if(tokenStart < pos) {
             string value = src[tokenStart..pos];
-            TKind tk2 = determineKind(value);
+            EToken tk2 = determineKind(value);
             int column = tokenStart-lineStart;
             tokens ~= Token(tk2, tokenStart, pos-tokenStart, line, column);
         }
-        if(k != TKind.NONE) {
+        if(k != EToken.NONE) {
             int column = pos-lineStart;
             int len = lengthOf(k);
             tokens ~= Token(k, pos, len, line, column);

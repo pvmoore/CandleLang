@@ -8,10 +8,11 @@ final class Linker {
 public:
     static bool link(Project project) {
 
-        string subsystem = "console";
-        string targetExe = project.targetDirectory().value.replace('/', '\\') ~ project.name ~ ".exe";
-        string[] objects = project.allProjects()
-                                  .map!(it=>it.targetDirectory().value ~ it.name ~ ".obj")
+        string subsystem    = "console";
+        auto buildDirectory = project.targetDirectory().add(Directory("build"));
+        string targetExe    = buildDirectory.value.replace('/', '\\') ~ project.name ~ ".exe";
+        string[] objects    = project.allProjects()
+                                  .map!(it=>buildDirectory.value ~ it.name ~ ".obj")
                                   .map!(it=>it.replace('/', '\\'))
                                   .array;
 

@@ -19,7 +19,7 @@ public:
     string debugValue(int offset = 0) {
         return get(offset).toString(src);
     }
-    TKind kind(int offset = 0) {
+    EToken kind(int offset = 0) {
         return get(offset).kind;
     }
     string value(int offset = 0) {
@@ -30,11 +30,11 @@ public:
     int length() {
         return tokens.length.as!int;
     }
-    bool isKind(TKind k) {
+    bool isKind(EToken k) {
         return kind() == k;
     }
-    bool isOneOf(TKind[] kinds...) {
-        TKind k = kind();
+    bool isOneOf(EToken[] kinds...) {
+        EToken k = kind();
         foreach(tk; kinds) { if(tk == k) return true; }
         return false;
     }
@@ -44,7 +44,7 @@ public:
     void next(int count = 1) {
         pos += count;
     }
-    void skip(TKind k) {
+    void skip(EToken k) {
         if(kind() != k) syntaxError(this, "'%s'".format(stringOf(k)));
         next();
     }
@@ -52,10 +52,10 @@ public:
         if(value() != val) syntaxError(this, val);
         next();
     }
-    void skipOptional(TKind k) {
+    void skipOptional(EToken k) {
         if(kind() == k) next();
     }
-    bool matches(TKind[] kinds...) {
+    bool matches(EToken[] kinds...) {
         foreach(i, k; kinds) {
             if(kind(i.as!int) != k) return false;
         }
@@ -66,17 +66,17 @@ public:
      * Assumes we are at the start of a scope - one of (, [ or {
      */
     int findEndOfScope(int offset = 0) {
-        TKind open = kind(offset);
-        TKind close = open == TKind.LBRACKET ? TKind.RBRACKET :
-                      open == TKind.LSQUARE ? TKind.RSQUARE :
-                      open == TKind.LCURLY ? TKind.RCURLY : TKind.NONE;
-        assert(close != TKind.NONE);
+        EToken open = kind(offset);
+        EToken close = open == EToken.LBRACKET ? EToken.RBRACKET :
+                      open == EToken.LSQUARE ? EToken.RSQUARE :
+                      open == EToken.LCURLY ? EToken.RCURLY : EToken.NONE;
+        assert(close != EToken.NONE);
 
         int sc = 0, br = 0, sq = 0, cl = 0;
         int i = offset;
         while(pos+i < tokens.length) {
-            TKind k = kind(i);
-            switch(k) with(TKind) {
+            EToken k = kind(i);
+            switch(k) with(EToken) {
                 case LBRACKET: br++; break;
                 case RBRACKET: br--; break;
                 case LSQUARE: sq++; break;

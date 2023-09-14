@@ -20,9 +20,9 @@ public:
             "/nologo",
             "/std:c17",
 
-            "/Fa",          // create asm file
-            "/Fo",          // create obj file
-            "/TC",          // all source files are C
+            "/Fabuild\\%s".format(project.name),    // create asm file
+            "/Fobuild\\%s".format(project.name),    // create obj file
+            "/TC",                                  // all source files are C
             "/utf-8",
 
             "/WX",          // warnings as errors
@@ -40,19 +40,21 @@ public:
         if(true) {
             // debug build
             args ~= [
-                "/Od",
-                "/Zi",
-                "/Zc:inline-",  // don't remove unreferenced functions
-                "/GS",          // check buffer security
+                "/Od",                                  // disables optimization
+                "/Zi",                                  // produces a PDB file that contains all the symbolic debugging 
+                "/Fdbuild\\%s".format(project.name),    // pdb file location
+                "/Zc:inline-",                          // don't remove unreferenced functions
+                "/GS",                                  // check buffer security
             ];
         } else {
             // optimised build
             args ~= [
-                "/O2",
+                "/O2",          // maximum speed
                 "/GL",          // whole program optimisation
                 "/Ot",          // favour code speed
                 "/Zc:inline",   // remove unreferenced functions
                 "/Gw", 	        // whole-program global data optimization
+                "/Oy",          // suppresses the creation of frame pointers on the call stack 
                 //"/Zo",        // debugging for optimised code
             ];
         }

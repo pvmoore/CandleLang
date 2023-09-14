@@ -14,6 +14,7 @@ import std.string       : toLower;
 
 import candle;
 
+import candle._1lex.EToken;
 import candle._1lex.Lexer;
 import candle._1lex.Token;
 import candle._1lex.Tokens;
@@ -41,6 +42,7 @@ import candle._6link.Linker;
 import candle.statics;
 import candle.utils;
 
+import candle.ast.ENode;
 import candle.ast.node_builder;
 import candle.ast.Node;
 import candle.ast.NodeRef;
@@ -66,6 +68,7 @@ import candle.ast.stmt.Var;
 
 import candle.ast.type.Array;
 import candle.ast.type.Enum;
+import candle.ast.type.EType;
 import candle.ast.type.Func;
 import candle.ast.type.Primitive;
 import candle.ast.type.Pointer;

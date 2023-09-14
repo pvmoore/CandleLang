@@ -12,7 +12,7 @@ public:
         this._type = t;
     }
 
-    override NKind nkind() { return NKind.NULL; }
+    override ENode nkind() { return ENode.NULL; }
     override Type type() { return _type ? _type : TYPE_UNKNOWN; }
     override int precedence() { return 0; }
     override bool isResolved() { return _type && _type.isResolved(); }

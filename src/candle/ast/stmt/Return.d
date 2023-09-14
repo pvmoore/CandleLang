@@ -11,7 +11,7 @@ public:
 
     Expr expr() { return hasChildren() ? first().as!Expr : null; }
 
-    override NKind nkind() { return NKind.RETURN; }
+    override ENode nkind() { return ENode.RETURN; }
     override Type type() { return TYPE_VOID; }
     override string toString() {
         return "Return";

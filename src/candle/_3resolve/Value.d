@@ -18,13 +18,13 @@ struct Value {
         double d;
     }
     Val value;
-    TypeKind kind;
+    EType kind;
 
     this(string s) {
         convert(s);
     }
     string toString() {
-        switch(kind) with(TypeKind) {
+        switch(kind) with(EType) {
             case BOOL: return value.b.to!string;
             case INT: return value.i.to!string;
             case UINT: return value.ui.to!string;
@@ -38,32 +38,32 @@ struct Value {
 private:
     void set(bool b) {
         value.b = b;
-        kind = TypeKind.BOOL;
+        kind = EType.BOOL;
     }
     void set(int i) {
         value.i = i;
-        kind = TypeKind.INT;
+        kind = EType.INT;
     }
     void set(long l) {
         value.l = l;
-        kind = TypeKind.LONG;
+        kind = EType.LONG;
     }
     void set(ulong l) {
         if(l <= 0xffff_ffffL) {
             value.ui = l.as!ulong.as!uint;
-            kind = TypeKind.UINT;
+            kind = EType.UINT;
         } else {
             value.ul = l.as!ulong;
-            kind = TypeKind.ULONG;
+            kind = EType.ULONG;
         }
     }
     void set(float f) {
         value.f = f;
-        kind = TypeKind.FLOAT;
+        kind = EType.FLOAT;
     }
     void set(double d) {
         value.d = d;
-        kind = TypeKind.DOUBLE;
+        kind = EType.DOUBLE;
     }
 
     void convert(string s) {

@@ -17,7 +17,7 @@ T makeNode(T : Unit)(Project project, string name) {
     node.id = IDS++;
     return node;
 }
-T makeNode(T : Primitive)(TypeKind k) {
+T makeNode(T : Primitive)(EType k) {
     T node = new Primitive(k);
     node.id = IDS++;
     return node;

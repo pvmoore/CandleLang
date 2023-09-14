@@ -30,8 +30,8 @@ public:
         return children.filter!(it=>it.isA!Func).map!(it=>it.as!Func).array;
     }
 
-    override NKind nkind() { return NKind.UNION; }
-    override TypeKind tkind() { return TypeKind.UNION; }
+    override ENode nkind() { return ENode.UNION; }
+    override EType tkind() { return EType.UNION; }
     override bool isResolved() { return true; }
     override Type type() { return this; }
     override bool exactlyMatches(Type otherType) {

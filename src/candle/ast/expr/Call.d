@@ -14,7 +14,7 @@ public:
     int numArgs() { return numChildren(); }
     Expr[] args() { return children.as!(Expr[]); }
 
-    override NKind nkind() { return NKind.CALL; }
+    override ENode nkind() { return ENode.CALL; }
     override Type type() { return target ? target.type() : TYPE_UNKNOWN; }
     override int precedence() { return 200; }
     override bool isResolved() { return target !is null; }

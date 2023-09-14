@@ -18,8 +18,8 @@ public:
         this.project = project;
     }
 
-    override NKind nkind() { return NKind.TYPE_REF; }
-    override TypeKind tkind() { return decorated ? decorated.tkind() : TypeKind.UNKNOWN; }
+    override ENode nkind() { return ENode.TYPE_REF; }
+    override EType tkind() { return decorated ? decorated.tkind() : EType.UNKNOWN; }
     override bool isResolved() { return decorated && decorated.isResolved(); }
     override Type type() { return decorated ? decorated : TYPE_UNKNOWN; }
     override bool exactlyMatches(Type otherType) {

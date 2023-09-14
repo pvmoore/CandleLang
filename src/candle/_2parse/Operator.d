@@ -140,53 +140,53 @@ int precedenceOf(Operator op) {
     }
 }
 
-Operator toUnaryOperator(TKind kind) {
+Operator toUnaryOperator(EToken kind) {
     switch(kind) with(Operator) {
-        case TKind.MINUS: return NEG;
-        case TKind.EXCLAIM: return BOOL_NOT;
-        case TKind.TILDE: return BIT_NOT;
+        case EToken.MINUS: return NEG;
+        case EToken.EXCLAIM: return BOOL_NOT;
+        case EToken.TILDE: return BIT_NOT;
 
         default:
-            throw new Exception("Can't convert from TKind %s to Operator".format(kind));
+            throw new Exception("Can't convert from EToken %s to Operator".format(kind));
     }
     assert(false);
 }
 
-Operator toBinaryOperator(TKind kind) {
+Operator toBinaryOperator(EToken kind) {
     switch(kind) with(Operator) {
-        case TKind.STAR: return MUL;
-        case TKind.SLASH: return DIV;
-        case TKind.PERCENT: return MOD;
-        case TKind.PLUS: return ADD;
-        case TKind.MINUS: return SUB;
-        case TKind.LT_LT: return SHL;
-        case TKind.GT_GT: return SHR;
-        case TKind.LT: return LT;
-        case TKind.LT_EQ: return LTE;
-        case TKind.GT: return GT;
-        case TKind.GT_EQ: return GTE;
-        case TKind.EQ_EQ: return EQ;
-        case TKind.EXCLAIM_EQ: return NEQ;
-        case TKind.AMP: return BIT_AND;
-        case TKind.HAT: return BIT_XOR;
-        case TKind.PIPE: return BIT_OR;
-        case TKind.AMP_AMP: return BOOL_AND;
-        case TKind.PIPE_PIPE: return BOOL_OR;
+        case EToken.STAR: return MUL;
+        case EToken.SLASH: return DIV;
+        case EToken.PERCENT: return MOD;
+        case EToken.PLUS: return ADD;
+        case EToken.MINUS: return SUB;
+        case EToken.LT_LT: return SHL;
+        case EToken.GT_GT: return SHR;
+        case EToken.LT: return LT;
+        case EToken.LT_EQ: return LTE;
+        case EToken.GT: return GT;
+        case EToken.GT_EQ: return GTE;
+        case EToken.EQ_EQ: return EQ;
+        case EToken.EXCLAIM_EQ: return NEQ;
+        case EToken.AMP: return BIT_AND;
+        case EToken.HAT: return BIT_XOR;
+        case EToken.PIPE: return BIT_OR;
+        case EToken.AMP_AMP: return BOOL_AND;
+        case EToken.PIPE_PIPE: return BOOL_OR;
 
-        case TKind.EQ: return ASSIGN;
-        case TKind.PLUS_EQ: return ADD_ASSIGN;
-        case TKind.MINUS_EQ: return SUB_ASSIGN;
-        case TKind.STAR_EQ: return MUL_ASSIGN;
-        case TKind.SLASH_EQ: return DIV_ASSIGN;
-        case TKind.PERCENT_EQ: return MOD_ASSIGN;
-        case TKind.LT_LT_EQ: return SHL_ASSIGN;
-        case TKind.GT_GT_EQ: return SHR_ASSIGN;
-        case TKind.AMP_EQ: return AND_ASSIGN;
-        case TKind.HAT_EQ: return XOR_ASSIGN;
-        case TKind.PIPE_EQ: return OR_ASSIGN;
+        case EToken.EQ: return ASSIGN;
+        case EToken.PLUS_EQ: return ADD_ASSIGN;
+        case EToken.MINUS_EQ: return SUB_ASSIGN;
+        case EToken.STAR_EQ: return MUL_ASSIGN;
+        case EToken.SLASH_EQ: return DIV_ASSIGN;
+        case EToken.PERCENT_EQ: return MOD_ASSIGN;
+        case EToken.LT_LT_EQ: return SHL_ASSIGN;
+        case EToken.GT_GT_EQ: return SHR_ASSIGN;
+        case EToken.AMP_EQ: return AND_ASSIGN;
+        case EToken.HAT_EQ: return XOR_ASSIGN;
+        case EToken.PIPE_EQ: return OR_ASSIGN;
 
         default:
-            throw new Exception("Can't convert from TKind %s to Operator".format(kind));
+            throw new Exception("Can't convert from EToken %s to Operator".format(kind));
     }
     assert(false);
 }

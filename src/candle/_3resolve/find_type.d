@@ -37,18 +37,18 @@ Type findType(Project project, string name) {
 }
 
 bool isType(Project project, Tokens t) {
-    if(t.kind() != TKind.ID) return false;
+    if(t.kind() != EToken.ID) return false;
     if(isPrimitiveType(t)) return true;
     if(isUserType(project, t)) return true;
 
-    bool isProjectId = t.isKind(TKind.ID) && project.isProjectName(t.value());
+    bool isProjectId = t.isKind(EToken.ID) && project.isProjectName(t.value());
 
     if(isProjectId) {
         // std.foo(
-        with(TKind) if(t.matches(ID, DOT, ID, LBRACKET)) return false;
+        with(EToken) if(t.matches(ID, DOT, ID, LBRACKET)) return false;
 
         // std.struct
-        with(TKind) if(t.matches(ID, DOT, ID)) return true;
+        with(EToken) if(t.matches(ID, DOT, ID)) return true;
     }
     return false;
 }
@@ -59,20 +59,20 @@ bool isType(Project project, Tokens t) {
 int typeLength(Tokens t) {
     int pos = t.pos;
 
-    assert(t.isKind(TKind.ID));
+    assert(t.isKind(EToken.ID));
     int offset = 1;
 
     // std.struct
-    with(TKind) if(t.matches(ID, DOT, ID)) {
+    with(EToken) if(t.matches(ID, DOT, ID)) {
         offset += 2;
     }
 
-    if(t.isKind(TKind.LSQUARE)) {
+    if(t.isKind(EToken.LSQUARE)) {
         int i = t.findEndOfScope(offset);
         offset += i + 1;
     }
 
-    while(t.isKind(TKind.STAR)) {
+    while(t.isKind(EToken.STAR)) {
         offset++;
     }
 

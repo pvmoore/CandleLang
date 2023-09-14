@@ -19,7 +19,7 @@ void parseStmt(Node parent, Tokens t) {
         // pub extern
         t.consumeModifiers();
 
-        switch(t.kind()) with(TKind) {
+        switch(t.kind()) with(EToken) {
             case ID:
                 switch(t.value()) {
                     case "struct": parseStruct(parent, t); return;
@@ -38,7 +38,7 @@ void parseStmt(Node parent, Tokens t) {
 
     }
 
-    switch(t.kind()) with(TKind) {
+    switch(t.kind()) with(EToken) {
         case ID:
             switch(t.value()) {
                 case "return": parseReturn(parent, t); return;
@@ -46,13 +46,13 @@ void parseStmt(Node parent, Tokens t) {
             }
 
             // ID ID -> Type ID
-            if(isType(project, t) || t.kind(1)==TKind.ID) {
+            if(isType(project, t) || t.kind(1)==EToken.ID) {
                 logParse("  isType %s", t.debugValue());
                 int afterType = typeLength(t);
                 logParse("afterType = %s .. %s", afterType, t.debugValue(afterType));
 
                 // Type Id (
-                if(t.kind(afterType)==TKind.ID && t.kind(afterType+1)==TKind.LBRACKET) {
+                if(t.kind(afterType)==EToken.ID && t.kind(afterType+1)==EToken.LBRACKET) {
                     parseFunc(parent, t);
                     return;
                 }
@@ -88,18 +88,18 @@ void parseVar(Node parent, Tokens t) {
     parseType(v, t);
 
     // Name (optional)
-    if(t.isKind(TKind.ID)) {
+    if(t.isKind(EToken.ID)) {
         v.name = t.value(); t.next();
 
         // Expression
-        if(t.isKind(TKind.EQ)) {
+        if(t.isKind(EToken.EQ)) {
             t.next();
 
             parseExpr(v, t);
         }
     }
 
-    if(t.isKind(TKind.SEMICOLON)) {
+    if(t.isKind(EToken.SEMICOLON)) {
         t.next();
     }
 
@@ -139,32 +139,32 @@ void parseFunc(Node parent, Tokens t) {
     f.name = t.value(); t.next();
 
     // Parameters
-    t.skip(TKind.LBRACKET);
-    while(!t.isKind(TKind.RBRACKET)) {
+    t.skip(EToken.LBRACKET);
+    while(!t.isKind(EToken.RBRACKET)) {
         f.numParams++;
         parseVar(f, t);
 
-        t.skipOptional(TKind.COMMA);
+        t.skipOptional(EToken.COMMA);
     }
-    t.skip(TKind.RBRACKET);
+    t.skip(EToken.RBRACKET);
 
     // Body
-    if(t.isKind(TKind.LCURLY)) {
-        t.skip(TKind.LCURLY);
+    if(t.isKind(EToken.LCURLY)) {
+        t.skip(EToken.LCURLY);
 
         Scope scope_ = makeNode!Scope();
         f.add(scope_);
 
-        while(!t.isKind(TKind.RCURLY)) {
+        while(!t.isKind(EToken.RCURLY)) {
             if(t.eof()) syntaxError(t, "}");
 
             parseStmt(scope_, t);
         }
 
-        t.skip(TKind.RCURLY);
+        t.skip(EToken.RCURLY);
     } else {
         // Must be an extern function
-        t.skip(TKind.SEMICOLON);
+        t.skip(EToken.SEMICOLON);
     }
 }
 
@@ -178,12 +178,12 @@ void parseReturn(Node parent, Tokens t) {
 
     t.skip("return");
 
-    if(t.isKind(TKind.SEMICOLON)) {
+    if(t.isKind(EToken.SEMICOLON)) {
         t.next();
     } else {
         parseExpr(ret, t);
 
-        t.skip(TKind.SEMICOLON);
+        t.skip(EToken.SEMICOLON);
     }
 }
 
@@ -201,13 +201,13 @@ void parseStruct(Node parent, Tokens t) {
 
     s.name = t.value(); t.next();
 
-    if(t.isKind(TKind.LCURLY)) {
+    if(t.isKind(EToken.LCURLY)) {
         t.next();
 
-        while(!t.isKind(TKind.RCURLY)) {
+        while(!t.isKind(EToken.RCURLY)) {
             parseVar(s, t);
         }
-        t.skip(TKind.RCURLY);
+        t.skip(EToken.RCURLY);
 
         // Move this above any Vars or Funcs
         if(Unit unit = parent.as!Unit) {
@@ -222,6 +222,6 @@ void parseStruct(Node parent, Tokens t) {
             }
         }
     } else {
-        t.skip(TKind.SEMICOLON);
+        t.skip(EToken.SEMICOLON);
     }
 }
