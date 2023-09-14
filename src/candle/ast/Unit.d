@@ -70,6 +70,6 @@ private:
         this.src = cast(string)read(project.directory.value ~ filename);
     }
     void lexSource() {
-        this.tokens = new Lexer(src).lex();
+        this.tokens = LexerManager.lex(src);
     }
 }

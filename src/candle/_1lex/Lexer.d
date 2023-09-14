@@ -4,10 +4,13 @@ import candle.all;
 
 final class Lexer {
 public:
+    ulong elapsedNanos() { return watch.peek().total!"nsecs"; }
+
     this(string src) {
         this.src = src;
     }
     Token[] lex() {
+        watch.start();
         while(pos<src.length) {
             char ch = peek(0);
             if(ch<33) {
@@ -151,9 +154,11 @@ public:
                     break;
             }
         }
+        watch.stop();
         return tokens;
     }
 private:
+    StopWatch watch;
     string src;
     int pos;
     int line;

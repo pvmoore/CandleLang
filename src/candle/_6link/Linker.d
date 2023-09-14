@@ -48,7 +48,7 @@ public:
 
         //args ~= getCRuntime();
 
-        log("Link command: %s", args);
+        //log("Link command: %s", args);
 
 
         //args ~= config.getExternalLibs();

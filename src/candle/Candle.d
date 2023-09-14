@@ -11,33 +11,20 @@ public:
     void compile() {
         log("Compiling");
         try{
+            if(parseAndResolve()) {
 
-            // Parse and Resolve phases. These will need to be run several times until all
-            // Nodes are resolved
-
-            bool resolved = false;
-            int maxPasses = 2;
-            for(int pass = 0; !resolved && pass < maxPasses; pass++) {
-                // Run a parse phase on all Projects
-                parseAllProjects(pass);
-
-                // Run a resolve phase on all Projects
-                resolved = resolveAllProjects(pass);
-            }
-
-            if(resolved) {
-
-                // Perform semantic checking on all Projects
                 if(checkAllProjects()) {
 
                     emitAllProjects();
 
-                    if(link()) {
-                        // Success
-                        log("OK " ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
-                    } else {
-                        // Fail
-                        log("Failed " ~ Ansi.RED_BOLD ~ "✘✘✘" ~ Ansi.RESET);
+                    if(buildAllProjects()) {
+                        if(link()) {
+                            // Success
+                            log("OK " ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
+                        } else {
+                            // Fail
+                            log("Failed " ~ Ansi.RED_BOLD ~ "✘✘✘" ~ Ansi.RESET);
+                        }
                     }
                 }
             }
@@ -50,6 +37,9 @@ public:
                 log("  %s", p);
             }
             log("══════════════════════════════════════════════════════════════════════════════════════════════════");
+            log("Timing:");
+            log("  Lexing %.2f ms (%s files)", LexerManager.getElapsedNanos()/1_000_000.0, LexerManager.getNumLexedFiles());
+            log("══════════════════════════════════════════════════════════════════════════════════════════════════");
 
         }catch(SyntaxError e) {
             log("%s", e.formatted());
@@ -60,6 +50,22 @@ public:
 private:
     BuildProperties props;
     Project mainProject;
+
+    bool parseAndResolve() {
+        bool resolved = false;
+        int maxPasses = 2;
+        for(int pass = 0; !resolved && pass < maxPasses; pass++) {
+            // Run a parse phase on all Projects
+            parseAllProjects(pass);
+
+            // Run a resolve phase on all Projects
+            resolved = resolveAllProjects(pass);
+        }
+        if(!resolved) {
+            log("There were problems found");
+        }
+        return resolved;
+    }
 
     void parseAllProjects(int pass) {
         log("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
@@ -97,25 +103,31 @@ private:
         log("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
 
         foreach(p; mainProject.allProjects()) {
-            log("  Emit %s", p.name);
+            log("🕯 Emit %s", p.name);
 
             auto emit = new EmitProject(p);
             emit.emit();
         }
 
     }
-    bool link() {
-        log("🕯♑ Link all projects: %s", mainProject.allProjects().map!(it=>it.name));
+    /** 
+     * Build all Projects into one object file per project
+     */
+    bool buildAllProjects() {
+        log("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
 
-        // Build all Projects into object files
         foreach(p; mainProject.allProjects()) {
             auto builder = new BuildProject(p);
             if(!builder.build()) {
                 return false;
             }
         }
-
-        // Link all object files together
+        return true;
+    }
+    /** 
+     * Link all object files together
+     */
+    bool link() {
         return Linker.link(mainProject);
     }
 }

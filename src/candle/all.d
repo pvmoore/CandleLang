@@ -5,17 +5,21 @@ public:
 import common;
 import resources.json5;
 
-import std.format       : format;
-import std.algorithm    : all, map, filter;
-import std.range        : array;
-import std.array        : replace;
-import std.stdio        : File, writefln;
-import std.string       : toLower;
+import core.atomic              : atomicLoad, atomicOp;
+
+import std.format               : format;
+import std.algorithm            : all, map, filter;
+import std.range                : array;
+import std.array                : replace;
+import std.stdio                : File, writefln;
+import std.string               : toLower;
+import std.datetime.stopwatch   : StopWatch;
 
 import candle;
 
 import candle._1lex.EToken;
 import candle._1lex.Lexer;
+import candle._1lex.LexerManager;
 import candle._1lex.Token;
 import candle._1lex.Tokens;
 
@@ -78,3 +82,12 @@ import candle.ast.type.TypeRef;
 import candle.ast.type.Union;
 
 import candle.errors.errors;
+
+version(GC_STATS) {
+    ///
+    /// Show GC stats after program exits
+    ///
+    extern(C) __gshared string[] rt_options = [
+        "gcopt=profile:1"
+    ];
+}

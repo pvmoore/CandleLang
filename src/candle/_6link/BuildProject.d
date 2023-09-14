@@ -64,8 +64,7 @@ public:
 
         args ~= "%s.c".format(project.name);
 
-        log("Build command: %s", args);
-
+        //log("Build command: %s", args);
 
         string[string] env;
         auto result = execute(args, env, Config.none, size_t.max, project.targetDirectory().value);
