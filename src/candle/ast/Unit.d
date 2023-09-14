@@ -26,7 +26,7 @@ public:
 
         // TODO - scan for Types?
     }
-    override ENode nkind() { return ENode.UNIT; }
+    override ENode enode() { return ENode.UNIT; }
     override bool isResolved() { return true; }
     override Type type() { return TYPE_UNKNOWN; }
 

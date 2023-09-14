@@ -11,7 +11,7 @@ public:
     final int numChildren() { return children.length.as!int; }
     final bool hasChildren() { return children.length > 0; }
 
-    abstract ENode nkind();
+    abstract ENode enode();
     abstract Type type();
     abstract bool isResolved();
 

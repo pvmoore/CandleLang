@@ -92,7 +92,7 @@ Target findIdTarget(Id id) {
  */
 Target findIdTarget(Id id, Node prev) {
     logResolve("findIdTarget %s (member)", id.name);
-    switch(prev.nkind()) with(ENode) {
+    switch(prev.enode()) with(ENode) {
         case PROJECT_ID: {
             ProjectId pid = prev.as!ProjectId;
             Project project = pid.project;
@@ -112,7 +112,7 @@ Target findIdTarget(Id id, Node prev) {
         case STRUCT:
         case UNION:
             break;
-        default: throw new Exception("findIdTarget: Handle node %s".format(prev.nkind()));
+        default: throw new Exception("findIdTarget: Handle node %s".format(prev.enode()));
     }
     return null;
 }

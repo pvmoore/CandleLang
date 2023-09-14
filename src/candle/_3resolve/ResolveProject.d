@@ -26,7 +26,7 @@ private:
 
     void resolve(Node n) {
         logResolve("resolve %s", n);
-        switch(n.nkind()) with(ENode) {
+        switch(n.enode()) with(ENode) {
             case BINARY: resolve(n.as!Binary); break;
             case CALL: resolve(n.as!Call); break;
             case CHAR: resolve(n.as!Char); break;
@@ -47,7 +47,7 @@ private:
             case UNIT: resolve(n.as!Unit); break;
             case VAR: resolve(n.as!Var); break;
             default:
-                throw new Exception("ResolveProject: Handle node %s".format(n.nkind()));
+                throw new Exception("ResolveProject: Handle node %s".format(n.enode()));
         }
 
         logResolve("  %s resolved = %s", n, n.isResolved());
@@ -169,7 +169,7 @@ private:
      */
     Type resolveTypeFromParent(Node n) {
         Type t = null;
-        switch(n.parent.nkind()) with(ENode) {
+        switch(n.parent.enode()) with(ENode) {
             case VAR: t = n.parent.type(); break;
             case CALL: {
                 // We are an argument. We need the call to be resolved before we know what our Type is
@@ -192,7 +192,7 @@ private:
                 break;
             }
             default:
-                throwIf(true, "Handle ResolveProject.resolveTypeFromParent %s", n.parent.nkind());
+                throwIf(true, "Handle ResolveProject.resolveTypeFromParent %s", n.parent.enode());
                 break;
         }
         return t;

@@ -10,7 +10,7 @@ public:
     string stringValue;
     Value value;
 
-    override ENode nkind() { return ENode.CHAR; }
+    override ENode enode() { return ENode.CHAR; }
     override Type type() { return TYPE_INT; }
     override int precedence() { return 0; }
     override bool isResolved() { return true; }

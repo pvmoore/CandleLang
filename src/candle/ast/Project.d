@@ -18,7 +18,7 @@ public:
     Directory targetDirectory() { return props.targetDirectory; }
     bool dumpAst() { return props.dumpAst; }
 
-    override ENode nkind() { return ENode.PROJECT; }
+    override ENode enode() { return ENode.PROJECT; }
     override Type type() { return TYPE_VOID; }
     override bool isResolved() { return true; }
 

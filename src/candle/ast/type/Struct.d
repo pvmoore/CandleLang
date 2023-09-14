@@ -30,8 +30,8 @@ public:
         return children.filter!(it=>it.isA!Func).map!(it=>it.as!Func).array;
     }
 
-    override ENode nkind() { return ENode.STRUCT; }
-    override EType tkind() { return EType.STRUCT; }
+    override ENode enode() { return ENode.STRUCT; }
+    override EType etype() { return EType.STRUCT; }
     override bool isResolved() { return true; }
     override Type type() { return this; }
 

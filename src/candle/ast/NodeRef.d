@@ -13,7 +13,7 @@ public:
         this.other = other;
     }
 
-    override ENode nkind() { return ENode.NODE_REF; }
+    override ENode enode() { return ENode.NODE_REF; }
     override bool isResolved() { return other.isResolved(); }
     override Type type() { return other.type(); }
     override string toString() {

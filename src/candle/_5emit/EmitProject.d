@@ -91,8 +91,8 @@ private:
     }
 
     void emit(Node n) {
-        logEmit("emit %s", n.nkind());
-        switch(n.nkind()) with(ENode) {
+        logEmit("emit %s", n.enode());
+        switch(n.enode()) with(ENode) {
             case BINARY: emit(n.as!Binary); break;
             case CALL: emit(n.as!Call); break;
             case CHAR: emit(n.as!Char); break;
@@ -111,7 +111,7 @@ private:
             case UNARY: emit(n.as!Unary); break;
             case UNIT: emit(n.as!Unit); break;
             case VAR: emit(n.as!Var); break;
-            default: throw new Exception("EmitUnit: Handle node %s".format(n.nkind()));
+            default: throw new Exception("EmitUnit: Handle node %s".format(n.enode()));
         }
     }
 
@@ -184,7 +184,7 @@ private:
         add("*".repeat(n.depth));
     }
     void emit(Primitive n) {
-        switch(n.tkind()) with(EType) {
+        switch(n.etype()) with(EType) {
             case BOOL: buf.add("bool"); break;
             case UBYTE: buf.add("ubyte"); break;
             case BYTE: buf.add("byte"); break;
@@ -197,7 +197,7 @@ private:
             case FLOAT: buf.add("float"); break;
             case DOUBLE: buf.add("double"); break;
             case VOID: buf.add("void"); break;
-            default: throw new Exception("EmitUnit: Handle Primitive %s".format(n.tkind()));
+            default: throw new Exception("EmitUnit: Handle Primitive %s".format(n.etype()));
         }
     }
     void emit(ProjectId n) {
@@ -263,7 +263,7 @@ private:
         }
     }
     void emit(TypeRef n) {
-        switch(n.decorated.tkind()) with(EType) {
+        switch(n.decorated.etype()) with(EType) {
             case STRUCT:
                 add("%s".format(getName(n.decorated.as!Struct)));
                 break;
@@ -271,7 +271,7 @@ private:
                 add(getName(n.decorated.as!Union));
                 break;
             default:
-                throwIf(true, "EmitProject: Handle %s", n.decorated.tkind());
+                throwIf(true, "EmitProject: Handle %s", n.decorated.etype());
                 break;
         }
     }

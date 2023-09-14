@@ -3,7 +3,7 @@ module candle.ast.type.Type;
 import candle.all;
 
 interface Type {
-    EType tkind();
+    EType etype();
     bool isResolved();
     bool canImplicitlyConvertTo(Type other);
     bool exactlyMatches(Type other);
@@ -20,16 +20,16 @@ bool isValue(Type t) {
     return !isPtr(t);
 }
 bool isBool(Type t) {
-    return t.tkind() == EType.BOOL;
+    return t.etype() == EType.BOOL;
 }
 bool isVoid(Type t) {
-    return t.tkind() == EType.VOID;
+    return t.etype() == EType.VOID;
 }
 bool isUnknown(Type t) {
-    return t.tkind() == EType.UNKNOWN;
+    return t.etype() == EType.UNKNOWN;
 }
 bool isInteger(Type t) {
-    switch(t.tkind()) with(EType) {
+    switch(t.etype()) with(EType) {
         case UBYTE: case BYTE:
         case USHORT: case SHORT:
         case UINT: case INT:
@@ -39,7 +39,7 @@ bool isInteger(Type t) {
     }
 }
 bool isReal(Type t) {
-    switch(t.tkind()) with(EType) {
+    switch(t.etype()) with(EType) {
         case FLOAT: case DOUBLE:
             return true;
         default: return false;
@@ -49,17 +49,17 @@ bool isVoidValue(Type t) {
     return t.isVoid() && t.isValue();
 }
 bool isStruct(Type t) {
-    return t.tkind() == EType.STRUCT;
+    return t.etype() == EType.STRUCT;
 }
 bool isArray(Type t) {
-    return t.tkind() == EType.ARRAY;
+    return t.etype() == EType.ARRAY;
 }
 bool isFunc(Type t) {
-    return t.tkind() == EType.FUNC;
+    return t.etype() == EType.FUNC;
 }
 int size(Type t) {
     if(t.isA!Pointer) return 8;
-    final switch(t.tkind())with(EType) {
+    final switch(t.etype())with(EType) {
         case VOID: return 0;
         case BOOL: case BYTE: case UBYTE: return 1;
         case SHORT: case USHORT: return 2;
@@ -108,7 +108,7 @@ Type getBestType(Type a, Type b) {
     }
 
     if(a.isReal() == b.isReal()) {
-        return a.tkind() > b.tkind() ? a : b;
+        return a.etype() > b.etype() ? a : b;
     }
     if(a.isReal()) return a;
     if(b.isReal()) return b;

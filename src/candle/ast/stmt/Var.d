@@ -15,7 +15,7 @@ public:
     bool isParameter() { return parent.isA!Func; }
     Expr initialiser() { assert(hasInitialiser()); return last().as!Expr; }
 
-    override ENode nkind() { return ENode.VAR; }
+    override ENode enode() { return ENode.VAR; }
     override Type type() { return first().as!Type; }
     override string toString() {
         string n = name ? "%s".format(name) : "(unnamed)";

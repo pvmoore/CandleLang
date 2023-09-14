@@ -24,8 +24,8 @@ public:
         return _lengthValue;
     }
 
-    override ENode nkind() { return ENode.ARRAY; }
-    override EType tkind() { return EType.ARRAY; }
+    override ENode enode() { return ENode.ARRAY; }
+    override EType etype() { return EType.ARRAY; }
     override bool isResolved() { return elementType.isResolved() && length().isResolved(); }
     override bool exactlyMatches(Type otherType) {
         assert(isResolved() && otherType.isResolved());

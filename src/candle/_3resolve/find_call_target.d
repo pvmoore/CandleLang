@@ -79,7 +79,7 @@ Target findCallTarget(Call call, Node prev) {
     throwIf(!prev.isResolved());
 
     logResolve("findCallTarget %s (member)", call.name);
-    switch(prev.nkind()) with(ENode) {
+    switch(prev.enode()) with(ENode) {
         case PROJECT_ID: {
             ProjectId pid = prev.as!ProjectId;
             Project project = pid.project;
@@ -97,7 +97,7 @@ Target findCallTarget(Call call, Node prev) {
         case STRUCT:
         case UNION:
             break;
-        default: throw new Exception("findTarget: Handle node %s".format(prev.nkind()));
+        default: throw new Exception("findTarget: Handle node %s".format(prev.enode()));
     }
     return null;
 }

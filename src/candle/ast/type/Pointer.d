@@ -16,8 +16,8 @@ public:
 
     Type valueType() { return first().as!Type; }
 
-    override ENode nkind() { return ENode.POINTER; }
-    override EType tkind() { return valueType().tkind(); }
+    override ENode enode() { return ENode.POINTER; }
+    override EType etype() { return valueType().etype(); }
     override bool isResolved() { return valueType.isResolved(); }
     override Type type() { return this; }
     override bool exactlyMatches(Type otherType) {
@@ -27,7 +27,7 @@ public:
     }
     override bool canImplicitlyConvertTo(Type otherType) {
         Pointer other = otherType.as!Pointer;
-        return other && other.valueType().tkind() == this.tkind();
+        return other && other.valueType().etype() == this.etype();
     }
     override string toString() {
         return "*".repeat(depth);

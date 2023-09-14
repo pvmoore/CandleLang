@@ -12,7 +12,7 @@ public:
 
     Expr expr() { return first().as!Expr; }
 
-    override ENode nkind() { return ENode.UNARY; }
+    override ENode enode() { return ENode.UNARY; }
     override Type type() { return expr().type(); }
     override int precedence() { return precedenceOf(op); }
     override bool isResolved() { return true; }

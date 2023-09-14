@@ -10,7 +10,7 @@ public:
     string stringValue;
     Value value;
 
-    override ENode nkind() { return ENode.NUMBER; }
+    override ENode enode() { return ENode.NUMBER; }
     override Type type() { return getStaticType(value.kind); }
     override int precedence() { return 0; }
     override bool isResolved() { return true; }

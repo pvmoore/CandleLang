@@ -10,8 +10,8 @@ public:
     this(EType k) {
         this._kind = k;
     }
-    override ENode nkind() { return ENode.PRIMITIVE; }
-    override EType tkind() { return _kind; }
+    override ENode enode() { return ENode.PRIMITIVE; }
+    override EType etype() { return _kind; }
     override bool isResolved() { return true; }
     override Type type() { return this; }
 
@@ -48,7 +48,7 @@ public:
     }
     override string toString() {
         import std.string:toLower;
-        return "%s".format(tkind()).toLower();
+        return "%s".format(etype()).toLower();
     }
 private:
     EType _kind;

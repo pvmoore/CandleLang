@@ -23,7 +23,7 @@ public:
 
         // Binary operations with byte or short are promoted to int
         if(Primitive p = _type.as!Primitive) {
-            switch(p.tkind()) with(EType) {
+            switch(p.etype()) with(EType) {
                 case BYTE: case SHORT:
                     _type = TYPE_INT;
                     break;
@@ -35,7 +35,7 @@ public:
         }
     }
 
-    override ENode nkind() { return ENode.BINARY; }
+    override ENode enode() { return ENode.BINARY; }
     override Type type() { return _type ? _type : TYPE_UNKNOWN; }
     override int precedence() { return precedenceOf(op); }
     override bool isResolved() { return _type !is null && _type != TYPE_UNKNOWN; }

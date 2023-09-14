@@ -13,8 +13,8 @@ public:
 
     }
 
-    override ENode nkind() { return ENode.ENUM; }
-    override EType tkind() { return EType.ENUM; }
+    override ENode enode() { return ENode.ENUM; }
+    override EType etype() { return EType.ENUM; }
     override bool isResolved() { return true; }
     override bool exactlyMatches(Type otherType) {
         return false;
