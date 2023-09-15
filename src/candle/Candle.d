@@ -4,13 +4,35 @@ import candle.all;
 
 final class Candle {
 public:
-    this(Compilation comp) {
-        this.comp = comp;
-        comp.mainProject = makeNode!Project(comp, comp.mainDirectory);
-        comp.mainProject.dumpProperties();
+    // Static data
+    bool isDebug;
+    string subsystem;
+    Directory mainDirectory;
+    Directory targetDirectory;
+    bool dumpAst;
+
+    // Generated data
+    Project mainProject;
+    Project[string] projects;
+    
+    Project[] allProjects() { return projects.values(); }
+
+    this() {}
+    void readConfig(string filename) {
+        // TODO
     }
     void compile() {
         log("Compiling");
+        ensureDirectoryExists(targetDirectory);
+        ensureDirectoryExists(targetDirectory.add(Directory("build")));
+
+        if(dumpAst) {
+            ensureDirectoryExists(targetDirectory.add(Directory("ast")));
+        }
+
+        mainProject = makeNode!Project(this, mainDirectory);
+        mainProject.dumpProperties();
+
         try{
             if(parseAndResolve()) {
 
@@ -34,7 +56,7 @@ public:
 
             log("\n════════════════════════════════════════════════════════════════════════════════════════");
             log("Projects:");
-            foreach(p; comp.allProjects()) {
+            foreach(p; allProjects()) {
                 log("  %s", p);
             }
             log("════════════════════════════════════════════════════════════════════════════════════════");
@@ -49,8 +71,13 @@ public:
         }
     }
 private:
-    Compilation comp;
-
+    void ensureDirectoryExists(Directory dir) {
+        if(!dir.exists()) {
+            dir.create();
+        } else {
+            // Clean it?
+        }
+    }
     bool parseAndResolve() {
         bool resolved = false;
         int maxPasses = 2;
@@ -69,7 +96,7 @@ private:
 
     void parseAllProjects(int pass) {
         log("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
-        foreach(p; comp.allProjects()) {
+        foreach(p; allProjects()) {
             logParse("  Parse %s", p);
 
             auto parser = new ParseProject(p);
@@ -79,7 +106,7 @@ private:
     bool resolveAllProjects(int pass) {
         log("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         bool allResolved = true;
-        foreach(p; comp.allProjects()) {
+        foreach(p; allProjects()) {
             logResolve("Resolve %s", p);
 
             auto resolver = new ResolveProject(p);
@@ -91,7 +118,7 @@ private:
     bool checkAllProjects() {
         log("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         bool allPassCheck = true;
-        foreach(p; comp.allProjects()) {
+        foreach(p; allProjects()) {
             logCheck("  Check %s", p.name);
 
             auto checker = new CheckProject(p);
@@ -101,8 +128,8 @@ private:
     }
     void emitAllProjects() {
         log("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        new CommonHeader(comp).emit();  
-        foreach(p; comp.allProjects()) {
+        new CommonHeader(this).emit();  
+        foreach(p; allProjects()) {
             new EmitProject(p).emit();
         }
     }
@@ -112,7 +139,7 @@ private:
     bool buildAllProjects() {
         log("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
 
-        foreach(p; comp.allProjects()) {
+        foreach(p; allProjects()) {
             auto builder = new BuildProject(p);
             if(!builder.build()) {
                 return false;
@@ -124,6 +151,6 @@ private:
      * Link all object files together
      */
     bool link() {
-        return Linker.link(comp.mainProject);
+        return Linker.link(mainProject);
     }
 }

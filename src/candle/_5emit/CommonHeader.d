@@ -4,18 +4,18 @@ import candle.all;
 
 final class CommonHeader {
 public:
-    this(Compilation comp) {
-        this.comp = comp;
+    this(Candle candle) {
+        this.candle = candle;
     }
     void emit() {
         string name = "candle_common.h";
-        auto path = Filepath(comp.targetDirectory, Filename(name));
+        auto path = Filepath(candle.targetDirectory, Filename(name));
         File file = File(path.value, "wb");
         file.write(HEADER_CONTENT);
         file.close();
     }
 private:
-    Compilation comp;
+    Candle candle;
     string HEADER_CONTENT = "
 #ifndef CANDLE_COMMON_TYPEDEFS_H
 #define CANDLE_COMMON_TYPEDEFS_H

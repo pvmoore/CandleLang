@@ -12,6 +12,7 @@ import std.string : strip;
 final class BuildProject {
 public:
     this(Project project) {
+        this.candle = project.candle;
         this.project = project;
     }
     bool build() {
@@ -67,7 +68,7 @@ public:
         //log("Build command: %s", args);
 
         string[string] env;
-        auto result = execute(args, env, Config.none, size_t.max, project.targetDirectory().value);
+        auto result = execute(args, env, Config.none, size_t.max, candle.targetDirectory.value);
 
         if(result.status!=0) {
             log("🕯 Build %s " ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", project.name, result.output.strip);
@@ -79,5 +80,6 @@ public:
         return true;
     }
 private:
+    Candle candle;
     Project project;
 }

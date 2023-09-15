@@ -35,9 +35,10 @@ bool isDigit(char c) {
 }
 
 void writeAst(Unit unit) {
-    if(unit.project.dumpAst()) {
-        Filepath path = Filepath(unit.project.targetDirectory.add(Directory("ast")),
-                                 Filename("%s_%s.canast".format(unit.project.name, unit.name)));
+    Candle candle = unit.project.candle;
+    if(candle.dumpAst) {
+        Filepath path = Filepath(candle.targetDirectory.add(Directory("ast")),
+                                 Filename("%s__%s.canast".format(unit.project.name, unit.name)));
         path.write(unit.dumpToString());
     }
 }

@@ -8,12 +8,14 @@ import candle.all;
  */
 final class Unit : Node {
 public:
+    // Static data
     Project project;
     string name;
     string filename;
     Token[] tokens;
     string src;
 
+    // Dynamic data
     bool isParsed;
 
     this(Project project, string filename) {

@@ -9,9 +9,9 @@ public:
     static bool link(Project project) {
 
         string subsystem    = "console";
-        auto buildDirectory = project.targetDirectory().add(Directory("build"));
+        auto buildDirectory = project.candle.targetDirectory.add(Directory("build"));
         string targetExe    = buildDirectory.value.replace('/', '\\') ~ project.name ~ ".exe";
-        string[] objects    = project.comp.allProjects()
+        string[] objects    = project.candle.allProjects()
                                   .map!(it=>buildDirectory.value ~ it.name ~ ".obj")
                                   .map!(it=>it.replace('/', '\\'))
                                   .array;

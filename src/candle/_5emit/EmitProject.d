@@ -5,6 +5,7 @@ import candle.all;
 final class EmitProject {
 public:
     this(Project project) {
+        this.candle = project.candle;
         this.project = project;
         this.sourceBuf = new StringBuffer();
         this.headerBuf = new StringBuffer();
@@ -16,17 +17,18 @@ public:
 
         // Write the file now
         string filename = project.name ~ ".c";
-        File file = File(Filepath(project.targetDirectory(), Filename(filename)).value, "wb");
+        File file = File(Filepath(candle.targetDirectory, Filename(filename)).value, "wb");
         file.write(sourceBuf.toString());
         file.close();
 
         // Write the file now
         string header = project.name ~ ".h";
-        File hFile = File(Filepath(project.targetDirectory(), Filename(header)).value, "wb");
+        File hFile = File(Filepath(candle.targetDirectory, Filename(header)).value, "wb");
         hFile.write(headerBuf.toString());
         hFile.close();
     }
 private:
+    Candle candle;
     Project project;
     StringBuffer buf, sourceBuf, headerBuf;
     string indent;
@@ -210,7 +212,7 @@ private:
         buf = sourceBuf;
 
         // Add includes for all Projects
-        foreach(p; project.comp.allProjects()) {
+        foreach(p; candle.allProjects()) {
             writeStmt("#include \"%s.h\"\n", p.name);
         }
 

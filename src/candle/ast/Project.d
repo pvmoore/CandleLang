@@ -8,24 +8,21 @@ import candle.all;
  */
 final class Project : Node {
 public:
+    Candle candle;
     string name;
-    Compilation comp;
     Directory directory;
     Directory[string] dependencies; // external Projects
-
-    Directory targetDirectory() { return comp.targetDirectory; }
-    bool dumpAst() { return comp.dumpAst; }
 
     override ENode enode() { return ENode.PROJECT; }
     override Type type() { return TYPE_VOID; }
     override bool isResolved() { return true; }
 
-    this(Compilation comp, Directory directory) {
-        this.comp = comp;
+    this(Candle candle, Directory directory) {
+        this.candle = candle;
         this.directory = directory;
         loadProjectJson5();
         addUnits();
-        comp.projects[name] = this;
+        candle.projects[name] = this;
     }
 
     Project getDependency(string name) {
@@ -35,15 +32,15 @@ public:
             throw new Exception("Project dependency not found '%s'".format(name));
         }
         // Reuse Project if we already have it
-        auto pptr = name in comp.projects;
+        auto pptr = name in candle.projects;
         if(pptr) return *pptr;
 
         // Create and load this Project
-        return makeNode!Project(comp, *dptr);
+        return makeNode!Project(candle, *dptr);
     }
 
     Project[] getExternalProjects() {
-        return comp.allProjects().filter!(it=>it !is this).array();
+        return candle.allProjects().filter!(it=>it !is this).array();
     }
 
     bool isProjectName(string name) {
