@@ -4,9 +4,10 @@ import candle.all;
 
 final class Candle {
 public:
-    this(BuildProperties props) {
-        this.mainProject = makeNode!Project(props, props.mainDirectory);
-        mainProject.dumpProperties();
+    this(Compilation comp) {
+        this.comp = comp;
+        comp.mainProject = makeNode!Project(comp, comp.mainDirectory);
+        comp.mainProject.dumpProperties();
     }
     void compile() {
         log("Compiling");
@@ -31,15 +32,15 @@ public:
 
             //  🌩🌧🌤🌻🍒🌹🍓🍔✒✕✖✗✘✓✔🗹♏
 
-            log("\n══════════════════════════════════════════════════════════════════════════════════════════════════");
+            log("\n════════════════════════════════════════════════════════════════════════════════════════");
             log("Projects:");
-            foreach(p; mainProject.allProjects()) {
+            foreach(p; comp.allProjects()) {
                 log("  %s", p);
             }
-            log("══════════════════════════════════════════════════════════════════════════════════════════════════");
+            log("════════════════════════════════════════════════════════════════════════════════════════");
             log("Timing:");
             log("  Lexing %.2f ms (%s files)", LexerManager.getElapsedNanos()/1_000_000.0, LexerManager.getNumLexedFiles());
-            log("══════════════════════════════════════════════════════════════════════════════════════════════════");
+            log("════════════════════════════════════════════════════════════════════════════════════════");
 
         }catch(SyntaxError e) {
             log("%s", e.formatted());
@@ -48,8 +49,7 @@ public:
         }
     }
 private:
-    BuildProperties props;
-    Project mainProject;
+    Compilation comp;
 
     bool parseAndResolve() {
         bool resolved = false;
@@ -69,7 +69,7 @@ private:
 
     void parseAllProjects(int pass) {
         log("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
-        foreach(p; mainProject.allProjects()) {
+        foreach(p; comp.allProjects()) {
             logParse("  Parse %s", p);
 
             auto parser = new ParseProject(p);
@@ -79,7 +79,7 @@ private:
     bool resolveAllProjects(int pass) {
         log("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         bool allResolved = true;
-        foreach(p; mainProject.allProjects()) {
+        foreach(p; comp.allProjects()) {
             logResolve("Resolve %s", p);
 
             auto resolver = new ResolveProject(p);
@@ -91,7 +91,7 @@ private:
     bool checkAllProjects() {
         log("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         bool allPassCheck = true;
-        foreach(p; mainProject.allProjects()) {
+        foreach(p; comp.allProjects()) {
             logCheck("  Check %s", p.name);
 
             auto checker = new CheckProject(p);
@@ -101,14 +101,10 @@ private:
     }
     void emitAllProjects() {
         log("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-
-        foreach(p; mainProject.allProjects()) {
-            log("🕯 Emit %s", p.name);
-
-            auto emit = new EmitProject(p);
-            emit.emit();
+        new CommonHeader(comp).emit();  
+        foreach(p; comp.allProjects()) {
+            new EmitProject(p).emit();
         }
-
     }
     /** 
      * Build all Projects into one object file per project
@@ -116,7 +112,7 @@ private:
     bool buildAllProjects() {
         log("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
 
-        foreach(p; mainProject.allProjects()) {
+        foreach(p; comp.allProjects()) {
             auto builder = new BuildProject(p);
             if(!builder.build()) {
                 return false;
@@ -128,6 +124,6 @@ private:
      * Link all object files together
      */
     bool link() {
-        return Linker.link(mainProject);
+        return Linker.link(comp.mainProject);
     }
 }

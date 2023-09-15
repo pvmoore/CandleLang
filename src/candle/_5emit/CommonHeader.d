@@ -1,20 +1,22 @@
-module candle._5emit.emit_utils;
+module candle._5emit.CommonHeader;
 
 import candle.all;
 
-void writeCommonHeader(Project project) {
-    string name = "candle_common.h";
-    auto path = Filepath(project.targetDirectory(), Filename(name));
-    if(!path.exists()) {
+final class CommonHeader {
+public:
+    this(Compilation comp) {
+        this.comp = comp;
+    }
+    void emit() {
+        string name = "candle_common.h";
+        auto path = Filepath(comp.targetDirectory, Filename(name));
         File file = File(path.value, "wb");
         file.write(HEADER_CONTENT);
         file.close();
     }
-}
-
 private:
-
-string HEADER_CONTENT = "
+    Compilation comp;
+    string HEADER_CONTENT = "
 #ifndef CANDLE_COMMON_TYPEDEFS_H
 #define CANDLE_COMMON_TYPEDEFS_H
 
@@ -31,3 +33,4 @@ typedef unsigned long long ulong;
 
 #endif
 ";
+}

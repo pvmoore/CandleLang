@@ -7,8 +7,8 @@ T makeNode(T : Node)() {
     node.id = IDS++;
     return node;
 }
-T makeNode(T : Project)(BuildProperties props, Directory directory) {
-    T node = new Project(props, directory);
+T makeNode(T : Project)(Compilation comp, Directory directory) {
+    T node = new Project(comp, directory);
     node.id = IDS++;
     return node;
 }

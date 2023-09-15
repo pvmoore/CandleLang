@@ -1,7 +1,6 @@
 module candle._5emit.EmitProject;
 
 import candle.all;
-import candle._5emit.emit_utils;
 
 final class EmitProject {
 public:
@@ -11,11 +10,8 @@ public:
         this.headerBuf = new StringBuffer();
     }
     void emit() {
-
-        writeCommonHeader(project);
-
+        log("🕯 Emit %s", project.name);
         buf = sourceBuf;
-
         emit(project);
 
         // Write the file now
@@ -213,8 +209,8 @@ private:
         emitHeader();
         buf = sourceBuf;
 
-        // Add includes for all external Project dependencies here ...
-        foreach(p; project.allProjects()) {
+        // Add includes for all Projects
+        foreach(p; project.comp.allProjects()) {
             writeStmt("#include \"%s.h\"\n", p.name);
         }
 

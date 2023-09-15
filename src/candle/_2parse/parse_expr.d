@@ -180,7 +180,7 @@ void parseId(Node parent, Tokens t) {
     if(project.isProjectName(name)) {
         ProjectId id = makeNode!ProjectId();
         id.name = name;
-        id.project = project.getProject(name);
+        id.project = project.getDependency(name);
         parent.add(id);
     } else {
         Id id = makeNode!Id();

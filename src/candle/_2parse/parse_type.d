@@ -35,7 +35,7 @@ void parseType(Node parent, Tokens t) {
 
         bool isProjectId = t.isKind(EToken.ID) && project.isProjectName(value);
         if(isProjectId) {
-            typeProject = project.getProject(value);
+            typeProject = project.getDependency(value);
             isExternal = true;
             t.next();
             t.skip(EToken.DOT);

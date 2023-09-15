@@ -5,6 +5,7 @@ import candle.all;
 /**
  *  Union
  *      { Var }
+ *      { Func }
  */
 final class Union : Node, Type {
 public:

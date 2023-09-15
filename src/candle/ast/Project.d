@@ -8,44 +8,42 @@ import candle.all;
  */
 final class Project : Node {
 public:
-    static Project[] allProjects() { return projects.values(); }
-    //──────────────────────────────────────────────────────────────────────────────────────────────
     string name;
-    BuildProperties props;
+    Compilation comp;
     Directory directory;
     Directory[string] dependencies; // external Projects
 
-    Directory targetDirectory() { return props.targetDirectory; }
-    bool dumpAst() { return props.dumpAst; }
+    Directory targetDirectory() { return comp.targetDirectory; }
+    bool dumpAst() { return comp.dumpAst; }
 
     override ENode enode() { return ENode.PROJECT; }
     override Type type() { return TYPE_VOID; }
     override bool isResolved() { return true; }
 
-    this(BuildProperties props, Directory directory) {
-        this.props = props;
+    this(Compilation comp, Directory directory) {
+        this.comp = comp;
         this.directory = directory;
         loadProjectJson5();
         addUnits();
-        projects[name] = this;
+        comp.projects[name] = this;
     }
 
-    Project getProject(string name) {
-        auto ptr = name in projects;
-        if(ptr) return *ptr;
-
+    Project getDependency(string name) {
         // Is it a Project we know about?
         auto dptr = name in dependencies;
         if(!dptr) {
             throw new Exception("Project dependency not found '%s'".format(name));
         }
+        // Reuse Project if we already have it
+        auto pptr = name in comp.projects;
+        if(pptr) return *pptr;
 
         // Create and load this Project
-        return makeNode!Project(props, *dptr);
+        return makeNode!Project(comp, *dptr);
     }
 
     Project[] getExternalProjects() {
-        return allProjects().filter!(it=>it !is this).array();
+        return comp.allProjects().filter!(it=>it !is this).array();
     }
 
     bool isProjectName(string name) {
@@ -84,8 +82,6 @@ public:
         return "Project '%s', '%s'".format(name, directory);
     }
 private:
-    static Project[string] projects;
-
     /** 
      * {
      *   name: "test",

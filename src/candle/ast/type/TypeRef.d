@@ -8,9 +8,9 @@ import candle.all;
 final class TypeRef : Node, Type {
 public:
     string name;        // this is set if the type name is known
-    Project project;
+    Project project;    // the Project of the decorated Type (if isExternal == true)
     Type decorated;     // this can be null until the Type has been resolved
-    bool isExternal;    // true if project is not in the current Project
+    bool isExternal;    // true if decorated Type is not in the current Project
 
     this(string name, Type decorated, Project project) {
         this.name = name;

@@ -1,4 +1,4 @@
-module candle._6link.Linker;
+module candle._6build.Linker;
 
 import candle.all;
 import std.process : Config, execute, spawnProcess, wait;
@@ -11,7 +11,7 @@ public:
         string subsystem    = "console";
         auto buildDirectory = project.targetDirectory().add(Directory("build"));
         string targetExe    = buildDirectory.value.replace('/', '\\') ~ project.name ~ ".exe";
-        string[] objects    = project.allProjects()
+        string[] objects    = project.comp.allProjects()
                                   .map!(it=>buildDirectory.value ~ it.name ~ ".obj")
                                   .map!(it=>it.replace('/', '\\'))
                                   .array;

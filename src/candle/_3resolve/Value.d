@@ -85,28 +85,28 @@ private:
                 if(s[1]=='\\') {
                     switch(s[1]) {
                         case '0' : v = 0; break;
-                        case 'b' : v =  8; break;
-                        case 't' : v =  9; break;
-                        case 'n' : v =  10; break;
-                        case 'f' : v =  12; break;
-                        case 'r' : v =  13; break;
-                        case '\"': v =  34; break;
-                        case '\'': v =  39; break;
-                        case '\\': v =  92; break;
+                        case 'b' : v = 8; break;
+                        case 't' : v = 9; break;
+                        case 'n' : v = 10; break;
+                        case 'f' : v = 12; break;
+                        case 'r' : v = 13; break;
+                        case '\"': v = 34; break;
+                        case '\'': v = 39; break;
+                        case '\\': v = 92; break;
                         case 'x' :
-                            set(to!long(s[2..4], 16));
+                            set(to!ulong(s[2..4], 16));
                             return;
                         case 'u' :
-                            set(to!long(s[2..6], 16));
+                            set(to!ulong(s[2..6], 16));
                             return;
                         case 'U' :
-                            to!long(s[2..10], 16);
+                            to!ulong(s[2..10], 16);
                             return;
                         default:
                             break;
                     }
                 } else {
-                    v = s[1].to!int;
+                    v = s[1].to!uint;
                 }
                 set(v);
                 return;

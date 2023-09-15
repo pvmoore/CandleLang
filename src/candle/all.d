@@ -38,10 +38,11 @@ import candle._3resolve.Value;
 
 import candle._4check.CheckProject;
 
+import candle._5emit.CommonHeader;
 import candle._5emit.EmitProject;
 
-import candle._6link.BuildProject;
-import candle._6link.Linker;
+import candle._6build.BuildProject;
+import candle._6build.Linker;
 
 import candle.statics;
 import candle.utils;

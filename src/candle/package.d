@@ -2,8 +2,8 @@ module candle;
 
 public:
 
-import candle.BuildProperties;
 import candle.Candle;
+import candle.Compilation;
 
 import candle.ast.Project;
 

@@ -1,14 +1,21 @@
-module candle.BuildProperties;
+module candle.Compilation;
 
 import candle.all;
 
-final class BuildProperties {
+final class Compilation {
 public:
+    // Static data
     bool isDebug;
     string subsystem;
     Directory mainDirectory;
     Directory targetDirectory;
     bool dumpAst;
+
+    // Generated data
+    Project mainProject;
+    Project[string] projects;
+    
+    Project[] allProjects() { return projects.values(); }
 
     this() {
         // Default values

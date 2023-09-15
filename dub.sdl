@@ -18,7 +18,7 @@ configuration "library" {
 	excludedSourceFiles "src/test.d"
 }
 
-versions "GC_STATS"
+#versions "GC_STATS"
 
 dependency "common" version="~master"
 dependency "resources" version="~master"

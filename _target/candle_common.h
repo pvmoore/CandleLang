@@ -8,6 +8,7 @@ typedef signed char byte;
 typedef unsigned short ushort;
 typedef unsigned int uint;
 typedef unsigned long long ulong;
+
 #define true 1
 #define false 0
 #define null 0

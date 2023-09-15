@@ -7,16 +7,16 @@ import common;
 
 void main(string[] args) {
 
-    auto props = new BuildProperties();
-    props.isDebug = true;
-    props.subsystem = "console";
-    props.mainDirectory = Directory("_test/");
-    props.targetDirectory = Directory("_target/");
-    props.dumpAst = true;
+    auto comp = new Compilation();
+    comp.isDebug = true;
+    comp.subsystem = "console";
+    comp.mainDirectory = Directory("_test/");
+    comp.targetDirectory = Directory("_target/");
+    comp.dumpAst = true;
 
-    props.load();
+    comp.load();
 
-    auto candle = new Candle(props);
+    auto candle = new Candle(comp);
 
     candle.compile();
 

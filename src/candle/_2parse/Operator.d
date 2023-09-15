@@ -137,6 +137,8 @@ int precedenceOf(Operator op) {
         case XOR_ASSIGN:
         case OR_ASSIGN:
             return 10;
+
+        // Literals and Id are 0    
     }
 }
 
