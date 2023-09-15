@@ -11,7 +11,7 @@ public:
         this.headerBuf = new StringBuffer();
     }
     void emit() {
-        log("🕯 Emit %s", project.name);
+        logEmit("🕯 Emit %s", project.name);
         buf = sourceBuf;
         emit(project);
 

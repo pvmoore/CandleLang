@@ -16,6 +16,7 @@ public:
         this.project = project;
     }
     bool build() {
+
         auto args = [
             "cl",
             "/nologo",
@@ -74,7 +75,7 @@ public:
             log("🕯 Build %s " ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", project.name, result.output.strip);
             return false;
         } else {
-            log("🕯 Build %s".format(project.name) ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
+            logBuild("🕯 Build %s".format(project.name) ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
         }
 
         return true;

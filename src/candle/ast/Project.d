@@ -23,6 +23,7 @@ public:
         loadProjectJson5();
         addUnits();
         candle.projects[name] = this;
+        dumpProperties();
     }
 
     Project getDependency(string name) {
@@ -117,7 +118,7 @@ private:
     void addUnits() {
         // Collect all the Units and add to the Project
         string[] filenames = unitFilenames();
-        log("Project files = %s", filenames);
+        //log("Project files = %s", filenames);
 
         foreach(filename; filenames) {
             Unit unit = makeNode!Unit(this, filename);

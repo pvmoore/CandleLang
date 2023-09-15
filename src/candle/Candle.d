@@ -17,12 +17,11 @@ public:
     
     Project[] allProjects() { return projects.values(); }
 
-    this() {}
     void readConfig(string filename) {
         // TODO
     }
     void compile() {
-        log("Compiling");
+        logo();
         ensureDirectoryExists(targetDirectory);
         ensureDirectoryExists(targetDirectory.add(Directory("build")));
 
@@ -31,7 +30,6 @@ public:
         }
 
         mainProject = makeNode!Project(this, mainDirectory);
-        mainProject.dumpProperties();
 
         try{
             if(parseAndResolve()) {
@@ -71,6 +69,11 @@ public:
         }
     }
 private:
+    void logo() {
+        log("\n══════════════════════");
+        log(" Candle Lang %s", 0.1);
+        log("══════════════════════\n");
+    }
     void ensureDirectoryExists(Directory dir) {
         if(!dir.exists()) {
             dir.create();
@@ -95,7 +98,7 @@ private:
     }
 
     void parseAllProjects(int pass) {
-        log("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
+        logParse("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         foreach(p; allProjects()) {
             logParse("  Parse %s", p);
 
@@ -104,19 +107,19 @@ private:
         }
     }
     bool resolveAllProjects(int pass) {
-        log("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
+        logResolve("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         bool allResolved = true;
         foreach(p; allProjects()) {
-            logResolve("Resolve %s", p);
+            logResolve("  Resolve %s", p);
 
             auto resolver = new ResolveProject(p);
             allResolved &= resolver.resolve();
         }
-        log("   All resolved = %s", allResolved);
+        logResolve("  All resolved = %s", allResolved);
         return allResolved;
     }
     bool checkAllProjects() {
-        log("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+        logCheck("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         bool allPassCheck = true;
         foreach(p; allProjects()) {
             logCheck("  Check %s", p.name);
@@ -127,7 +130,7 @@ private:
         return allPassCheck;
     }
     void emitAllProjects() {
-        log("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+        logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         new CommonHeader(this).emit();  
         foreach(p; allProjects()) {
             new EmitProject(p).emit();
@@ -137,8 +140,7 @@ private:
      * Build all Projects into one object file per project
      */
     bool buildAllProjects() {
-        log("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-
+        logBuild("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         foreach(p; allProjects()) {
             auto builder = new BuildProject(p);
             if(!builder.build()) {
@@ -151,6 +153,6 @@ private:
      * Link all object files together
      */
     bool link() {
-        return Linker.link(mainProject);
+        return Linker.link(this);
     }
 }

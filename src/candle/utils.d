@@ -29,6 +29,11 @@ void logEmit(A...)(string fmt, lazy A args) {
         log(fmt, args);
     }
 }
+void logBuild(A...)(string fmt, lazy A args) {
+    static if(LOG_BUILD) {
+        log(fmt, args);
+    }
+}
 
 bool isDigit(char c) {
     return c >= '0' && c <= '9';

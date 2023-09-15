@@ -6,12 +6,12 @@ import std.string : strip;
 
 final class Linker {
 public:
-    static bool link(Project project) {
-
-        string subsystem    = "console";
-        auto buildDirectory = project.candle.targetDirectory.add(Directory("build"));
-        string targetExe    = buildDirectory.value.replace('/', '\\') ~ project.name ~ ".exe";
-        string[] objects    = project.candle.allProjects()
+    static bool link(Candle candle) {
+        string targetName   = candle.mainProject.name;
+        string subsystem    = candle.subsystem;
+        auto buildDirectory = candle.targetDirectory.add(Directory("build"));
+        string targetExe    = buildDirectory.value.replace('/', '\\') ~ targetName ~ ".exe";
+        string[] objects    = candle.allProjects()
                                   .map!(it=>buildDirectory.value ~ it.name ~ ".obj")
                                   .map!(it=>it.replace('/', '\\'))
                                   .array;
@@ -21,15 +21,15 @@ public:
             "/NOLOGO",
             //"/VERBOSE",
             "/MACHINE:X64",
-            "/WX",              /// Treat linker warnings as errors
+            "/WX",              // Treat linker warnings as errors
             "/SUBSYSTEM:" ~ subsystem
         ];
 
-        if(true) {
+        if(candle.isDebug) {
             // debug build
             args ~= [
-                 "/DEBUG:NONE",     /// Don't generate a PDB for now
-                "/OPT:NOREF"        /// Don't remove unreferenced functions and data
+                "/DEBUG:NONE",     // Don't generate a PDB for now
+                "/OPT:NOREF"        // Don't remove unreferenced functions and data
             ];
         } else {
             // optimised build
@@ -57,10 +57,10 @@ public:
         auto result = execute(args, env, Config.none, size_t.max, ".");
 
         if(result.status!=0) {
-            log("🕯 Link %s " ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", project.name, result.output.strip);
+            log("🕯 Link %s " ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", targetName, result.output.strip);
             return false;
         } else {
-            log("🕯 Link %s".format(project.name) ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
+            logBuild("🕯 Link %s".format(targetName) ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
         }
 
         return true;

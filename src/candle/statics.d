@@ -8,6 +8,7 @@ enum LOG_PARSE   = !true;
 enum LOG_RESOLVE = !true;
 enum LOG_CHECK   = !true;
 enum LOG_EMIT    = !true;
+enum LOG_BUILD   = true;
 
 File logFile;
 
