@@ -211,10 +211,13 @@ private:
         emitHeader();
         buf = sourceBuf;
 
-        // Add includes for all Projects
-        foreach(p; candle.allProjects()) {
+        // Add includes for all dependent Projects
+        foreach(p; n.getExternalProjects()) {
             writeStmt("#include \"%s.h\"\n", p.name);
         }
+
+        // Add our own header
+        writeStmt("#include \"%s.h\"\n", n.name);
 
         // Emit Project private prototypes
         writeStmt("// Prototypes\n");

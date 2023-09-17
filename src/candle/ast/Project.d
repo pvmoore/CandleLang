@@ -11,8 +11,7 @@ public:
     Candle candle;
     string name;
     Directory directory;
-    Directory[string] dependencies; // external Projects
-
+    
     override ENode enode() { return ENode.PROJECT; }
     override Type type() { return TYPE_VOID; }
     override bool isResolved() { return true; }
@@ -33,15 +32,20 @@ public:
             throw new Exception("Project dependency not found '%s'".format(name));
         }
         // Reuse Project if we already have it
+        Project project;
         auto pptr = name in candle.projects;
-        if(pptr) return *pptr;
-
-        // Create and load this Project
-        return makeNode!Project(candle, *dptr);
+        if(pptr) {
+            project = *pptr;
+        } else {
+            // Create and load this Project
+            project = makeNode!Project(candle, *dptr);
+        }
+        externalProjects[name] = project;
+        return project;
     }
 
     Project[] getExternalProjects() {
-        return candle.allProjects().filter!(it=>it !is this).array();
+        return externalProjects.values();
     }
 
     bool isProjectName(string name) {
@@ -80,6 +84,9 @@ public:
         return "Project '%s', '%s'".format(name, directory);
     }
 private:
+    Directory[string] dependencies;     // declared possible external Projects
+    Project[string] externalProjects;   // accessed external Projects
+
     /** 
      * {
      *   name: "test",
