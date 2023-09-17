@@ -16,6 +16,11 @@ public:
         }
         return formattedError(node.getUnit(), node.coord, msg);
     }
+    override bool isDuplicateOf(CandleError e) {
+        auto other = e.as!ResolutionError;
+        if(!other) return false;
+        return node.id == other.node.id;
+    }
 private:
     Node node;
 }

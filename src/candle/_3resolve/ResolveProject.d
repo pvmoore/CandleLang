@@ -5,6 +5,7 @@ import candle.all;
 final class ResolveProject {
 public:
     this(Project project) {
+        this.candle = project.candle;
         this.project = project;
     }
     bool resolve() {
@@ -15,6 +16,7 @@ public:
         return allResolved;
     }
 private:
+    Candle candle;
     Project project;
     bool allResolved;
 
@@ -28,6 +30,7 @@ private:
         logResolve("resolve %s", n);
         switch(n.enode()) with(ENode) {
             case BINARY: resolve(n.as!Binary); break;
+            case BUILTIN_FUNC: resolve(n.as!BuiltinFunc); break;
             case CALL: resolve(n.as!Call); break;
             case CHAR: resolve(n.as!Char); break;
             case DOT: resolve(n.as!Dot); break;
@@ -55,6 +58,10 @@ private:
     }
 
     void resolve(Binary n) {
+        resolveChildren(n);
+        n.resolve();
+    }
+    void resolve(BuiltinFunc n) {
         resolveChildren(n);
         n.resolve();
     }

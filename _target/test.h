@@ -1,7 +1,7 @@
 #ifndef test_H
 #define test_H
 
-#include "candle_common.h"
+#include "candle__common.h"
 
 typedef struct test_Apple {
   int a;

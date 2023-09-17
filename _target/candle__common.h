@@ -13,6 +13,16 @@ typedef unsigned long long ulong;
 #define false 0
 #define null 0
 
-#include "assert.h"
+#include "stdlib.h"
+#include "stdio.h"
+
+inline void candle__assert(int value, const char* unitName, uint line) {
+    if(!value) {
+        putchar(13); putchar(10);
+        printf("!! Assertion failed: [%s] Line %u", unitName, line);
+        putchar(13); putchar(10);
+        exit(-1);
+    }
+}
 
 #endif

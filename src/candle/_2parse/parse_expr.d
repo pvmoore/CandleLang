@@ -20,6 +20,7 @@ void lhs(Node parent, Tokens t) {
         case EXCLAIM: parseUnary(parent, t); return;
         case TILDE: parseUnary(parent, t); return;
         case LBRACKET: parseParens(parent, t); return;
+        case AT: parseBuiltinFunc(parent, t); return;
         case ID:
             switch(t.value()) {
                 case "true":
@@ -233,4 +234,26 @@ void parseParens(Node parent, Tokens t) {
     parseExpr(p, t);
 
     t.skip(EToken.RBRACKET);
+}
+/** 
+ * BUILTIN_FUNC ::= '@' name '(' { Expr } ')'
+ */
+void parseBuiltinFunc(Node parent, Tokens t) {
+    BuiltinFunc f = makeNode!BuiltinFunc(t.coord());
+    parent.add(f);
+
+    t.skip(EToken.AT);
+
+    f.name = t.value(); t.next();
+
+    t.skip(EToken.LBRACKET);
+    while(!t.isKind(EToken.RBRACKET)) {
+        parseExpr(f, t);
+        t.skipOptional(EToken.COMMA);
+    }
+    t.skip(EToken.RBRACKET);
+
+    if(t.isKind(EToken.SEMICOLON)) {
+        f.isStmt = true;
+    }
 }

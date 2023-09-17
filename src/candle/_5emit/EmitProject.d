@@ -67,7 +67,7 @@ private:
     void emitHeader() {
         buf.add("#ifndef %s_H\n", project.name);
         buf.add("#define %s_H\n\n", project.name);
-        buf.add("#include \"candle_common.h\"\n\n");
+        buf.add("#include \"candle__common.h\"\n\n");
         foreach(u; project.getUnits()) {
             foreach(s; u.getStructs()) {
                 if(s.isPublic) {
@@ -92,6 +92,7 @@ private:
         logEmit("emit %s", n.enode());
         switch(n.enode()) with(ENode) {
             case BINARY: emit(n.as!Binary); break;
+            case BUILTIN_FUNC: emit(n.as!BuiltinFunc); break;
             case CALL: emit(n.as!Call); break;
             case CHAR: emit(n.as!Char); break;
             case DOT: emit(n.as!Dot); break;
@@ -109,7 +110,7 @@ private:
             case UNARY: emit(n.as!Unary); break;
             case UNIT: emit(n.as!Unit); break;
             case VAR: emit(n.as!Var); break;
-            default: throw new Exception("EmitUnit: Handle node %s".format(n.enode()));
+            default: throw new Exception("EmitProject: Handle node %s".format(n.enode()));
         }
     }
 
@@ -117,6 +118,21 @@ private:
         emit(n.left());
         add(" %s ", stringOf(n.op));
         emit(n.right());
+    }
+    void emit(BuiltinFunc n) {
+        switch(n.name) {
+            case "assert":
+                if(n.isStmt) {
+                    writeStmt("candle__assert(");
+                } else {
+                    add("candle__assert(");
+                }        
+                emit(n.first());
+                add(", \"%s\", %s)", n.getUnit().filename, n.coord.line+1);
+                if(n.isStmt) add(";\n");
+                break;
+            default: break;
+        }
     }
     void emit(Call n) {
 
@@ -218,6 +234,8 @@ private:
 
         // Add our own header
         writeStmt("#include \"%s.h\"\n", n.name);
+
+        //writeStmt("static const char* candle_projectName;");// = \"%s\";", n.name);
 
         // Emit Project private prototypes
         writeStmt("// Prototypes\n");

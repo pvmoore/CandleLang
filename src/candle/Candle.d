@@ -9,14 +9,16 @@ public:
     string subsystem;
     Directory mainDirectory;
     Directory targetDirectory;
+    bool nullChecks = true;
     bool dumpAst;
 
     // Generated data
     Project mainProject;
     Project[string] projects;
-    CandleError[] errors;
     
     Project[] allProjects() { return projects.values(); }
+    bool hasErrors() { return errors.length > 0; }
+    CandleError[] getErrors() { return errors; }
 
     void readConfig(string filename) {
         // TODO
@@ -37,9 +39,8 @@ public:
                 return false;
             }
 
-            if(!checkAllProjects()) {
-                return false;
-            }
+            checkAllProjects();
+            if(hasErrors()) return false;
 
             emitAllProjects();
 
@@ -75,7 +76,15 @@ public:
         }
         return true;
     }
+    void addError(CandleError error) {
+        foreach(e; errors) {
+            if(error.isDuplicateOf(e)) return;
+        }
+        errors ~= error;
+    }
 private:
+    CandleError[] errors;
+
     void logo() {
         log("\n══════════════════════");
         log(" 🕯 Candle Lang %s", 0.1);
@@ -104,7 +113,7 @@ private:
                 p.getUnresolved(nodes);
             }
             foreach(Node n; nodes) {
-                errors ~= new ResolutionError(n);
+                addError(new ResolutionError(n));
             }
             assert(errors, "Where are the resolution errors?");
         }
@@ -132,16 +141,12 @@ private:
         logResolve("  All resolved = %s", allResolved);
         return allResolved;
     }
-    bool checkAllProjects() {
+    void checkAllProjects() {
         logCheck("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        bool allPassCheck = true;
         foreach(p; allProjects()) {
             logCheck("  Check %s", p.name);
-
-            auto checker = new CheckProject(p);
-            allPassCheck |= checker.check();
+            new CheckProject(p).check();
         }
-        return allPassCheck;
     }
     void emitAllProjects() {
         logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");

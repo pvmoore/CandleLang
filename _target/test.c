@@ -23,6 +23,7 @@ int main() {
   std_putChar('b');
   test_doSomething(null, null);
   doSomethingElse();
+  candle__assert(false, "test.can", 19);
   return 0;
 }
 void doSomethingElse() {

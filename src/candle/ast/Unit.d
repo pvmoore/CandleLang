@@ -32,8 +32,6 @@ public:
     override bool isResolved() { return true; }
     override Type type() { return TYPE_UNKNOWN; }
 
-    Candle getCandle() { return project.candle; }
-
     Var getVar(string name) {
         return children.filter!(it=>it.isA!Var)
                        .map!(it=>it.as!Var)

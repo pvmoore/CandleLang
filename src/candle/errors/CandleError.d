@@ -4,6 +4,7 @@ import candle.all;
 
 interface CandleError {
     string formatted();
+    bool isDuplicateOf(CandleError);
 }
 
 string formattedError(Unit unit, FileCoord coord, string msg) {

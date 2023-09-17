@@ -84,31 +84,22 @@ public:
         if(!hasChildren()) return null;
         return children[$-1];
     }
-    T findFirstChildOf(T)() {
-        foreach(ch; children) if(ch.isA!T) return ch.as!T;
-        return null;
-    }
-    Unit getUnit() {
+    final Unit getUnit() {
         if(this.isA!Unit) return this.as!Unit;
         assert(parent);
         return parent.getUnit();
     }
-    Project getProject() {
+    final Project getProject() {
         if(this.isA!Project) return this.as!Project;
         assert(parent);
         return parent.getProject();
     }
-    bool hasAncestor(T)() {
-        if(!parent) return false;
-        if(parent.isA!T) return true;
-        return parent.hasAncestor!T;
+    final Candle getCandle() {
+        if(auto p = this.as!Project) return p.candle;
+        if(auto u = this.as!Unit) return u.project.candle;
+        assert(parent);
+        return parent.getCandle();
     }
-    T getAncestor(T)() {
-        if(!parent) return null;
-        if(parent.isA!T) return parent.as!T;
-        return parent.getAncestor!T;
-    }
-
     final void dump(string indent = "") {
         log("%s%s", indent, this);
         foreach(ch; children) {
@@ -121,6 +112,20 @@ public:
             s ~= ch.dumpToString(indent ~ "  ");
         }
         return s;
+    }
+    T findFirstChildOf(T)() {
+        foreach(ch; children) if(ch.isA!T) return ch.as!T;
+        return null;
+    }
+    bool hasAncestor(T)() {
+        if(!parent) return false;
+        if(parent.isA!T) return true;
+        return parent.hasAncestor!T;
+    }
+    T getAncestor(T)() {
+        if(!parent) return null;
+        if(parent.isA!T) return parent.as!T;
+        return parent.getAncestor!T;
     }
 protected:
 
