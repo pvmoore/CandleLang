@@ -10,18 +10,18 @@ void parseType(Node parent, Tokens t) {
     Node type;
 
     switch(value) {
-        case "bool": type = makeNode!Primitive(EType.BOOL); break;
-        case "byte": type = makeNode!Primitive(EType.BYTE); break;
-        case "ubyte": type = makeNode!Primitive(EType.UBYTE); break;
-        case "short": type = makeNode!Primitive(EType.SHORT); break;
-        case "ushort": type = makeNode!Primitive(EType.USHORT); break;
-        case "int": type = makeNode!Primitive(EType.INT); break;
-        case "uint": type = makeNode!Primitive(EType.UINT); break;
-        case "long": type = makeNode!Primitive(EType.LONG); break;
-        case "ulong": type = makeNode!Primitive(EType.ULONG); break;
-        case "float": type = makeNode!Primitive(EType.FLOAT); break;
-        case "double": type = makeNode!Primitive(EType.DOUBLE); break;
-        case "void": type = makeNode!Primitive(EType.VOID); break;
+        case "bool": type = makeNode!Primitive(t.coord(), EType.BOOL); break;
+        case "byte": type = makeNode!Primitive(t.coord(), EType.BYTE); break;
+        case "ubyte": type = makeNode!Primitive(t.coord(), EType.UBYTE); break;
+        case "short": type = makeNode!Primitive(t.coord(), EType.SHORT); break;
+        case "ushort": type = makeNode!Primitive(t.coord(), EType.USHORT); break;
+        case "int": type = makeNode!Primitive(t.coord(), EType.INT); break;
+        case "uint": type = makeNode!Primitive(t.coord(), EType.UINT); break;
+        case "long": type = makeNode!Primitive(t.coord(), EType.LONG); break;
+        case "ulong": type = makeNode!Primitive(t.coord(), EType.ULONG); break;
+        case "float": type = makeNode!Primitive(t.coord(), EType.FLOAT); break;
+        case "double": type = makeNode!Primitive(t.coord(), EType.DOUBLE); break;
+        case "void": type = makeNode!Primitive(t.coord(), EType.VOID); break;
         default: break;
     }
 
@@ -43,7 +43,7 @@ void parseType(Node parent, Tokens t) {
         }
 
         Type ty = findType(typeProject, value);
-        TypeRef tr = makeNode!TypeRef(value, ty, typeProject);
+        TypeRef tr = makeNode!TypeRef(t.coord(), value, ty, typeProject);
         tr.isExternal = isExternal;
         type = tr;
 
@@ -58,7 +58,7 @@ void parseType(Node parent, Tokens t) {
 
     // Pointer
     if(t.isKind(EToken.STAR)) {
-        Pointer ptr = makeNode!Pointer();
+        Pointer ptr = makeNode!Pointer(type.coord);
         ptr.add(type);
 
         while(t.isKind(EToken.STAR)) {

@@ -46,7 +46,8 @@ public:
                 "/Fdbuild\\%s".format(project.name),    // pdb file location
                 "/Zc:inline-",                          // don't remove unreferenced functions
                 "/GS",                                  // check buffer security
-            ];
+                "/sdl",                                 // enables a superset of the baseline security checks
+            ];  
         } else {
             // optimised build
             args ~= [

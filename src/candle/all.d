@@ -18,6 +18,7 @@ import std.datetime.stopwatch   : StopWatch;
 import candle;
 
 import candle._1lex.EToken;
+import candle._1lex.FileCoord;
 import candle._1lex.Lexer;
 import candle._1lex.LexerManager;
 import candle._1lex.Token;
@@ -83,6 +84,8 @@ import candle.ast.type.TypeRef;
 import candle.ast.type.Union;
 
 import candle.errors.errors;
+import candle.errors.ResolutionError;
+import candle.errors.SyntaxError;
 
 version(GC_STATS) {
     ///

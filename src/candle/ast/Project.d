@@ -22,7 +22,7 @@ public:
         loadProjectJson5();
         addUnits();
         candle.projects[name] = this;
-        dumpProperties();
+        //dumpProperties();
     }
 
     Project getDependency(string name) {
@@ -80,6 +80,14 @@ public:
             units ~
             "}");
     }
+    void getUnresolved(ref Node[] nodes) {
+        this.recurse((n) {
+            if(!n.isResolved()) {
+                nodes ~= n;
+            }
+        });
+    }
+
     override string toString() {
         return "Project '%s', '%s'".format(name, directory);
     }

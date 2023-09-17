@@ -14,6 +14,9 @@ void main(string[] args) {
     candle.targetDirectory = Directory("_target/");
     candle.dumpAst = true;
 
-    candle.compile();
-
+    if(!candle.compile()) {
+        foreach(e; candle.errors) {
+            writefln("%s", e.formatted());
+        }
+    }
 }

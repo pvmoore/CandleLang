@@ -16,6 +16,9 @@ public:
         if(pos+offset >= tokens.length) return NO_TOKEN;
         return tokens[pos+offset];
     }
+    FileCoord coord() {
+        return get().coord;
+    }
     string debugValue(int offset = 0) {
         return get(offset).toString(src);
     }

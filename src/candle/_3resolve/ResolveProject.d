@@ -70,7 +70,7 @@ private:
                 }
             } else {
                 Node prev = n.prevLink();
-                log("  prev = %s", prev);
+                logResolve("  prev = %s", prev);
                 if(!prev.isResolved()) return;
 
                 Target target = findCallTarget(n, prev);

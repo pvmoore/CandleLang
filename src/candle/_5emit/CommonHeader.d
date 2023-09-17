@@ -31,6 +31,8 @@ typedef unsigned long long ulong;
 #define false 0
 #define null 0
 
+#include \"assert.h\"
+
 #endif
 ";
 }

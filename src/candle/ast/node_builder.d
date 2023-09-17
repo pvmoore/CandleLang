@@ -2,9 +2,10 @@ module candle.ast.node_builder;
 
 import candle.all;
 
-T makeNode(T : Node)() {
+T makeNode(T : Node)(FileCoord coord) {
     T node = new T();
     node.id = IDS++;
+    node.coord = coord;
     return node;
 }
 T makeNode(T : Project)(Candle candle, Directory directory) {
@@ -17,18 +18,21 @@ T makeNode(T : Unit)(Project project, string name) {
     node.id = IDS++;
     return node;
 }
-T makeNode(T : Primitive)(EType k) {
+T makeNode(T : Primitive)(FileCoord coord, EType k) {
     T node = new Primitive(k);
     node.id = IDS++;
+    node.coord = coord;
     return node;
 }
 T makeNode(T : NodeRef)(Node n) {
     T node = new NodeRef(n);
     node.id = IDS++;
+    node.coord = n.coord;
     return node;
 }
-T makeNode(T : TypeRef)(string name, Type n, Project project) {
+T makeNode(T : TypeRef)(FileCoord coord, string name, Type n, Project project) {
     T node = new TypeRef(name, n, project);
     node.id = IDS++;
+    node.coord = coord;
     return node;
 }

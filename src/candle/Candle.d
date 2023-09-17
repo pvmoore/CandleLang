@@ -14,13 +14,14 @@ public:
     // Generated data
     Project mainProject;
     Project[string] projects;
+    CandleError[] errors;
     
     Project[] allProjects() { return projects.values(); }
 
     void readConfig(string filename) {
         // TODO
     }
-    void compile() {
+    bool compile() {
         logo();
         ensureDirectoryExists(targetDirectory);
         ensureDirectoryExists(targetDirectory.add(Directory("build")));
@@ -32,23 +33,25 @@ public:
         mainProject = makeNode!Project(this, mainDirectory);
 
         try{
-            if(parseAndResolve()) {
-
-                if(checkAllProjects()) {
-
-                    emitAllProjects();
-
-                    if(buildAllProjects()) {
-                        if(link()) {
-                            // Success
-                            log("OK " ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
-                        } else {
-                            // Fail
-                            log("Failed " ~ Ansi.RED_BOLD ~ "✘✘✘" ~ Ansi.RESET);
-                        }
-                    }
-                }
+            if(!parseAndResolve()) {
+                return false;
             }
+
+            if(!checkAllProjects()) {
+                return false;
+            }
+
+            emitAllProjects();
+
+            if(buildAllProjects()) {
+                if(link()) {
+                    // Success
+                    log("OK " ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
+                } else {
+                    // Fail
+                    log("Failed " ~ Ansi.RED_BOLD ~ "✘✘✘" ~ Ansi.RESET);
+                }
+            }    
 
             //  🌩🌧🌤🌻🍒🌹🍓🍔✒✕✖✗✘✓✔🗹♏
 
@@ -62,11 +65,15 @@ public:
             log("  Lexing %.2f ms (%s files)", LexerManager.getElapsedNanos()/1_000_000.0, LexerManager.getNumLexedFiles());
             log("════════════════════════════════════════════════════════════════════════════════════════");
 
-        }catch(SyntaxError e) {
-            log("%s", e.formatted());
+        }catch(AbortCompilation e) {
+            return false;
         }catch(Exception e) {
             log("Exception: %s", e);
+            return false;
+        }finally{
+            
         }
+        return true;
     }
 private:
     void logo() {
@@ -92,7 +99,14 @@ private:
             resolved = resolveAllProjects(pass);
         }
         if(!resolved) {
-            log("There were problems found");
+            Node[] nodes;
+            foreach(p; allProjects()) {
+                p.getUnresolved(nodes);
+            }
+            foreach(Node n; nodes) {
+                errors ~= new ResolutionError(n);
+            }
+            assert(errors, "Where are the resolution errors?");
         }
         return resolved;
     }

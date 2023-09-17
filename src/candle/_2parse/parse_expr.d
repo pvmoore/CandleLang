@@ -80,14 +80,14 @@ void rhs(Node parent, Tokens t) {
             case GT_EQ:
             case EQ_EQ:
             case EXCLAIM_EQ: {
-                auto b = makeNode!Binary();
+                auto b = makeNode!Binary(t.coord());
                 b.op = toBinaryOperator(t.kind());
                 t.next();
                 parent = attachAndRead(parent, b, t, true);
                 break;
             }
             case DOT: {
-                Dot dot = makeNode!Dot;
+                Dot dot = makeNode!Dot(t.coord());
                 t.skip(EToken.DOT);
                 parent = attachAndRead(parent, dot, t, true);
                 break;
@@ -136,27 +136,27 @@ Expr attachAndRead(Node parent, Expr newExpr, Tokens t, bool andRead) {
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 void parseNumber(Node parent, Tokens t) {
-    Number num = makeNode!Number();
+    Number num = makeNode!Number(t.coord());
     parent.add(num);
 
     num.stringValue = t.value(); t.next();
     num.value = Value(num.stringValue);
 }
 void parseNull(Node parent, Tokens t) {
-    Null n = makeNode!Null;
+    Null n = makeNode!Null(t.coord());
     parent.add(n);
 
     t.next();
 }
 void parseChar(Node parent, Tokens t) {
-    Char ch = makeNode!Char();
+    Char ch = makeNode!Char(t.coord());
     parent.add(ch);
 
     ch.stringValue = t.value(); t.next();
     ch.value = Value(ch.stringValue);
 }
 void parseString(Node parent, Tokens t) {
-    String str = makeNode!String();
+    String str = makeNode!String(t.coord());
     parent.add(str);
 
     // Gather all sequential strings into one
@@ -165,7 +165,7 @@ void parseString(Node parent, Tokens t) {
     }
 }
 void parseUnary(Node parent, Tokens t) {
-    Unary u = makeNode!Unary();
+    Unary u = makeNode!Unary(t.coord());
     parent.add(u);
 
     u.op = toUnaryOperator(t.kind());
@@ -178,19 +178,19 @@ void parseId(Node parent, Tokens t) {
     auto project = parent.getProject();
 
     if(project.isProjectName(name)) {
-        ProjectId id = makeNode!ProjectId();
+        ProjectId id = makeNode!ProjectId(t.coord());
         id.name = name;
         id.project = project.getDependency(name);
         parent.add(id);
     } else {
-        Id id = makeNode!Id();
+        Id id = makeNode!Id(t.coord());
         id.name = name;
         parent.add(id);
     }
 }
 void parseCall(Node parent, Tokens t) {
 
-    Call call = makeNode!Call;
+    Call call = makeNode!Call(t.coord());
     parent.add(call);
 
     call.name = t.value(); t.next();
@@ -201,7 +201,7 @@ void parseCall(Node parent, Tokens t) {
 
     if(hasArgs) {
 
-        Parens p = makeNode!Parens;
+        Parens p = makeNode!Parens(t.coord());
         call.add(p);
 
         while(!t.isKind(EToken.RBRACKET)) {
@@ -225,7 +225,7 @@ void parseCall(Node parent, Tokens t) {
 }
 void parseParens(Node parent, Tokens t) {
 
-    Parens p = makeNode!Parens;
+    Parens p = makeNode!Parens(t.coord());
     parent.add(p);
 
     t.skip(EToken.LBRACKET);

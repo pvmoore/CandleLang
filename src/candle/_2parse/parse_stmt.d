@@ -81,7 +81,7 @@ void parseStmt(Node parent, Tokens t) {
 void parseVar(Node parent, Tokens t) {
     logParse("parseVar %s", t.debugValue());
 
-    Var v = makeNode!Var();
+    Var v = makeNode!Var(t.coord());
     parent.add(v);
 
     // Type
@@ -125,7 +125,7 @@ void parseVar(Node parent, Tokens t) {
 void parseFunc(Node parent, Tokens t) {
     logParse("parseFunc %s", t.debugValue());
 
-    Func f = makeNode!Func();
+    Func f = makeNode!Func(t.coord());
     parent.add(f);
 
     // Modifiers
@@ -150,10 +150,10 @@ void parseFunc(Node parent, Tokens t) {
 
     // Body
     if(t.isKind(EToken.LCURLY)) {
-        t.skip(EToken.LCURLY);
-
-        Scope scope_ = makeNode!Scope();
+        Scope scope_ = makeNode!Scope(t.coord());
         f.add(scope_);
+
+        t.skip(EToken.LCURLY);
 
         while(!t.isKind(EToken.RCURLY)) {
             if(t.eof()) syntaxError(t, "}");
@@ -173,7 +173,7 @@ void parseFunc(Node parent, Tokens t) {
  */
 void parseReturn(Node parent, Tokens t) {
 
-    Return ret = makeNode!Return();
+    Return ret = makeNode!Return(t.coord());
     parent.add(ret);
 
     t.skip("return");
@@ -192,7 +192,7 @@ void parseReturn(Node parent, Tokens t) {
  *  BODY   ::= '{' { Var } '}'
  */
 void parseStruct(Node parent, Tokens t) {
-    Struct s = makeNode!Struct;
+    Struct s = makeNode!Struct(t.coord());
     parent.add(s);
 
     s.isPublic = t.getAndResetPubModifier();

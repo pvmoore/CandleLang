@@ -262,12 +262,12 @@ private:
             string value = src[tokenStart..pos];
             EToken tk2 = determineKind(value);
             int column = tokenStart-lineStart;
-            tokens ~= Token(tk2, tokenStart, pos-tokenStart, line, column);
+            tokens ~= Token(tk2, FileCoord(tokenStart, line, column, pos-tokenStart));
         }
         if(k != EToken.NONE) {
             int column = pos-lineStart;
             int len = lengthOf(k);
-            tokens ~= Token(k, pos, len, line, column);
+            tokens ~= Token(k, FileCoord(pos, line, column, len));
             pos += len;
         }
         tokenStart = pos;

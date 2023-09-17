@@ -7,6 +7,7 @@ public:
     Node[] children;
     Node parent;
     uint id;
+    FileCoord coord;
 
     final int numChildren() { return children.length.as!int; }
     final bool hasChildren() { return children.length > 0; }
@@ -132,4 +133,10 @@ private:
 bool areResolved(T)(T[] nodes) if(is(T:Node)) {
     foreach(n; nodes) if(!n.isResolved()) return false;
     return true;
+}
+void recurse(Node n, void delegate(Node n) callback) {
+    callback(n);
+    foreach(ch; n.children) {
+        recurse(ch, callback);
+    }
 }

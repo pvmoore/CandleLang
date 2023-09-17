@@ -35,19 +35,19 @@ static this() {
     if(!exists(".logs/")) mkdir(".logs/");
     logFile = File(".logs/candle.log", "wb");
 
-    TYPE_UNKNOWN = makeNode!Primitive(EType.UNKNOWN);
-    TYPE_VOID = makeNode!Primitive(EType.VOID);
-    TYPE_BOOL = makeNode!Primitive(EType.BOOL);
-    TYPE_BYTE = makeNode!Primitive(EType.BYTE);
-    TYPE_UBYTE = makeNode!Primitive(EType.UBYTE);
-    TYPE_SHORT = makeNode!Primitive(EType.SHORT);
-    TYPE_USHORT = makeNode!Primitive(EType.USHORT);
-    TYPE_INT = makeNode!Primitive(EType.INT);
-    TYPE_UINT = makeNode!Primitive(EType.UINT);
-    TYPE_LONG = makeNode!Primitive(EType.LONG);
-    TYPE_ULONG = makeNode!Primitive(EType.ULONG);
-    TYPE_FLOAT = makeNode!Primitive(EType.FLOAT);
-    TYPE_DOUBLE = makeNode!Primitive(EType.DOUBLE);
+    TYPE_UNKNOWN = makeNode!Primitive(FileCoord(), EType.UNKNOWN);
+    TYPE_VOID = makeNode!Primitive(FileCoord(), EType.VOID);
+    TYPE_BOOL = makeNode!Primitive(FileCoord(), EType.BOOL);
+    TYPE_BYTE = makeNode!Primitive(FileCoord(), EType.BYTE);
+    TYPE_UBYTE = makeNode!Primitive(FileCoord(), EType.UBYTE);
+    TYPE_SHORT = makeNode!Primitive(FileCoord(), EType.SHORT);
+    TYPE_USHORT = makeNode!Primitive(FileCoord(), EType.USHORT);
+    TYPE_INT = makeNode!Primitive(FileCoord(), EType.INT);
+    TYPE_UINT = makeNode!Primitive(FileCoord(), EType.UINT);
+    TYPE_LONG = makeNode!Primitive(FileCoord(), EType.LONG);
+    TYPE_ULONG = makeNode!Primitive(FileCoord(), EType.ULONG);
+    TYPE_FLOAT = makeNode!Primitive(FileCoord(), EType.FLOAT);
+    TYPE_DOUBLE = makeNode!Primitive(FileCoord(), EType.DOUBLE);
 
     staticTypes[EType.UNKNOWN] = TYPE_UNKNOWN;
     staticTypes[EType.VOID] = TYPE_VOID;
