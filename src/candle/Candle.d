@@ -71,7 +71,7 @@ public:
 private:
     void logo() {
         log("\n══════════════════════");
-        log(" Candle Lang %s", 0.1);
+        log(" 🕯 Candle Lang %s", 0.1);
         log("══════════════════════\n");
     }
     void ensureDirectoryExists(Directory dir) {

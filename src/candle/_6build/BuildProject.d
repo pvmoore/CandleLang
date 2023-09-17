@@ -16,7 +16,6 @@ public:
         this.project = project;
     }
     bool build() {
-
         auto args = [
             "cl",
             "/nologo",
@@ -39,7 +38,7 @@ public:
         // Add dependency project directories
         //args ~= "/I<includedir>";
 
-        if(true) {
+        if(candle.isDebug) {
             // debug build
             args ~= [
                 "/Od",                                  // disables optimization
@@ -52,7 +51,7 @@ public:
             // optimised build
             args ~= [
                 "/O2",          // maximum speed
-                "/GL",          // whole program optimisation
+                //"/GL",          // whole program optimisation
                 "/Ot",          // favour code speed
                 "/Zc:inline",   // remove unreferenced functions
                 "/Gw", 	        // whole-program global data optimization
@@ -69,13 +68,19 @@ public:
         //log("Build command: %s", args);
 
         string[string] env;
-        auto result = execute(args, env, Config.none, size_t.max, candle.targetDirectory.value);
+        auto result = execute(
+            args, 
+            env, 
+            Config.none, 
+            size_t.max, 
+            candle.targetDirectory.value);
 
         if(result.status!=0) {
-            log("🕯 Build %s " ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", project.name, result.output.strip);
+            log("🕯 Build %s" ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", 
+                project.name, result.output.strip);
             return false;
         } else {
-            logBuild("🕯 Build %s".format(project.name) ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
+            logBuild("🕯 Build %s (%s)".format(project.name, candle.isDebug ? "DEBUG" : "RELEASE") ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
         }
 
         return true;

@@ -10,9 +10,9 @@ public:
         string targetName   = candle.mainProject.name;
         string subsystem    = candle.subsystem;
         auto buildDirectory = candle.targetDirectory.add(Directory("build"));
-        string targetExe    = buildDirectory.value.replace('/', '\\') ~ targetName ~ ".exe";
+        string targetExe    = targetName ~ ".exe";
         string[] objects    = candle.allProjects()
-                                  .map!(it=>buildDirectory.value ~ it.name ~ ".obj")
+                                  .map!(it=>it.name ~ ".obj")
                                   .map!(it=>it.replace('/', '\\'))
                                   .array;
 
@@ -36,7 +36,7 @@ public:
             args ~= [
                 "/RELEASE",
                 "/OPT:REF",         /// Remove unreferenced functions and data
-                //"/LTCG",          /// Link time code gen
+                "/LTCG",          /// Link time code gen
             ];
         }
 
@@ -54,13 +54,18 @@ public:
         //args ~= config.getExternalLibs();
 
         string[string] env;
-        auto result = execute(args, env, Config.none, size_t.max, ".");
+        auto result = execute(
+            args, 
+            env, 
+            Config.none, 
+            size_t.max, 
+            buildDirectory.value);
 
         if(result.status!=0) {
             log("🕯 Link %s " ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", targetName, result.output.strip);
             return false;
         } else {
-            logBuild("🕯 Link %s".format(targetName) ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
+            logBuild("🕯 Link %s (%s)".format(targetName, candle.isDebug ? "DEBUG" : "RELEASE") ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
         }
 
         return true;
