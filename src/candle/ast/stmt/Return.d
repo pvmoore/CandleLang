@@ -16,5 +16,19 @@ public:
     override string toString() {
         return "Return";
     }
+    /**
+     *  RETURN ::= 'return' [ Expr ] ';'
+     */
+    override void parse(Tokens t) {
+        t.skip("return");
+
+        if(t.isKind(EToken.SEMICOLON)) {
+            t.next();
+        } else {
+            parseExpr(this, t);
+
+            t.skip(EToken.SEMICOLON);
+        }
+    }
 private:
 }

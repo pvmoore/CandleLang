@@ -66,6 +66,19 @@ public:
     override string toString() {
         return "Unit %s (Project %s)".format(name, getProject().name);
     }
+    override void parse(Tokens t) {
+        int lastPos = t.pos;
+
+        while(!t.eof()) {
+            parseStmt(this, t);
+
+            // Check that we have not stalled
+            if(t.pos == lastPos) throw new Exception("No progress made");
+            lastPos = t.pos;
+        }
+        isParsed = true;
+        writeAst(this);
+    }
 private:
     void readSource() {
         import std.file : read;

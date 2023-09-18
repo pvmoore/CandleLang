@@ -20,7 +20,25 @@ public:
     override string toString() {
         return "BuiltinFunc %s".format(name);
     }
+    /** 
+     * BUILTIN_FUNC ::= '@' name '(' { Expr } ')'
+     */
+    override void parse(Tokens t) {
+        t.skip(EToken.AT);
 
+        this.name = t.value(); t.next();
+
+        t.skip(EToken.LBRACKET);
+        while(!t.isKind(EToken.RBRACKET)) {
+            parseExpr(this, t);
+            t.skipOptional(EToken.COMMA);
+        }
+        t.skip(EToken.RBRACKET);
+
+        if(t.isKind(EToken.SEMICOLON)) {
+            this.isStmt = true;
+        }
+    }
     override void resolve() {
         if(isResolved()) return;
         switch(name) {

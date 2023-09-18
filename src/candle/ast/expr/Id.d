@@ -18,6 +18,9 @@ public:
         string t = target ? "%s".format(target) : "unresolved";
         return "Id %s -> %s".format(name, t);
     }
+    override void parse(Tokens t) {
+        this.name = t.value(); t.next();
+    }
     override void resolve() {
         logResolve("  resolving %s", this);
 

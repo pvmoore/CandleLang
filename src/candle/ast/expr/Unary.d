@@ -19,5 +19,11 @@ public:
     override string toString() {
         return "Unary %s".format(stringOf(op));
     }
+    override void parse(Tokens t) {
+        this.op = toUnaryOperator(t.kind());
+        t.next();
+
+        parseExprLhs(this, t);
+    }
 private:
 }

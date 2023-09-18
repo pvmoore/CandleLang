@@ -22,6 +22,37 @@ public:
         string t = target ? "%s".format(target) : " unresolved";
         return "Call %s -> %s".format(name, t);
     }
+    override void parse(Tokens t) {
+        this.name = t.value(); t.next();
+
+        t.skip(EToken.LBRACKET);
+
+        bool hasArgs = !t.isKind(EToken.RBRACKET);
+
+        if(hasArgs) {
+
+            Parens p = makeNode!Parens(t.coord());
+            this.add(p);
+
+            while(!t.isKind(EToken.RBRACKET)) {
+                parseExpr(p, t);
+
+                if(t.isKind(EToken.COMMA)) {
+                    t.next();
+                }
+            }
+
+            p.detach();
+            while(p.hasChildren()) {
+                this.add(p.first());
+            }
+        }
+        t.skip(EToken.RBRACKET);
+
+        if(t.isKind(EToken.SEMICOLON)) {
+            this.isStmt = true;
+        }
+    }
     override void resolve() {
         logResolve("  resolving %s", this);
 

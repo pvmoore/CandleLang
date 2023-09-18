@@ -45,5 +45,51 @@ public:
         string extrn = isExtern ? ", extern" : "";
         return "Func %s, %s params%s%s".format(name, numParams, pub, extrn);
     }
+    /**
+     * FUNC      ::= MODIFIERS Type Id '(' PARAMS ')'  [ BODY ] ';'
+     * MODIFIERS ::= [pub] [extern]
+     * PARAMS    ::= [ Type Id ] { ',' Type Id }
+     * BODY      ::= '{' {Stmt} '}'
+     */
+    override void parse(Tokens t) {
+        // Modifiers
+        this.isPublic = t.getAndResetPubModifier();
+        this.isExtern = t.getAndResetExternModifier();
+
+        // Return type
+        parseType(this, t);
+
+        // Name
+        this.name = t.value(); t.next();
+
+        // Parameters
+        t.skip(EToken.LBRACKET);
+        while(!t.isKind(EToken.RBRACKET)) {
+            this.numParams++;
+            parseVar(this, t);
+
+            t.skipOptional(EToken.COMMA);
+        }
+        t.skip(EToken.RBRACKET);
+
+        // Body
+        if(t.isKind(EToken.LCURLY)) {
+            Scope scope_ = makeNode!Scope(t.coord());
+            this.add(scope_);
+
+            t.skip(EToken.LCURLY);
+
+            while(!t.isKind(EToken.RCURLY)) {
+                if(t.eof()) syntaxError(t, "}");
+
+                parseStmt(scope_, t);
+            }
+
+            t.skip(EToken.RCURLY);
+        } else {
+            // Must be an extern function
+            t.skip(EToken.SEMICOLON);
+        }
+    }
 private:
 }

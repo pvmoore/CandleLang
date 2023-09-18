@@ -17,5 +17,9 @@ public:
     override string toString() {
         return "%s (%s)".format(value, type());
     }
+    override void parse(Tokens t) {
+        this.stringValue = t.value(); t.next();
+        this.value = Value(this.stringValue);
+    }
 private:
 }

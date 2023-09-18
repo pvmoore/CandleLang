@@ -23,11 +23,9 @@ import candle.lex.Lex;
 import candle.lex.Token;
 import candle.lex.Tokens;
 
-import candle.parse.Operator;
 import candle.parse.parse_expr;
 import candle.parse.parse_type;
 import candle.parse.parse_stmt;
-import candle.parse.ParseProject;
 
 import candle.resolve.find_call_target;
 import candle.resolve.find_id_target;
@@ -43,6 +41,8 @@ import candle.build.Linker;
 
 import candle.Checker;
 import candle.Lexer;
+import candle.Operator;
+import candle.Parser;
 import candle.Resolver;
 import candle.statics;
 import candle.utils;

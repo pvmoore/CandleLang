@@ -17,5 +17,9 @@ public:
     override string toString() {
         return "ProjectId -> %s".format(project);
     }
+    override void parse(Tokens t) {
+        this.name = t.value(); t.next();
+        this.project = getProject().getDependency(name);
+    }
 private:
 }

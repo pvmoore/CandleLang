@@ -64,6 +64,7 @@ public:
             log("════════════════════════════════════════════════════════════════════════════════════════");
             log("Timing:");
             log("  Lexing ..... %.2f ms (%s files)", Lexer.getElapsedNanos()/1_000_000.0, Lexer.getNumLexedFiles());
+            log("  Parsing .... %.2f ms", Parser.getElapsedNanos()/1_000_000.0);
             log("  Resolving .. %.2f ms", Resolver.getElapsedNanos()/1_000_000.0);
             log("  Checking ... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
             log("════════════════════════════════════════════════════════════════════════════════════════");
@@ -127,8 +128,7 @@ private:
         foreach(p; allProjects()) {
             logParse("  Parse %s", p);
 
-            auto parser = new ParseProject(p);
-            parser.parse();
+            Parser.parse(p);
         }
     }
     bool resolveAllProjects(int pass) {

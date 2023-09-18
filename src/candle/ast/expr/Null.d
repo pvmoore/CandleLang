@@ -22,6 +22,9 @@ public:
     override void resolve() {
         setType(Resolver.resolveTypeFromParent(this));
     }
+    override void parse(Tokens t) {
+        t.skip("null");
+    }
 private:
     Type _type;
 }

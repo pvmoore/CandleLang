@@ -46,10 +46,45 @@ public:
         // TODO
         return false;
     }
-
     override string toString() {
         string pub = isPublic ? ", pub" : "";
         return "Struct %s%s".format(name, pub);
+    }
+    /**
+     *  STRUCT ::= 'struct' Id ( BODY | ';')
+     *  BODY   ::= '{' { Var } '}'
+     */
+    override void parse(Tokens t) {
+        
+        this.isPublic = t.getAndResetPubModifier();
+
+        t.skip("struct");
+
+        this.name = t.value(); t.next();
+
+        if(t.isKind(EToken.LCURLY)) {
+            t.next();
+
+            while(!t.isKind(EToken.RCURLY)) {
+                parseVar(this, t);
+            }
+            t.skip(EToken.RCURLY);
+
+            // Move this above any Vars or Funcs
+            if(Unit unit = parent.as!Unit) {
+                Var v = unit.findFirstChildOf!Var;
+                Func f = unit.findFirstChildOf!Func;
+                int index = minOf(v ? v.index() : int.max, f ? f.index() : int.max);
+                if(index != int.max) {
+                    int sIndex = unit.indexOf(this);
+                    if(sIndex > index) {
+                        unit.moveToIndex(index, this);
+                    }
+                }
+            }
+        } else {
+            t.skip(EToken.SEMICOLON);
+        }
     }
 private:
 }

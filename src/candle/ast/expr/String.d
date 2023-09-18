@@ -16,5 +16,11 @@ public:
     override string toString() {
         return "\"%s\"".format(stringValue);
     }
+    override void parse(Tokens t) {
+        // Gather all sequential strings into one
+        while(t.isKind(EToken.STRING)) {
+            this.stringValue ~= t.value()[1..$-1]; t.next();
+        }
+    }
 private:
 }

@@ -16,6 +16,9 @@ public:
     abstract Type type();
     abstract bool isResolved();
 
+    void parse(Tokens tokens) {
+
+    }
     /** Will be called in bottom-up order and only where isResolved() == false */
     void resolve() {
         // By default do nothing

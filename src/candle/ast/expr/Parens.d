@@ -18,5 +18,10 @@ public:
     override string toString() {
         return "Parens";
     }
+    override void parse(Tokens t) {
+        t.skip(EToken.LBRACKET);
+        parseExpr(this, t);
+        t.skip(EToken.RBRACKET);
+    }
 private:
 }
