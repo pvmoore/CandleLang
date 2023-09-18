@@ -22,5 +22,24 @@ public:
         string t = target ? "%s".format(target) : " unresolved";
         return "Call %s -> %s".format(name, t);
     }
+    override void resolve() {
+        logResolve("  resolving %s", this);
+
+        if(isStartOfChain()) {
+            this.target = findCallTarget(this);
+            if(target) {
+                logResolve("    found target %s", target);
+            }
+        } else {
+            Node prev = prevLink();
+            logResolve("  prev = %s", prev);
+            if(!prev.isResolved()) return;
+
+            this.target = findCallTarget(this, prev);
+            if(target) {
+                logResolve("    found target %s", target);
+            }
+        }
+    }
 private:
 }

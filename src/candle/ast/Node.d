@@ -16,6 +16,15 @@ public:
     abstract Type type();
     abstract bool isResolved();
 
+    /** Will be called in bottom-up order and only where isResolved() == false */
+    void resolve() {
+        // By default do nothing
+    }
+    /** Will be called in bottom-up order */
+    void check() {
+        // By default do nothing
+    }
+
     final void add(Node n) {
         n.detach();
         n.parent = this;

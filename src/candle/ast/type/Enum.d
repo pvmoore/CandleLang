@@ -8,11 +8,6 @@ import candle.all;
  */
 final class Enum : Node, Type {
 public:
-
-    void resolve() {
-
-    }
-
     override ENode enode() { return ENode.ENUM; }
     override EType etype() { return EType.ENUM; }
     override bool isResolved() { return true; }

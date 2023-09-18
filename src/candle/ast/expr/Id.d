@@ -18,5 +18,24 @@ public:
         string t = target ? "%s".format(target) : "unresolved";
         return "Id %s -> %s".format(name, t);
     }
+    override void resolve() {
+        logResolve("  resolving %s", this);
+
+        if(isStartOfChain()) {
+            this.target = findIdTarget(this);
+            if(target) {
+                logResolve("    found target %s", target);
+            }
+        } else {
+            Node prev = prevLink();
+            log("  prev = %s", prev);
+            if(!prev.isResolved()) return;
+
+            this.target = findIdTarget(this, prev);
+            if(target) {
+                logResolve("    found target %s", target);
+            }
+        }
+    }
 private:
 }

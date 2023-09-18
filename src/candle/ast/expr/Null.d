@@ -19,6 +19,9 @@ public:
     override string toString() {
         return "Null (%s)".format(type());
     }
+    override void resolve() {
+        setType(ResolveProject.resolveTypeFromParent(this));
+    }
 private:
     Type _type;
 }

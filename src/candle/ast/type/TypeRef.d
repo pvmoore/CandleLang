@@ -37,5 +37,10 @@ public:
         string unresolved = isResolved() ? "" : ", unresolved";
         return "TypeRef -> %s%s%s".format(s, p, unresolved);
     }
+    override void resolve() {
+        if(!decorated) {
+            decorated = findType(project, name);
+        }
+    }
 private:
 }

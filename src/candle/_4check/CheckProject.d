@@ -13,19 +13,17 @@ public:
      */
     void check() {
         foreach(u; project.getUnits()) {
-            checkChildren(u);
+            recurseChildren(u);
         }
     }
 private:
     Candle candle;
     Project project;
 
-    void checkChildren(Node n) {
+    void recurseChildren(Node n) {
         foreach(ch; n.children) {
-            checkChildren(ch);
+            recurseChildren(ch);
         }
-        if(Stmt stmt = n.as!Stmt) {
-            stmt.check();
-        }
+        n.check();
     }
 }
