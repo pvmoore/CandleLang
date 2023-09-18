@@ -1,4 +1,4 @@
-module candle._6build.BuildProject;
+module candle.build.BuildProject;
 
 import candle.all;
 import std.process : Config, execute, spawnProcess, wait;

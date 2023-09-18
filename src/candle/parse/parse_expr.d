@@ -1,4 +1,4 @@
-module candle._2parse.parse_expr;
+module candle.parse.parse_expr;
 
 import candle.all;
 

@@ -1,4 +1,4 @@
-module candle._5emit.EmitProject;
+module candle.emit.EmitProject;
 
 import candle.all;
 

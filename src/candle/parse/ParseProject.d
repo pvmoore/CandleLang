@@ -1,4 +1,4 @@
-module candle._2parse.ParseProject;
+module candle.parse.ParseProject;
 
 import candle.all;
 

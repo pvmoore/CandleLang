@@ -63,7 +63,9 @@ public:
             }
             log("════════════════════════════════════════════════════════════════════════════════════════");
             log("Timing:");
-            log("  Lexing %.2f ms (%s files)", LexerManager.getElapsedNanos()/1_000_000.0, LexerManager.getNumLexedFiles());
+            log("  Lexing ..... %.2f ms (%s files)", Lexer.getElapsedNanos()/1_000_000.0, Lexer.getNumLexedFiles());
+            log("  Resolving .. %.2f ms", Resolver.getElapsedNanos()/1_000_000.0);
+            log("  Checking ... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
             log("════════════════════════════════════════════════════════════════════════════════════════");
 
         }catch(AbortCompilation e) {
@@ -135,8 +137,7 @@ private:
         foreach(p; allProjects()) {
             logResolve("  Resolve %s", p);
 
-            auto resolver = new ResolveProject(p);
-            allResolved &= resolver.resolve();
+            allResolved &= Resolver.resolve(p);
         }
         logResolve("  All resolved = %s", allResolved);
         return allResolved;
@@ -145,7 +146,7 @@ private:
         logCheck("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         foreach(p; allProjects()) {
             logCheck("  Check %s", p.name);
-            new CheckProject(p).check();
+            Checker.check(p);
         }
     }
     void emitAllProjects() {

@@ -1,4 +1,4 @@
-module candle._1lex.Tokens;
+module candle.lex.Tokens;
 
 import candle.all;
 

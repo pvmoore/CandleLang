@@ -17,34 +17,33 @@ import std.datetime.stopwatch   : StopWatch;
 
 import candle;
 
-import candle._1lex.EToken;
-import candle._1lex.FileCoord;
-import candle._1lex.Lexer;
-import candle._1lex.LexerManager;
-import candle._1lex.Token;
-import candle._1lex.Tokens;
+import candle.lex.EToken;
+import candle.lex.FileCoord;
+import candle.lex.Lex;
+import candle.lex.Token;
+import candle.lex.Tokens;
 
-import candle._2parse.Operator;
-import candle._2parse.parse_expr;
-import candle._2parse.parse_type;
-import candle._2parse.parse_stmt;
-import candle._2parse.ParseProject;
+import candle.parse.Operator;
+import candle.parse.parse_expr;
+import candle.parse.parse_type;
+import candle.parse.parse_stmt;
+import candle.parse.ParseProject;
 
-import candle._3resolve.find_call_target;
-import candle._3resolve.find_id_target;
-import candle._3resolve.find_type;
-import candle._3resolve.ResolveProject;
-import candle._3resolve.Target;
-import candle._3resolve.Value;
+import candle.resolve.find_call_target;
+import candle.resolve.find_id_target;
+import candle.resolve.find_type;
+import candle.resolve.Target;
+import candle.resolve.Value;
 
-import candle._4check.CheckProject;
+import candle.emit.CommonHeader;
+import candle.emit.EmitProject;
 
-import candle._5emit.CommonHeader;
-import candle._5emit.EmitProject;
+import candle.build.BuildProject;
+import candle.build.Linker;
 
-import candle._6build.BuildProject;
-import candle._6build.Linker;
-
+import candle.Checker;
+import candle.Lexer;
+import candle.Resolver;
 import candle.statics;
 import candle.utils;
 

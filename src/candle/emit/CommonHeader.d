@@ -1,4 +1,4 @@
-module candle._5emit.CommonHeader;
+module candle.emit.CommonHeader;
 
 import candle.all;
 

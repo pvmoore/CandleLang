@@ -1,20 +1,21 @@
-module candle._3resolve.ResolveProject;
+module candle.Resolver;
 
 import candle.all;
 
-final class ResolveProject {
+final class Resolver {
 public:
-    this(Project project) {
-        this.candle = project.candle;
-        this.project = project;
-    }
-    bool resolve() {
-        allResolved = true;
+    static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
+
+    static bool resolve(Project project) {
+        StopWatch watch;
+        watch.start();
+        bool allResolved = true;
 
         foreach(u; project.getUnits()) {
-            recurseChildren(u);
+            recurseChildren(u, allResolved);
         }
-
+        watch.stop();
+        atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
         return allResolved;
     }
     /**
@@ -53,13 +54,11 @@ public:
         return t;
     }
 private:
-    Candle candle;
-    Project project;
-    bool allResolved;
+    shared static ulong totalNanos;
 
-    void recurseChildren(Node n) {
+    static void recurseChildren(Node n, ref bool allResolved) {
         foreach(ch; n.children) {
-            recurseChildren(ch);
+            recurseChildren(ch, allResolved);
         }
         if(!n.isResolved()) {
             n.resolve();

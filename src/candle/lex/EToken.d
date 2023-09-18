@@ -1,4 +1,4 @@
-module candle._1lex.EToken;
+module candle.lex.EToken;
 
 import candle.all;
 

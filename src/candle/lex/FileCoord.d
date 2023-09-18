@@ -1,4 +1,4 @@
-module candle._1lex.FileCoord;
+module candle.lex.FileCoord;
 
 import candle.all;
 

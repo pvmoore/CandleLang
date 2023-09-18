@@ -1,4 +1,4 @@
-module candle._6build.Linker;
+module candle.build.Linker;
 
 import candle.all;
 import std.process : Config, execute, spawnProcess, wait;
