@@ -23,7 +23,7 @@ int main() {
   std__putChar('b');
   test__doSomething(null, null);
   doSomethingElse();
-  candle__assert(true, "test.can", 19);
+  candle__assert(true, "test.can", 18);
   return 0;
 }
 static void doSomethingElse() {

@@ -14,9 +14,13 @@ public:
         this.coord = coord;
         this.message = message;
     }
-    override string formatted() {
+    override string brief() {
         string msg = "Syntax error. %s".format(message);
-        return formattedError(unit, coord, msg);
+        return formatBrief(unit, coord, msg);
+    }
+    override string verbose() {
+        string msg = "Syntax error. %s".format(message);
+        return formatVerboseMultiline(unit, coord, msg);
     }
     override bool isDuplicateOf(CandleError e) {
         auto other = e.as!SyntaxError;

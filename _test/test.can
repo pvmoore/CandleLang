@@ -1,5 +1,4 @@
 
-
 extern int putchar(int); 
 
 int main() {

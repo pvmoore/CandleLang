@@ -17,7 +17,7 @@ void main(string[] args) {
 
     if(!candle.compile()) {
         foreach(e; candle.getErrors()) {
-            writefln("%s", e.formatted());
+            writefln("%s", e.verbose());
         }
     }
 }

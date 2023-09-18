@@ -7,14 +7,23 @@ public:
     this(Node node) {
         this.node = node;
     }    
-    override string formatted() {
+    override string brief() {
         string msg = "Unresolved %s".format(node.enode);
         if(auto call = node.as!Call) {
             msg = "Function '%s' not found".format(call.name);
         } else if(auto id = node.as!Id) {
             msg = "Undefined symbol '%s'".format(id.name);
         }
-        return formattedError(node.getUnit(), node.coord, msg);
+        return formatBrief(node.getUnit(), node.coord, msg);
+    }
+    override string verbose() {
+        string msg = "Unresolved %s".format(node.enode);
+        if(auto call = node.as!Call) {
+            msg = "Function '%s' not found".format(call.name);
+        } else if(auto id = node.as!Id) {
+            msg = "Undefined symbol '%s'".format(id.name);
+        }
+        return formatVerboseMultiline(node.getUnit(), node.coord, msg);
     }
     override bool isDuplicateOf(CandleError e) {
         auto other = e.as!ResolutionError;

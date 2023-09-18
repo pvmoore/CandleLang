@@ -3,17 +3,17 @@ module candle.errors.CandleError;
 import candle.all;
 
 interface CandleError {
-    string formatted();
+    string brief();
+    string verbose();
     bool isDuplicateOf(CandleError);
 }
 
-string formattedError(Unit unit, FileCoord coord, string msg) {
-    string brief = formatBrief(unit, coord, msg);
-    //string verbose = formatVerboseSingleLine(coord, getSourceLine(unit.src, coord.line));
-    string verbose = formatVerboseMultiline(unit, coord);
-    return brief ~ "\n" ~ verbose;
-}
-private:
+// string formattedError(Unit unit, FileCoord coord, string msg) {
+//     string brief = formatBrief(unit, coord, msg);
+//     //string verbose = formatVerboseSingleLine(coord, getSourceLine(unit.src, coord.line));
+//     string verbose = formatVerboseMultiline(unit, coord);
+//     return brief ~ "\n" ~ verbose;
+// }
 
 string formatBrief(Unit unit, FileCoord coord, string msg) {
     string location = " %s%s.can %s:%s : ".format(
@@ -23,7 +23,7 @@ string formatBrief(Unit unit, FileCoord coord, string msg) {
         ansiWrap(location, Ansi.BOLD) ~ 
         msg ~ "\n";
 }
-string formatVerboseMultiline(Unit unit, FileCoord coord) {
+string formatVerboseMultiline(Unit unit, FileCoord coord, string msg) {
     string[] lines = getSourceLines(unit.src);
     string output;
     int line = coord.line.as!int;
@@ -32,26 +32,29 @@ string formatVerboseMultiline(Unit unit, FileCoord coord) {
     for(int i = line-1; i>=0 && i<line+2 && i<lines.length; i++) {
         string srcLine = lines[i];
         string lineStr = i==line 
-            ? highlightYellow(srcLine, start, end)
+            ? highlight(srcLine, start, end)
             : srcLine;
-        output ~= "| %s | %s\n".format(i+1, lineStr);
+        output ~= "| %2s | %s\n".format(i+1, lineStr);
     }
-    return output;
+    return formatBrief(unit, coord, msg) ~ "\n" ~ output;
 }
-string formatVerboseSingleLine(FileCoord coord, string srcLine) {
+string formatVerboseSingleLine(Unit unit, FileCoord coord, string msg) {
+    string srcLine = getSourceLine(unit.src, coord.line);
     string coloured;
     auto start = coord.column;
     auto end = coord.column+coord.length;
     if(coord.column+coord.length <= srcLine.length) {
-        coloured = highlightYellow(srcLine, start, end);
+        coloured = highlight(srcLine, start, end);
     } else {
         coloured = srcLine;
     }
-    return "\n%s\n".format(coloured);
+    return formatBrief(unit, coord, msg) ~ "\n%s\n".format(coloured);
 }
-string highlightYellow(string text, int start, int end) {
+private:
+
+string highlight(string text, int start, int end) {
     return text[0..start] ~
-            ansiWrap(text[start..end], Ansi.YELLOW_BOLD) ~
+            ansiWrap(text[start..end], Ansi.WHITE ~ Ansi.RED_BOLD_BG) ~
             text[end..$];
 }
 string ansiWrap(string text, string ansi) {
