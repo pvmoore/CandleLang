@@ -52,16 +52,19 @@ private:
     }
 
     string getName(Id n) {
-        return n.target.isPublic() ? "%s_%s".format(n.target.project().name, n.name) : n.name;
+        return n.target.isPublic() ? "%s__%s".format(n.target.project().name, n.name) : n.name;
     }
     string getName(Call n) {
-        return n.target.isPublic() ? "%s_%s".format(n.target.project().name, n.name) : n.name;
+        return n.target.isPublic() ? "%s__%s".format(n.target.project().name, n.name) : n.name;
     }
     string getName(Struct n) {
-        return n.isPublic ? "%s_%s".format(n.getProject().name, n.name) : n.name;
+        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
     }
     string getName(Union n) {
-        return n.isPublic ? "%s_%s".format(n.getProject().name, n.name) : n.name;
+        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
+    }
+    string getName(Func n) {
+        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
     }
 
     void emitHeader() {
@@ -163,7 +166,7 @@ private:
 
         emit(n.returnType().as!Node);
 
-        string name = n.isPublic ? "%s_%s".format(project.name, n.name) : n.name;
+        string name = getName(n);
 
         add(" %s(", name);
         foreach(i, p; n.params()) {

@@ -3,10 +3,10 @@
 
 #include "candle__common.h"
 
-typedef struct test_Apple {
+typedef struct test__Apple {
   int a;
-} test_Apple;
+} test__Apple;
 
-void test_doSomething(int* a, float** b);
+void test__doSomething(int* a, float** b);
 
 #endif // test_H

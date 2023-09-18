@@ -3,10 +3,10 @@
 
 #include "candle__common.h"
 
-typedef struct std_PlumPublic {
+typedef struct std__PlumPublic {
   int a;
-} std_PlumPublic;
+} std__PlumPublic;
 
-void std_putChar(int ch);
+void std__putChar(int ch);
 
 #endif // std_H
