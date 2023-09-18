@@ -21,11 +21,22 @@ public:
         return "BuiltinFunc %s".format(name);
     }
 
-    void resolve() {
+    override void resolve() {
         if(isResolved()) return;
         switch(name) {
             case "assert":
                 _isResolved = true;
+                break;
+            default: break;
+        }
+    }
+    override void check() {
+        switch(name) {
+            case "assert":
+                if(numChildren()!=1) {
+                    getCandle().addError(new SyntaxError(getUnit(), coord, 
+                        "Expected 1 argument but found %s".format(numChildren())));
+                }
                 break;
             default: break;
         }

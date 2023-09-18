@@ -14,7 +14,7 @@ public:
     Expr left() { return first().as!Expr; }
     Expr right() { return last().as!Expr; }
 
-    void resolve() {
+    override void resolve() {
         if(isResolved()) return;
         if(!left().isResolved() || !right.isResolved()) return;
 

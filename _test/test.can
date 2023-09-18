@@ -16,7 +16,7 @@ int main() {
     doSomething(null, null);
     doSomethingElse();
 
-    @assert(false);
+    @assert(true);
 
     return 0;
 }

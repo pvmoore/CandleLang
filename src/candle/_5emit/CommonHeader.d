@@ -34,7 +34,7 @@ typedef unsigned long long ulong;
 #include \"stdlib.h\"
 #include \"stdio.h\"
 
-inline void candle__assert(int value, const char* unitName, uint line) {
+static void candle__assert(int value, const char* unitName, uint line) {
     if(!value) {
         putchar(13); putchar(10);
         printf(\"!! Assertion failed: [%s] Line %u\", unitName, line);
