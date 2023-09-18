@@ -8,11 +8,11 @@ public:
         this.node = node;
     }    
     override string formatted() {
-        string msg = "unresolved %s".format(node.enode);
+        string msg = "Unresolved %s".format(node.enode);
         if(auto call = node.as!Call) {
-            msg = "function '%s' not found".format(call.name);
+            msg = "Function '%s' not found".format(call.name);
         } else if(auto id = node.as!Id) {
-            msg = "undefined";
+            msg = "Undefined symbol '%s'".format(id.name);
         }
         return formattedError(node.getUnit(), node.coord, msg);
     }

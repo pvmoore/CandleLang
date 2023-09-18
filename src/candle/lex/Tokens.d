@@ -33,8 +33,12 @@ public:
     int length() {
         return tokens.length.as!int;
     }
-    bool isKind(EToken k) {
-        return kind() == k;
+    bool isKind(EToken k, int offset = 0) {
+        return kind(offset) == k;
+    }
+    bool isValue(string v, int offset = 0) {
+        auto t = get(offset);
+        return t.kind==EToken.ID && t.value(src) == v;
     }
     bool isOneOf(EToken[] kinds...) {
         EToken k = kind();

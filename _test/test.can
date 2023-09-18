@@ -2,9 +2,6 @@
 
 extern int putchar(int); 
 
-// test this after implementing scan types
-//hoo
-
 int main() {
     int a = 6;
 

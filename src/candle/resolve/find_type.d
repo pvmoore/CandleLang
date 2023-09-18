@@ -99,5 +99,6 @@ bool isPrimitiveType(Tokens t) {
     }
 }
 bool isUserType(Project project, Tokens t) {
-    return findType(project, t.value()) !is null;
+    return project.isDeclaredType(t.value());
+    //return findType(project, t.value()) !is null;
 }

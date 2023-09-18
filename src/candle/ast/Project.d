@@ -11,6 +11,7 @@ public:
     Candle candle;
     string name;
     Directory directory;
+    bool[string] scannedTypes; // true if isPublic
     
     override ENode enode() { return ENode.PROJECT; }
     override Type type() { return TYPE_VOID; }
@@ -42,6 +43,9 @@ public:
         }
         externalProjects[name] = project;
         return project;
+    }
+    bool isDeclaredType(string value) {
+        return (value in scannedTypes) !is null;
     }
 
     Project[] getExternalProjects() {
@@ -139,5 +143,6 @@ private:
             Unit unit = makeNode!Unit(this, filename);
             this.add(unit);
         }
+        //log("[%s] Declared types: %s", name, scannedTypes);
     }
 }

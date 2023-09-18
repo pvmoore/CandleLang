@@ -25,8 +25,7 @@ public:
 
         readSource();
         lexSource();
-
-        // TODO - scan for Types?
+        scanTypes();
     }
     override ENode enode() { return ENode.UNIT; }
     override bool isResolved() { return true; }
@@ -86,5 +85,26 @@ private:
     }
     void lexSource() {
         this.tokens = Lexer.lex(src);
+    }
+    void scanTypes() {
+        Tokens t = new Tokens(this);
+        while(!t.eof()) {
+            if(t.isValue("struct") || t.isValue("union")) {
+                bool isPublic = t.isValue("pub", -1);
+                string structName = t.value(1);
+                project.scannedTypes[structName] = isPublic;
+            } else {
+                switch(t.kind()) with(EToken) {
+                    case LBRACKET:
+                    case LCURLY:
+                    case LSQUARE:
+                        t.findEndOfScope();
+                        break;
+                    default: break;
+                }
+            }
+            t.next();
+        }
+        //log("[%s] Scanned types: %s", name, scannedTypes);
     }
 }

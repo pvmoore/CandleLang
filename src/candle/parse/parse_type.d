@@ -37,7 +37,7 @@ void parseType(Node parent, Tokens t) {
             t.next();
             t.skip(EToken.DOT);
             value = t.value();
-        }
+        } 
 
         Type ty = findType(typeProject, value);
         TypeRef tr = makeNode!TypeRef(t.coord(), value, ty, typeProject);

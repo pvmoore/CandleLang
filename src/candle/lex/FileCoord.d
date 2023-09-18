@@ -7,4 +7,8 @@ struct FileCoord {
     uint line;
     uint column;
     uint length;
+
+    string toString() {
+        return "{pos:%s, line:%s, col:%s, len:%s}".format(pos, line, column, length);
+    }
 }

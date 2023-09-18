@@ -44,9 +44,7 @@ void parseStmt(Node parent, Tokens t) {
                 case "return": parseReturn(parent, t); return;
                 default: break;
             }
-
-            // ID ID -> Type ID
-            if(isType(project, t) || t.kind(1)==EToken.ID) {
+            if(isType(project, t)) {
                 logParse("  isType %s", t.debugValue());
                 int afterType = typeLength(t);
                 logParse("afterType = %s .. %s", afterType, t.debugValue(afterType));
