@@ -25,11 +25,8 @@ void parseType(Node parent, Tokens t) {
         default: break;
     }
 
-    if(type) t.next();
-
     // Is it a user defined type?
     if(!type) {
-
         Project typeProject = project;
         bool isExternal = false;
 
@@ -46,15 +43,14 @@ void parseType(Node parent, Tokens t) {
         TypeRef tr = makeNode!TypeRef(t.coord(), value, ty, typeProject);
         tr.isExternal = isExternal;
         type = tr;
-
-        t.next();
     }
+    logParse("  type = %s", type);
 
     if(!type) {
         syntaxError(t, "a Type");
     }
 
-    logParse("  type = %s", type);
+    t.next();
 
     // Pointer
     if(t.isKind(EToken.STAR)) {
@@ -68,7 +64,6 @@ void parseType(Node parent, Tokens t) {
 
         type = ptr;
     }
-
 
     parent.add(type);
 }

@@ -30,8 +30,6 @@ import candle.parse.parse_stmt;
 import candle.resolve.find_call_target;
 import candle.resolve.find_id_target;
 import candle.resolve.find_type;
-import candle.resolve.Target;
-import candle.resolve.Value;
 
 import candle.emit.CommonHeader;
 import candle.emit.EmitProject;
@@ -45,7 +43,9 @@ import candle.Operator;
 import candle.Parser;
 import candle.Resolver;
 import candle.statics;
+import candle.Target;
 import candle.utils;
+import candle.Value;
 
 import candle.ast.ENode;
 import candle.ast.node_builder;
