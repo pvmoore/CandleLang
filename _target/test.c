@@ -5,7 +5,7 @@
 // Prototypes
 int putchar(int);
 int main();
-void doSomethingElse();
+static void doSomethingElse();
 void test__doSomething(int* a, float** b);
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -15,7 +15,7 @@ typedef struct Peach {
   int a;
 } Peach;
 
-float foo = 1;
+static float foo = 1;
 int main() {
   int a = 6;
   int* b = null;
@@ -23,10 +23,10 @@ int main() {
   std__putChar('b');
   test__doSomething(null, null);
   doSomethingElse();
-  candle__assert(true, "test.can", 19);
+  candle__assert(true, "test.can", 22);
   return 0;
 }
-void doSomethingElse() {
+static void doSomethingElse() {
 }
 void test__doSomething(int* a, float** b) {
   bool c = !true;

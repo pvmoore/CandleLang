@@ -14,6 +14,7 @@ public:
     string name;
     bool isPublic;
     bool isExtern;
+    bool isProgramEntry; // true if this is "main" or "WinMain"
 
     Type returnType() { return first.as!Type; }
     Var[] params() { return children[1..numParams+1].as!(Var[]); }
@@ -61,6 +62,7 @@ public:
 
         // Name
         this.name = t.value(); t.next();
+        this.isProgramEntry = name=="main" || name.toLower()=="winmain";
 
         // Parameters
         t.skip(EToken.LBRACKET);

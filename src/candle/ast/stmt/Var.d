@@ -13,6 +13,8 @@ public:
 
     bool hasInitialiser() { return numChildren() > 1; }
     bool isParameter() { return parent.isA!Func; }
+    bool isLocal() { return !isGlobal(); }
+    bool isGlobal() { return parent.isA!Unit; }
     Expr initialiser() { assert(hasInitialiser()); return last().as!Expr; }
 
     override ENode enode() { return ENode.VAR; }

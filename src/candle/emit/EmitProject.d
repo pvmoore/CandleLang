@@ -164,6 +164,10 @@ private:
     void emit(Func n, bool asPrototype = false) {
         if(n.isExtern && !asPrototype) return;
 
+        if(!n.isPublic && !n.isExtern && !n.isProgramEntry) {
+            add("static ");
+        }
+
         emit(n.returnType().as!Node);
 
         string name = getName(n);
@@ -317,6 +321,11 @@ private:
     }
     void emit(Var n) {
         if(!n.isParameter()) writeStmt("");
+
+        if(n.isGlobal()) {
+            add("static ");
+        }
+
         emit(n.type().as!Node);
         if(n.name) {
             add(" %s", n.name);

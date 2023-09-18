@@ -8,6 +8,7 @@ void parseExpr(Node parent, Tokens t) {
     parseExprRhs(parent, t);
 }
 void parseExprLhs(Node parent, Tokens t) {
+    logParse("lhs %s", t.debugValue());
     switch(t.kind()) with(EToken) {
         case NUMBER: parseNumber(parent, t); return;
         case CHAR: parseChar(parent, t); return;
@@ -37,6 +38,7 @@ void parseExprLhs(Node parent, Tokens t) {
     }
 }
 void parseExprRhs(Node parent, Tokens t) {
+    logParse("rhs %s", t.debugValue());
     while(!t.eof()) {
         switch(t.kind()) with(EToken) {
             case NONE:
@@ -88,7 +90,7 @@ void parseExprRhs(Node parent, Tokens t) {
                 break;
             }
             default:
-                syntaxError(t, "expression rhs");
+                syntaxError(t, "expression rhs %s".format(t.debugValue()));
                 break;
         }
     }

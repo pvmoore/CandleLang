@@ -75,7 +75,13 @@ public:
             log("Exception: %s", e);
             return false;
         }finally{
-            
+            if(dumpAst) {
+                foreach(p; allProjects()) {
+                    foreach(u; p.getUnits()) {
+                        writeAst(u);
+                    }
+                }
+            }
         }
         return true;
     }
