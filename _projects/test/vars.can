@@ -32,4 +32,15 @@ void variables() {
 
     double k1; @assert(k1==0.0);
     double k2 = 10; @assert(k2==10.0);
+
+    MyStruct l;
+    // TODO - struct literals
+
+    // TODO Function ptrs 
+
+    // TODO Union
+}
+
+struct MyStruct {
+    int a;
 }

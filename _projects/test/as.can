@@ -1,0 +1,8 @@
+
+void as_() {
+    int a = 10;
+    float b = 3;
+
+    // TODO
+    // int c = 10.0f as int
+}

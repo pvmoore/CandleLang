@@ -3,6 +3,7 @@
 #include "std.h"
 #include "test.h"
 // Prototypes
+static void as_();
 static void binary();
 s32 putchar(s32);
 s32 main();
@@ -10,6 +11,13 @@ static void doSomethingElse();
 void test__doSomething(s32* a, f32** b);
 static void variables();
 
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+// as.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void as_() {
+  s32 a = 10;
+  f32 b = 3.0f;
+}
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // binary.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -76,6 +84,7 @@ s32 main() {
   candle__assert(true, "test.can", 21);
   variables();
   binary();
+  as_();
   return 0;
 }
 static void doSomethingElse() {
@@ -95,6 +104,10 @@ void test__doSomething(s32* a, f32** b) {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // vars.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
+typedef struct MyStruct {
+  s32 a;
+} MyStruct;
+
 static void variables() {
   bool a1 = false;
   candle__assert(!a1, "vars.can", 3);
@@ -140,4 +153,5 @@ static void variables() {
   candle__assert(k1 == 0.0, "vars.can", 33);
   f64 k2 = 10.0;
   candle__assert(k2 == 10.0, "vars.can", 34);
+  MyStruct l;
 }
