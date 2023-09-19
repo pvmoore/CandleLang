@@ -80,6 +80,35 @@ int size(Type t) {
             throw new Exception("size(UNKNOWN)");
     }
 }
+string initStr(Type t) {
+    if(t.isA!Pointer) return "null";
+    final switch(t.etype())with(EType) {
+        case BOOL: return "false";
+        case BYTE:
+        case UBYTE:
+        case SHORT:
+        case USHORT:
+        case INT:
+        case UINT:
+        case LONG:
+        case ULONG:
+            return "0";
+        case FLOAT:
+            return "0.0f";
+        case DOUBLE:
+            return "0.0";
+        case FUNC:
+            return "null";    
+        case STRUCT:
+        case UNION:
+        case ARRAY:
+        case ENUM:
+        case UNKNOWN:
+        case VOID:
+            return null;   
+    }
+    assert(false);
+}
 bool exactlyMatch(Type[] a, Type[] b) {
     if(a.length != b.length) return false;
     foreach(i; 0..a.length) if(!a[i].exactlyMatches(b[i])) return false;

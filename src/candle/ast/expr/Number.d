@@ -25,23 +25,11 @@ public:
         if(Var var = parent.as!Var) {
             auto vt = var.type().as!Primitive;
             if(vt.isResolved() && vt.etype() != value.kind) {
-                convertTo(vt);
+                value.changeType(vt.etype());
             }
         }
         _isResolved = true;
     }
 private:
     bool _isResolved;
-
-    void convertTo(Type t) {
-        value.changeType(t.etype());
-        // Change double constant to float
-        // if(value.kind == EType.DOUBLE && t==EType.FLOAT) {
-        //     value.changeType(t);
-        // } else if(value.isInteger() && t==EType.DOUBLE) {
-        //     value.changeType(t);
-        // } else {
-
-        // }
-    }
 }

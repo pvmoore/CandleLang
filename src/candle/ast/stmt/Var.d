@@ -13,7 +13,8 @@ public:
 
     bool hasInitialiser() { return numChildren() > 1; }
     bool isParameter() { return parent.isA!Func; }
-    bool isLocal() { return !isGlobal(); }
+    bool isMember() { return parent.isA!Struct || parent.isA!Union; }
+    bool isLocal() { return parent.isA!Scope; }
     bool isGlobal() { return parent.isA!Unit; }
     Expr initialiser() { assert(hasInitialiser()); return last().as!Expr; }
 

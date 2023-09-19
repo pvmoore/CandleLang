@@ -92,7 +92,7 @@ private:
     }
 
     void afterExpr(Expr e) {
-
+        if(e.isStmt) add(";\n");
     }
 
     void emit(Node n) {
@@ -139,7 +139,6 @@ private:
                 }        
                 emit(n.first());
                 add(", \"%s\", %s)", n.getUnit().filename, n.coord.line+1);
-                if(n.isStmt) add(";\n");
                 break;
             default: break;
         }
@@ -159,8 +158,6 @@ private:
             emit(ch);
         }
         add(")");
-
-        if(n.isStmt) add(";\n");
     }
     void emit(Char n) {
         add(n.stringValue);
@@ -334,6 +331,13 @@ private:
         if(n.hasInitialiser()) {
             add(" = ");
             emit(n.initialiser());
+        } else {
+            if(n.isGlobal() || n.isLocal()) {
+                // set a default value if possible
+                if(string s = n.type().initStr()) {
+                    add(" = %s", s);
+                }
+            }
         }
         if(!n.isParameter()) {
             add(";\n");
