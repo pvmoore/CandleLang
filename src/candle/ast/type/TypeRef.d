@@ -22,12 +22,13 @@ public:
     override EType etype() { return decorated ? decorated.etype() : EType.UNKNOWN; }
     override bool isResolved() { return decorated && decorated.isResolved(); }
     override Type type() { return decorated ? decorated : TYPE_UNKNOWN; }
+
     override bool exactlyMatches(Type otherType) {
-        assert(decorated);
+        assert(isResolved() && otherType.isResolved());
         return decorated.exactlyMatches(otherType);
     }
     override bool canImplicitlyConvertTo(Type otherType) {
-        assert(decorated);
+        assert(isResolved() && otherType.isResolved());
         return decorated.canImplicitlyConvertTo(otherType);
     }
     override string toString() {

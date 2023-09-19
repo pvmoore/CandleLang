@@ -11,10 +11,13 @@ public:
     override ENode enode() { return ENode.ENUM; }
     override EType etype() { return EType.ENUM; }
     override bool isResolved() { return true; }
+
     override bool exactlyMatches(Type otherType) {
+        assert(isResolved() && otherType.isResolved());
         return false;
     }
-    override bool canImplicitlyConvertTo(Type other) {
+    override bool canImplicitlyConvertTo(Type otherType) {
+        assert(isResolved() && otherType.isResolved());
         return false;
     }
     override Type type() { return this; }

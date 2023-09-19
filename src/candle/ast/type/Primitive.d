@@ -24,9 +24,13 @@ public:
         Primitive other = otherType.as!Primitive;
         if(!other) return false;
 
-        if(otherType.isBool()) return true;
         if(this.isVoid() || otherType.isVoid()) return false;
         if(this.isUnknown() || otherType.isUnknown()) return false;
+        
+        // Allow all implicit convert to bool
+        if(otherType.isBool()) return true;
+        // Let's allow bool -> any for now and see how it goes
+        if(this.isBool()) return true;
 
         if(isInteger(this)) {
             if(other.isInteger()) {
@@ -47,7 +51,6 @@ public:
         }
     }
     override string toString() {
-        import std.string:toLower;
         return "%s".format(etype()).toLower();
     }
 private:

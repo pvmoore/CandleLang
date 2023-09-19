@@ -1,7 +1,7 @@
 {
     name: "test",
     dependencies: {
-        std: "_extern/std"
+        std: "_projects/std"
     }
 }  
 

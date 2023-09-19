@@ -26,6 +26,7 @@ public:
         return depth == other.depth && valueType.exactlyMatches(other.valueType());
     }
     override bool canImplicitlyConvertTo(Type otherType) {
+        assert(isResolved() && otherType.isResolved());
         Pointer other = otherType.as!Pointer;
         return other && other.valueType().etype() == this.etype();
     }

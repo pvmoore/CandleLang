@@ -35,13 +35,17 @@ public:
     override EType etype() { return EType.UNION; }
     override bool isResolved() { return true; }
     override Type type() { return this; }
+    
     override bool exactlyMatches(Type otherType) {
         assert(isResolved() && otherType.isResolved());
         Union other = otherType.as!Union;
         if(!other) return false;
+        // TODO
         return false;
     }
-    override bool canImplicitlyConvertTo(Type other) {
+    override bool canImplicitlyConvertTo(Type otherType) {
+        assert(isResolved() && otherType.isResolved());
+        // TODO
         return false;
     }
 

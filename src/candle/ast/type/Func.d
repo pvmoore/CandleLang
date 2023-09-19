@@ -10,31 +10,34 @@ import candle.all;
  */
 final class Func : Node, Type {
 public:
-    int numParams;
     string name;
+    int numParams;
     bool isPublic;
     bool isExtern;
     bool isProgramEntry; // true if this is "main" or "WinMain"
 
-    Type returnType() { return first.as!Type; }
+    Type returnType() { return first().as!Type; }
     Var[] params() { return children[1..numParams+1].as!(Var[]); }
     Type[] paramTypes() { return params().map!(it=>it.type()).array(); }
-    Scope body_() { return children[$-1].as!Scope; }
+    Scope body_() { assert(!isExtern); return last().as!Scope; }
 
     override ENode enode() { return ENode.FUNC; }
     override EType etype() { return EType.FUNC; }
     override bool isResolved() { return returnType().isResolved() && params().areResolved(); }
     override Type type() { return this; }
+
+    /** 
+     * This only checks the parameter types.
+     * The return type and the name are not included.  
+     */
     override bool exactlyMatches(Type otherType) {
-        // This only checks the parameter types
         assert(isResolved() && otherType.isResolved());
         Func other = otherType.as!Func;
         if(!other) return false;
-        //if(name!=other.name) return false;
-        //if(!returnType.exactlyMatches(other.returnType())) return false;
         return exactlyMatch(paramTypes(), other.paramTypes());
     }
     override bool canImplicitlyConvertTo(Type otherType) {
+        assert(isResolved() && otherType.isResolved());
         Func other = otherType.as!Func;
         if(other is null || other.numParams != numParams) return false;
 

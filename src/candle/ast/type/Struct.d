@@ -42,7 +42,10 @@ public:
         // TODO
         return false;
     }
-    override bool canImplicitlyConvertTo(Type other) {
+    override bool canImplicitlyConvertTo(Type otherType) {
+        assert(isResolved() && otherType.isResolved());
+        Struct other = otherType.as!Struct;
+        if(!other) return false;
         // TODO
         return false;
     }
