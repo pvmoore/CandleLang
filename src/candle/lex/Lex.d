@@ -78,7 +78,10 @@ public:
                     }
                     break;
                 case '-':
-                    if(peek(1)=='=') {
+                    if(pos==tokenStart && peek(1).isDigit()) {
+                        // this is a negative number
+                        pos++;
+                    } else if(peek(1)=='=') {
                         addToken(EToken.MINUS_EQ);
                     } else {
                         addToken(EToken.MINUS);

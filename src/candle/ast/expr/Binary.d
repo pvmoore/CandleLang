@@ -14,6 +14,14 @@ public:
     Expr left() { return first().as!Expr; }
     Expr right() { return last().as!Expr; }
 
+    override ENode enode() { return ENode.BINARY; }
+    override Type type() { return _type ? _type : TYPE_UNKNOWN; }
+    override int precedence() { return precedenceOf(op); }
+    override bool isResolved() { return _type !is null && _type != TYPE_UNKNOWN; }
+    override string toString() {
+        string t = _type ? "%s".format(_type) : "unknown";
+        return "Binary %s (%s)".format(stringOf(op), t);
+    }
     override void resolve() {
         if(isResolved()) return;
         if(!left().isResolved() || !right.isResolved()) return;
@@ -33,14 +41,6 @@ public:
                 default: break;
             }
         }
-    }
-
-    override ENode enode() { return ENode.BINARY; }
-    override Type type() { return _type ? _type : TYPE_UNKNOWN; }
-    override int precedence() { return precedenceOf(op); }
-    override bool isResolved() { return _type !is null && _type != TYPE_UNKNOWN; }
-    override string toString() {
-        return "Binary %s".format(stringOf(op));
     }
 private:
     Type _type;

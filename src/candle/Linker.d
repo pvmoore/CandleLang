@@ -1,4 +1,4 @@
-module candle.build.Linker;
+module candle.Linker;
 
 import candle.all;
 import std.process : Config, execute, spawnProcess, wait;
@@ -6,7 +6,11 @@ import std.string : strip;
 
 final class Linker {
 public:
+    static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
+
     static bool link(Candle candle) {
+        StopWatch watch;
+        watch.start();
         string targetName   = candle.mainProject.name;
         string subsystem    = candle.subsystem;
         auto buildDirectory = candle.targetDirectory.add(Directory("build"));
@@ -61,16 +65,20 @@ public:
             size_t.max, 
             buildDirectory.value);
 
+        bool ret = true;
         if(result.status!=0) {
             log("🕯 Link %s " ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", targetName, result.output.strip);
-            return false;
+            ret =false;
         } else {
             logBuild("🕯 Link %s (%s)".format(targetName, candle.isDebug ? "DEBUG" : "RELEASE") ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
         }
-
-        return true;
+        watch.stop();
+        atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
+        return ret;
     }
 private:
+    shared static ulong totalNanos;
+
     static string[] getCRuntime() {
         if(true) {
             // Dynamic runtime

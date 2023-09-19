@@ -35,12 +35,12 @@ import candle.emit.CommonHeader;
 import candle.emit.EmitProject;
 
 import candle.build.BuildProject;
-import candle.build.Linker;
 
 import candle.Builder;
 import candle.Checker;
 import candle.Emitter;
 import candle.Lexer;
+import candle.Linker;
 import candle.Operator;
 import candle.Parser;
 import candle.Resolver;

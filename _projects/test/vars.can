@@ -32,6 +32,4 @@ void variables() {
 
     double k1; @assert(k1==0.0);
     double k2 = 10; @assert(k2==10.0);
-
-    // change aliases to s8, u8 etc...
 }

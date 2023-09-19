@@ -160,10 +160,48 @@ private:
         value.d = d;
         kind = EType.DOUBLE;
     }
+    void setUnspecifiedInteger(ulong v) {
+        if(v <= ubyte.max) {
+            set(v.as!ubyte);
+        } else if(v <= ushort.max) {
+            set(v.as!ushort);
+        } else if(v <= uint.max) {
+            set(v.as!uint);
+        } else {
+            set(v);        
+        }
+    }
+    void setUnspecifiedInteger(long v) {
+        if(v < 0) {
+            if(v >= byte.min) {
+                set(v.as!byte);
+            } else if(v >= short.min) {
+                set(v.as!short);
+            } else if(v >= int.min) {
+                set(v.as!int);
+            } else {
+                set(v);
+            }
+        } else {
+            if(v <= byte.max) {
+                set(v.as!byte);
+            } else if(v <= short.max) {
+                set(v.as!short);
+            } else if(v <= int.max) {
+                set(v.as!int);
+            } else {
+                set(v);        
+            }
+        }
+    }
     void convert(string s) {
         if(s.length > 1) {
             if(s[0..2] == "0x" || s[0..2] == "0X") {
-                set(to!long(s[2..$], 16));
+                setUnspecifiedInteger(to!ulong(s[2..$], 16));
+                return;
+            }
+            if(s[0..2] == "0b" || s[0..2] == "0B") {
+                setUnspecifiedInteger(to!ulong(s[2..$], 2));
                 return;
             }
             if("true" == s) {
@@ -257,29 +295,7 @@ private:
                 return;
             }
         }
-
         // Find the smallest integer type to represent this number
-        long v = to!long(s);
-        if(v < 0) {
-            if(v >= byte.min) {
-                set(v.as!byte);
-            } else if(v >= short.min) {
-                set(v.as!short);
-            } else if(v >= int.min) {
-                set(v.as!int);
-            } else {
-                set(v);
-            }
-        } else {
-            if(v <= byte.max) {
-                set(v.as!byte);
-            } else if(v <= short.max) {
-                set(v.as!short);
-            } else if(v <= int.max) {
-                set(v.as!int);
-            } else {
-                set(v);        
-            }
-        }
+        setUnspecifiedInteger(to!long(s));
     }
 }

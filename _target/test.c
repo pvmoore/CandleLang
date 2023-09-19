@@ -3,6 +3,7 @@
 #include "std.h"
 #include "test.h"
 // Prototypes
+static void binary();
 s32 putchar(s32);
 s32 main();
 static void doSomethingElse();
@@ -10,7 +11,54 @@ void test__doSomething(s32* a, f32** b);
 static void variables();
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-// Unit test
+// binary.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void binary() {
+  s32 a = 10;
+  s32 b = 20;
+  s32 c = a + b;
+  candle__assert(c == 30, "binary.can", 6);
+  s32 d = a - b;
+  candle__assert(d == -10, "binary.can", 7);
+  s32 e = a * b;
+  candle__assert(e == 200, "binary.can", 8);
+  s32 f = b / a;
+  candle__assert(f == 2, "binary.can", 9);
+  s32 f2 = b % 3;
+  candle__assert(f2 == 2, "binary.can", 10);
+  s32 g = a << 1;
+  candle__assert(g == 20, "binary.can", 12);
+  s32 h = a >> 1;
+  candle__assert(h == 5, "binary.can", 13);
+  s32 i = a & 2;
+  candle__assert(i == 2, "binary.can", 16);
+  s32 j = a | 1;
+  candle__assert(j == 11, "binary.can", 17);
+  s32 k = a ^ 3u;
+  candle__assert(k == 9, "binary.can", 18);
+  s32 l = ~a;
+  candle__assert(l == -11, "binary.can", 21);
+  s32 m = -a;
+  candle__assert(m == -10, "binary.can", 23);
+  s32 n = a < 20;
+  candle__assert(n, "binary.can", 25);
+  s32 n2 = a <= 10;
+  candle__assert(n2, "binary.can", 26);
+  s32 o = a > 5;
+  candle__assert(o, "binary.can", 28);
+  s32 o2 = a >= 10;
+  candle__assert(o2, "binary.can", 29);
+  s32 p = a == (b - 10);
+  candle__assert(p, "binary.can", 31);
+  s32 p2 = a != 0;
+  candle__assert(p2, "binary.can", 32);
+  s32 q = a < 20 && b > a;
+  candle__assert(q, "binary.can", 34);
+  s32 q2 = a < 20 || b < a;
+  candle__assert(q2, "binary.can", 35);
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+// test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 typedef struct Peach {
   s32 a;
@@ -27,6 +75,7 @@ s32 main() {
   doSomethingElse();
   candle__assert(true, "test.can", 21);
   variables();
+  binary();
   return 0;
 }
 static void doSomethingElse() {
@@ -34,7 +83,7 @@ static void doSomethingElse() {
 void test__doSomething(s32* a, f32** b) {
   bool c = !true;
   s32 d = 'a';
-  s64 e = 255LL;
+  s64 e = -1LL;
   f32 f = foo;
   s32 y = 1 + 2 / 3;
   s32 z = 1 / 2 + 3;
@@ -44,7 +93,7 @@ void test__doSomething(s32* a, f32** b) {
   std__PlumPublic plum;
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-// Unit vars
+// vars.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void variables() {
   bool a1 = false;

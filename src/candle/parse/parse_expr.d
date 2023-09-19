@@ -14,7 +14,10 @@ void parseExprLhs(Node parent, Tokens t) {
         case CHAR: parseChar(parent, t); return;
         case STRING: parseString(parent, t); return;
         case EXCLAIM: parseUnary(parent, t); return;
-        case TILDE: parseUnary(parent, t); return;
+        case TILDE:
+        case MINUS: 
+            parseUnary(parent, t); 
+            return;
         case LBRACKET: parseParens(parent, t); return;
         case AT: parseBuiltinFunc(parent, t); return;
         case ID:
@@ -70,6 +73,8 @@ void parseExprRhs(Node parent, Tokens t) {
             case HAT_EQ:
             case LT_LT_EQ:
             case GT_GT_EQ:
+            case AMP_AMP:
+            case PIPE_PIPE:
 
             case LT:
             case GT:

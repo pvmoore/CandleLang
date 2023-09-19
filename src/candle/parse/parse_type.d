@@ -9,6 +9,7 @@ void parseType(Node parent, Tokens t) {
 
     Node type;
 
+    // Primitive type?
     switch(value) {
         case "bool": type = makeNode!Primitive(t.coord(), EType.BOOL); break;
         case "byte": type = makeNode!Primitive(t.coord(), EType.BYTE); break;

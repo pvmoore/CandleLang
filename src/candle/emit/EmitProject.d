@@ -107,6 +107,7 @@ private:
             case ID: emit(n.as!Id); break;
             case NULL: emit(n.as!Null); break;
             case NUMBER: emit(n.as!Number); break;
+            case PARENS: emit(n.as!Parens); break;
             case POINTER: emit(n.as!Pointer); break;
             case PRIMITIVE: emit(n.as!Primitive); break;
             case PROJECT_ID: emit(n.as!ProjectId); break;
@@ -197,6 +198,11 @@ private:
     }
     void emit(Number n) {
         add(n.value.toString());
+    }
+    void emit(Parens n) {
+        add("(");
+        emit(n.expr());
+        add(")");
     }
     void emit(Pointer n) {
         emit(n.valueType().as!Node);
@@ -313,7 +319,7 @@ private:
     }
     void emit(Unit n) {
         writeStmt("//──────────────────────────────────────────────────────────────────────────────────────────────────\n");
-        writeStmt("// Unit %s\n", n.name);
+        writeStmt("// %s.can\n", n.name);
         writeStmt("//──────────────────────────────────────────────────────────────────────────────────────────────────\n");
         recurseChildren(n);
     }

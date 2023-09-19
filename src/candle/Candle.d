@@ -69,6 +69,7 @@ public:
             log("  Checking ... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
             log("  Emitting ... %.2f ms", Emitter.getElapsedNanos()/1_000_000.0);
             log("  Building ... %.2f ms", Builder.getElapsedNanos()/1_000_000.0);
+            log("  Linking .... %.2f ms", Linker.getElapsedNanos()/1_000_000.0);
             log("════════════════════════════════════════════════════════════════════════════════════════");
 
         }catch(AbortCompilation e) {

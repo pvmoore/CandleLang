@@ -21,6 +21,7 @@ int main() {
     @assert(true);
 
     variables();
+    binary();
 
     return 0;
 }

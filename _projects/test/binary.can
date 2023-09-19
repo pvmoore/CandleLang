@@ -1,0 +1,36 @@
+
+void binary() {
+    int a = 10;
+    int b = 20;
+
+    int c = a + b; @assert(c == 30);
+    int d = a - b; @assert(d == -10);
+    int e = a * b; @assert(e == 200);
+    int f = b / a; @assert(f == 2);
+    int f2 = b % 3; @assert(f2 == 2);
+
+    int g = a << 1; @assert(g == 20);
+    int h = a >> 1; @assert(h == 5);
+
+    // 10 = 1010
+    int i = a & 2; @assert(i == 2);
+    int j = a | 1; @assert(j == 11);
+    int k = a ^ 0b11; @assert(k == 9);
+
+    // ~1010 = 11110101 = 245u = -11
+    int l = ~a; @assert(l == -11);
+
+    int m = -a; @assert(m == -10);
+
+    int n = a < 20; @assert(n);
+    int n2 = a <= 10; @assert(n2);
+
+    int o = a > 5; @assert(o);
+    int o2 = a >= 10; @assert(o2);
+
+    int p = a == (b-10); @assert(p);
+    int p2 = a != 0; @assert(p2);
+
+    int q = a < 20 && b > a; @assert(q);
+    int q2 = a < 20 || b < a; @assert(q2);
+}
