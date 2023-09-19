@@ -51,3 +51,7 @@ void writeAst(Unit unit) {
 T minOf(T)(T a, T b) {
     return a < b ? a : b;
 }
+
+string ansiWrap(string text, string ansi) {
+    return ansi ~ text ~ Ansi.RESET;
+}

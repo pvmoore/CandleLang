@@ -20,6 +20,8 @@ int main() {
 
     @assert(true);
 
+    variables();
+
     return 0;
 }
 

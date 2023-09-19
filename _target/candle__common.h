@@ -27,7 +27,7 @@ static void candle__assert(s32 value, const char* unitName, u32 line) {
         printf("!! Assertion failed: [%s] Line %u", unitName, line);
         putchar(13); putchar(10);
         exit(-1);
-    }
+    } 
 }
 
 #endif

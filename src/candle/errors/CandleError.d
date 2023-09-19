@@ -57,9 +57,6 @@ string highlight(string text, int start, int end) {
             ansiWrap(text[start..end], Ansi.WHITE ~ Ansi.RED_BOLD_BG) ~
             text[end..$];
 }
-string ansiWrap(string text, string ansi) {
-    return ansi ~ text ~ Ansi.RESET;
-}
 string[] getSourceLines(string src) {
     import std.string : splitLines;
     return src.splitLines();

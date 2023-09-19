@@ -28,12 +28,25 @@ public:
 
         this.name = t.value(); t.next();
 
-        t.skip(EToken.LBRACKET);
-        while(!t.isKind(EToken.RBRACKET)) {
-            parseExpr(this, t);
-            t.skipOptional(EToken.COMMA);
+        if(t.isKind(EToken.LBRACKET)) {
+            t.skip(EToken.LBRACKET);
+
+            bool hasArgs = !t.isKind(EToken.RBRACKET);
+            if(hasArgs) {
+                Parens p = makeNode!Parens(t.coord());
+                this.add(p);
+
+                while(!t.isKind(EToken.RBRACKET)) {
+                    parseExpr(p, t);
+                    t.skipOptional(EToken.COMMA);
+                }
+                p.detach();
+                while(p.hasChildren()) {
+                    this.add(p.first());
+                }
+            }
+            t.skip(EToken.RBRACKET);
         }
-        t.skip(EToken.RBRACKET);
 
         if(t.isKind(EToken.SEMICOLON)) {
             this.isStmt = true;
