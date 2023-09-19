@@ -3,17 +3,18 @@ module candle.Value;
 import candle.all;
 import std.conv : to;
 
+// Assume any calculations will be done as int or higher
 struct Value {
-    // Assume any calculations will be done as int or higher
     union Val {
         bool b;
-
+        byte by;
+        ubyte uby;
+        short s;
+        ushort us;
         int i;
         uint ui;
-
         long l;
         ulong ul;
-
         float f;
         double d;
     }
@@ -26,36 +27,130 @@ struct Value {
     string toString() {
         switch(kind) with(EType) {
             case BOOL: return value.b.to!string;
+            case BYTE: return value.by.to!string;
+            case UBYTE: return value.uby.to!string ~ "u";
+            case SHORT: return value.s.to!string;
+            case USHORT: return value.us.to!string ~ "u";
             case INT: return value.i.to!string;
-            case UINT: return value.ui.to!string;
-            case LONG: return value.l.to!string;
-            case ULONG: return value.ul.to!string;
-            case FLOAT: return value.f.to!string;
-            case DOUBLE: return value.d.to!string;
+            case UINT: return value.ui.to!string ~ "u";
+            case LONG: return value.l.to!string ~ "LL";
+            case ULONG: return value.ul.to!string ~ "LLU";
+            case FLOAT: { 
+                string s = value.f.to!string;
+                if(!s.contains('.')) {
+                    s ~= ".0";
+                }
+                return s ~ "f";
+            }
+            case DOUBLE: { 
+                string s = value.d.to!string;
+                if(!s.contains('.')) {
+                    s ~= ".0";
+                }
+                return s;
+            }
+            default: assert(false);
+        }
+    }
+    bool isInteger() {
+        return kind.isOneOf(
+            EType.BYTE, EType.UBYTE, EType.SHORT, EType.USHORT,
+            EType.INT, EType.UINT, EType.LONG, EType.ULONG);
+    }
+    bool isReal() {
+        return !isBool() && !isInteger();
+    }
+    bool isBool() {
+        return kind == EType.BOOL;
+    }
+    void changeType(EType newKind) {
+        if(kind == newKind) return;
+        switch(newKind) with(EType) {
+            case BOOL: set(asBool()); break;
+            case BYTE: set(asLong().as!byte); break;
+            case UBYTE: set(asLong().as!ubyte); break;
+            case SHORT: set(asLong().as!short); break;
+            case USHORT: set(asLong().as!ushort); break;
+            case INT: set(asLong().as!int); break;
+            case UINT: set(asLong().as!uint); break;
+            case LONG: set(asLong()); break;
+            case ULONG: set(asLong().as!ulong); break;
+            case FLOAT: set(asDouble().as!float); break;
+            case DOUBLE: set(asDouble()); break;
             default: assert(false);
         }
     }
 private:
+    bool asBool() {
+        return value.ul != 0;
+    }
+    long asLong() {
+        switch(kind) with(EType) {
+            case BOOL: return value.b != 0 ? 1 : 0;
+            case BYTE: return value.by;
+            case UBYTE: return value.by;
+            case SHORT: return value.s;
+            case USHORT: return value.s;
+            case INT: return value.i;
+            case UINT: return value.i;
+            case LONG: return value.l;
+            case ULONG: return value.l;
+            case FLOAT: return value.f.as!long;
+            case DOUBLE: return value.d.as!long;
+            default: assert(false);
+        } 
+    }
+    double asDouble() {
+        switch(kind) with(EType) {
+            case BOOL: return value.b != 0 ? 1 : 0;
+            case BYTE: return value.by;
+            case UBYTE: return value.by;
+            case SHORT: return value.s;
+            case USHORT: return value.s;
+            case INT: return value.i;
+            case UINT: return value.i;
+            case LONG: return value.l;
+            case ULONG: return value.l;
+            case FLOAT: return value.f;
+            case DOUBLE: return value.d;
+            default: assert(false);
+        } 
+    }
     void set(bool b) {
         value.b = b;
         kind = EType.BOOL;
     }
+    void set(byte b) {
+        value.by = b;
+        kind = EType.BYTE;
+    }
+    void set(ubyte b) {
+        value.uby = b;
+        kind = EType.UBYTE;
+    }
+    void set(short s) {
+        value.s = s;
+        kind = EType.SHORT;
+    }
+    void set(ushort s) {
+        value.us = s;
+        kind = EType.USHORT;
+    }
     void set(int i) {
         value.i = i;
         kind = EType.INT;
+    }
+    void set(uint i) {
+        value.ui = i;
+        kind = EType.UINT;
     }
     void set(long l) {
         value.l = l;
         kind = EType.LONG;
     }
     void set(ulong l) {
-        if(l <= 0xffff_ffffL) {
-            value.ui = l.as!ulong.as!uint;
-            kind = EType.UINT;
-        } else {
-            value.ul = l.as!ulong;
-            kind = EType.ULONG;
-        }
+        value.ul = l.as!ulong;
+        kind = EType.ULONG;
     }
     void set(float f) {
         value.f = f;
@@ -65,7 +160,6 @@ private:
         value.d = d;
         kind = EType.DOUBLE;
     }
-
     void convert(string s) {
         if(s.length > 1) {
             if(s[0..2] == "0x" || s[0..2] == "0X") {
@@ -164,12 +258,28 @@ private:
             }
         }
 
-        // Assume it is an int or long
+        // Find the smallest integer type to represent this number
         long v = to!long(s);
-        if(v <= 0x7fff_ffff) {
-            set(v.as!int);
+        if(v < 0) {
+            if(v >= byte.min) {
+                set(v.as!byte);
+            } else if(v >= short.min) {
+                set(v.as!short);
+            } else if(v >= int.min) {
+                set(v.as!int);
+            } else {
+                set(v);
+            }
         } else {
-            set(v);
+            if(v <= byte.max) {
+                set(v.as!byte);
+            } else if(v <= short.max) {
+                set(v.as!short);
+            } else if(v <= int.max) {
+                set(v.as!int);
+            } else {
+                set(v);        
+            }
         }
     }
 }

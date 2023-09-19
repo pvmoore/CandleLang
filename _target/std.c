@@ -2,16 +2,16 @@
 
 #include "std.h"
 // Prototypes
-int putchar(int);
-void std__putChar(int ch);
+s32 putchar(s32);
+void std__putChar(s32 ch);
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // Unit std
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 typedef struct PlumPrivate {
-  int a;
+  s32 a;
 } PlumPrivate;
 
-void std__putChar(int ch) {
+void std__putChar(s32 ch) {
   putchar(ch);
 }

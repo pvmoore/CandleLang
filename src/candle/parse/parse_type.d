@@ -44,7 +44,6 @@ void parseType(Node parent, Tokens t) {
         tr.isExternal = isExternal;
         type = tr;
     }
-    logParse("  type = %s", type);
 
     if(!type) {
         syntaxError(t, "a Type");
@@ -66,4 +65,6 @@ void parseType(Node parent, Tokens t) {
     }
 
     parent.add(type);
+    
+    logParse("  type = %s", type);
 }

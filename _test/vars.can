@@ -1,0 +1,37 @@
+
+void variables() {
+    bool a1; // we should default init this
+    bool a2 = true; @assert(a2);
+
+    byte b1;
+    byte b2 = 1;
+
+    ubyte c1;
+    ubyte c2 = 2;
+
+    short d1;
+    short d2 = 3;
+
+    ushort e1;
+    ushort e2 = 4;
+
+    int f1;
+    int f2 = 5;
+
+    uint g1;
+    uint g2 = 6;
+
+    long h1;
+    long h2 = 7;
+
+    ulong i1;
+    ulong i2 = 8;
+
+    float j1;
+    float j2 = 9.1;
+
+    double k1;
+    double k2 = 10;
+
+    // change aliases to s8, u8 etc...
+}

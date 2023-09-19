@@ -21,11 +21,16 @@ private:
 #define CANDLE_COMMON_TYPEDEFS_H
 
 typedef unsigned char bool;
-typedef unsigned char ubyte;
-typedef signed char byte;
-typedef unsigned short ushort;
-typedef unsigned int uint;
-typedef unsigned long long ulong;
+typedef unsigned char u8;
+typedef signed char s8;
+typedef unsigned short u16;
+typedef signed short s16;
+typedef unsigned int u32;
+typedef signed int s32;
+typedef signed long long s64;
+typedef unsigned long long u64;
+typedef float f32;
+typedef double f64;
 
 #define true 1
 #define false 0
@@ -34,8 +39,8 @@ typedef unsigned long long ulong;
 #include \"stdlib.h\"
 #include \"stdio.h\"
 
-static void candle__assert(int value, const char* unitName, uint line) {
-    if(!value) {
+static void candle__assert(s32 value, const char* unitName, u32 line) {
+    if(value == 0) {
         putchar(13); putchar(10);
         printf(\"!! Assertion failed: [%s] Line %u\", unitName, line);
         putchar(13); putchar(10);

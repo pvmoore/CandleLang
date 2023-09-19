@@ -4,9 +4,9 @@
 #include "candle__common.h"
 
 typedef struct std__PlumPublic {
-  int a;
+  s32 a;
 } std__PlumPublic;
 
-void std__putChar(int ch);
+void std__putChar(s32 ch);
 
 #endif // std_H

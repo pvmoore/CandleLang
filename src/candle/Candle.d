@@ -67,6 +67,8 @@ public:
             log("  Parsing .... %.2f ms", Parser.getElapsedNanos()/1_000_000.0);
             log("  Resolving .. %.2f ms", Resolver.getElapsedNanos()/1_000_000.0);
             log("  Checking ... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
+            log("  Emitting ... %.2f ms", Emitter.getElapsedNanos()/1_000_000.0);
+            log("  Building ... %.2f ms", Builder.getElapsedNanos()/1_000_000.0);
             log("════════════════════════════════════════════════════════════════════════════════════════");
 
         }catch(AbortCompilation e) {
@@ -159,7 +161,7 @@ private:
         logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         new CommonHeader(this).emit();  
         foreach(p; allProjects()) {
-            new EmitProject(p).emit();
+            Emitter.emit(p);
         }
     }
     /** 
@@ -168,10 +170,8 @@ private:
     bool buildAllProjects() {
         logBuild("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         foreach(p; allProjects()) {
-            auto builder = new BuildProject(p);
-            if(!builder.build()) {
-                return false;
-            }
+            bool result = Builder.build(p);
+            if(!result) return false;
         }
         return true;
     }

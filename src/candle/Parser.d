@@ -18,6 +18,7 @@ public:
             //log("%s", tokens.toString());
             u.parse(tokens);
         }
+        logParse("  Finished parsing %s", project);
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
     }

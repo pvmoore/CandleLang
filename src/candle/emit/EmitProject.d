@@ -91,6 +91,10 @@ private:
         buf.add("\n#endif // %s_H\n", project.name);
     }
 
+    void afterExpr(Expr e) {
+
+    }
+
     void emit(Node n) {
         logEmit("emit %s", n.enode());
         switch(n.enode()) with(ENode) {
@@ -114,6 +118,9 @@ private:
             case UNIT: emit(n.as!Unit); break;
             case VAR: emit(n.as!Var); break;
             default: throw new Exception("EmitProject: Handle node %s".format(n.enode()));
+        }
+        if(Expr expr = n.as!Expr) {
+            afterExpr(expr);
         }
     }
 
@@ -193,12 +200,6 @@ private:
     }
     void emit(Number n) {
         add(n.value.toString());
-        switch(n.value.kind) with(EType) {
-            case FLOAT: add("f"); break;
-            case LONG: add("LL"); break;
-            case ULONG: add("ULL"); break;
-            default: break;
-        }
     }
     void emit(Pointer n) {
         emit(n.valueType().as!Node);
@@ -207,16 +208,16 @@ private:
     void emit(Primitive n) {
         switch(n.etype()) with(EType) {
             case BOOL: buf.add("bool"); break;
-            case UBYTE: buf.add("ubyte"); break;
-            case BYTE: buf.add("byte"); break;
-            case USHORT: buf.add("ushort"); break;
-            case SHORT: buf.add("short"); break;
-            case UINT: buf.add("uint"); break;
-            case INT: buf.add("int"); break;
-            case ULONG: buf.add("ulong"); break;
-            case LONG: buf.add("long long"); break;
-            case FLOAT: buf.add("float"); break;
-            case DOUBLE: buf.add("double"); break;
+            case UBYTE: buf.add("u8"); break;
+            case BYTE: buf.add("s8"); break;
+            case USHORT: buf.add("u16"); break;
+            case SHORT: buf.add("s16"); break;
+            case UINT: buf.add("u32"); break;
+            case INT: buf.add("s32"); break;
+            case ULONG: buf.add("u64"); break;
+            case LONG: buf.add("s64"); break;
+            case FLOAT: buf.add("f32"); break;
+            case DOUBLE: buf.add("f64"); break;
             case VOID: buf.add("void"); break;
             default: throw new Exception("EmitUnit: Handle Primitive %s".format(n.etype()));
         }

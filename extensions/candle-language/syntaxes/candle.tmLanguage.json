@@ -56,11 +56,7 @@
 					"match": "\\b(pub|extern)(\\*+|\\b)"
 				},
 				{
-					"name" : "storage.modifier.candle",
-					"match": "\\b(pub)\\b"
-				},
-				{
-					"name" : "support.function.candle",
+					"name" : "entity.name.function.candle",
 					"match" : "@[_\\w]+\\b"
 				},
 				{
