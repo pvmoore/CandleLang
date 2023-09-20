@@ -17,6 +17,11 @@ void parseExpr(Node parent, Tokens t) {
 }
 void parseExprLhs(Node parent, Tokens t) {
     logParse("lhs %s", t.debugValue());
+    Project project = t.unit.project;
+    if(isType(project, t)) {
+        parseType(parent, t);
+        return;
+    }
     switch(t.kind()) with(EToken) {
         case NUMBER: parseNumber(parent, t); return;
         case CHAR: parseChar(parent, t); return;
@@ -52,13 +57,17 @@ void parseExprRhs(Node parent, Tokens t) {
     logParse("rhs %s", t.debugValue());
     while(!t.eof()) {
         switch(t.kind()) with(EToken) {
+            case ID:        
+                As as = makeNode!As(t.coord());
+                t.next();
+                parent = attachAndRead(parent, as, t, true);
+                break;
             case NONE:
             case SEMICOLON:
             case RCURLY:
             case RBRACKET:
             case RSQUARE:
             case COMMA:
-            case ID:        // ID, ID could be a Var or Func with an unknown Type
                 return;
             case EQ:
             case PLUS:

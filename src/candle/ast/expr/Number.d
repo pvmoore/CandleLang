@@ -13,7 +13,7 @@ public:
     override ENode enode() { return ENode.NUMBER; }
     override Type type() { return getStaticType(value.kind); }
     override int precedence() { return 0; }
-    override bool isResolved() { return _isResolved; }
+    override bool isResolved() { return true; }
     override string toString() {
         return "%s (%s)".format(value, type());
     }
@@ -23,13 +23,17 @@ public:
     }
     override void resolve() {
         if(Var var = parent.as!Var) {
-            auto vt = var.type().as!Primitive;
-            if(vt.isResolved() && vt.etype() != value.kind) {
-                value.changeType(vt.etype());
-            }
+            changeType(var);
+        } else if(Binary b = parent.as!Binary) {
+            changeType(b);
         }
-        _isResolved = true;
     }
 private:
-    bool _isResolved;
+    void changeType(Node p) {
+        if(!p.isResolved()) return;
+        auto vt = p.type().as!Primitive;
+        if(vt && vt.etype() != value.kind) {
+            value.changeType(vt.etype());
+        }
+    }
 }

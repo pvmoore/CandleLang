@@ -90,7 +90,11 @@ private:
         }
         buf.add("\n#endif // %s_H\n", project.name);
     }
-
+    void castTo(Type t) {
+        add("(");
+        emit(t.as!Node);
+        add(")");
+    }
     void beforeNode(Node n) {
         logEmit("emit %s", n.enode());
         Expr expr = n.as!Expr;
@@ -109,6 +113,7 @@ private:
     void emit(Node n) {
         beforeNode(n);
         switch(n.enode()) with(ENode) {
+            case AS: emit(n.as!As); break;
             case BINARY: emit(n.as!Binary); break;
             case BUILTIN_FUNC: emit(n.as!BuiltinFunc); break;
             case CALL: emit(n.as!Call); break;
@@ -135,10 +140,19 @@ private:
             afterExpr(expr);
         }
     }
-
+    void emit(As n) {
+        castTo(n.type());
+        emit(n.expr());
+    }
     void emit(Binary n) {
+        if(!n.type().exactlyMatches(n.left().type())) {
+            castTo(n.type());
+        }
         emit(n.left());
         add(" %s ", stringOf(n.op));
+        if(!n.type().exactlyMatches(n.right().type())) {
+            castTo(n.type());
+        }
         emit(n.right());
     }
     void emit(BuiltinFunc n) {

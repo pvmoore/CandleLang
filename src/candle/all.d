@@ -55,6 +55,7 @@ import candle.ast.Node;
 import candle.ast.NodeRef;
 import candle.ast.Unit;
 
+import candle.ast.expr.As;
 import candle.ast.expr.Binary;
 import candle.ast.expr.BuiltinFunc;
 import candle.ast.expr.Call;

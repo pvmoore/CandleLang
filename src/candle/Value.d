@@ -77,7 +77,7 @@ struct Value {
             case ULONG: set(asLong().as!ulong); break;
             case FLOAT: set(asDouble().as!float); break;
             case DOUBLE: set(asDouble()); break;
-            default: assert(false);
+            default: assert(false, "newKind is %s".format(newKind));
         }
     }
 private:

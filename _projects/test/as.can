@@ -3,6 +3,8 @@ void as_() {
     int a = 10;
     float b = 3;
 
-    // TODO
-    // int c = 10.0f as int
+    int c = 10.3f as int; @assert(c==10);
+    double d = 10.9 + 2.9 as int; @assert(d==12.9);
+    int e = (10.9 + 2.9) as int; @assert(e==13);
+    int f = 10.9 as int + 2.9 as int; @assert(f==12);
 }

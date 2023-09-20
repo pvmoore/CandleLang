@@ -12,7 +12,7 @@ public:
     }
     override ENode enode() { return ENode.PRIMITIVE; }
     override EType etype() { return _kind; }
-    override bool isResolved() { return true; }
+    override bool isResolved() { return _kind!=EType.UNKNOWN; }
     override Type type() { return this; }
 
     override bool exactlyMatches(Type otherType) {

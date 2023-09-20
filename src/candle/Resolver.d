@@ -60,9 +60,9 @@ private:
         foreach(ch; n.children) {
             recurseChildren(ch, allResolved);
         }
-        if(!n.isResolved()) {
+        //if(!n.isResolved()) {
             n.resolve();
             allResolved &= n.isResolved();
-        }
+        //}
     }
 }
