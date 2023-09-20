@@ -50,6 +50,7 @@ public:
         t.skip(EToken.RBRACKET);
     }
     override void resolve() {
+        if(isResolved()) return;
         logResolve("  resolving %s", this);
 
         if(isStartOfChain()) {

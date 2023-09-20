@@ -19,7 +19,7 @@ public:
     void parse(Tokens tokens) {
 
     }
-    /** Will be called in bottom-up order and only where isResolved() == false */
+    /** Will be called in bottom-up order */
     void resolve() {
         // By default do nothing
     }

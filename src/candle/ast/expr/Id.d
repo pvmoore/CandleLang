@@ -22,6 +22,7 @@ public:
         this.name = t.value(); t.next();
     }
     override void resolve() {
+        if(isResolved()) return;
         logResolve("  resolving %s", this);
 
         if(isStartOfChain()) {
