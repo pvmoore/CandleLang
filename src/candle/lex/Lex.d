@@ -78,11 +78,13 @@ public:
                     }
                     break;
                 case '-':
-                    if(pos==tokenStart && peek(1).isDigit()) {
-                        // this is a negative number
-                        pos++;
+                    if(peek(1)=='>') {
+                        addToken(EToken.RT_ARROW);
                     } else if(peek(1)=='=') {
                         addToken(EToken.MINUS_EQ);
+                    } else if(pos==tokenStart && peek(1).isDigit()) {
+                        // this is a negative number
+                        pos++;
                     } else {
                         addToken(EToken.MINUS);
                     }

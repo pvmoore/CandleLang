@@ -9,3 +9,5 @@
 - Arrays
 - Enums
 - Unions
+- Change && and || to 'and' 'or'
+- Change unary ! to 'not

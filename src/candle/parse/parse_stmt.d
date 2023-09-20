@@ -63,6 +63,13 @@ void parseStmt(Node parent, Tokens t) {
             }
 
             break;
+        case LBRACKET:
+            // function ptr
+            if(isType(project, t)) {
+                parseVar(parent, t);
+                return;
+            }
+            break;    
         case SEMICOLON:
             t.next();
             return;

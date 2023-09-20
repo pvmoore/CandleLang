@@ -11,7 +11,7 @@ public:
         watch.start();
         logParse("  Parsing %s", project);
         foreach(u; project.getUnits()) {
-            if(u.isParsed) return;
+            if(u.isParsed) continue;
 
             logParse("  Parsing %s", u);
             Tokens tokens = new Tokens(u);

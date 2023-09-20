@@ -154,4 +154,5 @@ static void variables() {
   f64 k2 = 10.0;
   candle__assert(k2 == 10.0, "vars.can", 34);
   MyStruct l;
+  void (*fp)(s32,f32) = null;
 }

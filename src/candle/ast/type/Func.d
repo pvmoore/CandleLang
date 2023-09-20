@@ -10,11 +10,12 @@ import candle.all;
  */
 final class Func : Node, Type {
 public:
-    string name;
+    string name;        // null if isFuncPtr == true
     int numParams;
     bool isPublic;
     bool isExtern;
     bool isProgramEntry; // true if this is "main" or "WinMain"
+    bool isFuncPtr; 
 
     Type returnType() { return first().as!Type; }
     Var[] params() { return children[1..numParams+1].as!(Var[]); }
@@ -45,6 +46,14 @@ public:
         return false;
     }
     override string toString() {
+        if(isFuncPtr) {
+            string s;
+            foreach(i, t; paramTypes()) {
+                if(i>0) s ~= ",";
+                s ~= "%s".format(t);
+            } 
+            return "Func (%s->%s)".format(s, returnType());
+        }
         string pub = isPublic ? ", pub" : "";
         string extrn = isExtern ? ", extern" : "";
         return "Func %s, %s params%s%s".format(name, numParams, pub, extrn);

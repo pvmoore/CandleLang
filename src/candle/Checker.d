@@ -24,6 +24,7 @@ private:
         foreach(ch; n.children) {
             recurseChildren(ch);
         }
+        logCheck("Checking %s", n.enode());
         n.check();
     }
 }

@@ -11,6 +11,7 @@ public:
         this.unit = unit;
         this.src = unit.src;
         this.tokens = unit.tokens;
+        this.savePoints = new Stack!SaveState;
     }
     Token get(int offset = 0) {
         if(pos+offset >= tokens.length) return NO_TOKEN;
@@ -122,6 +123,15 @@ public:
         isExtern = false;
         return p;
     }
+    void pushState() {
+        savePoints.push(SaveState(pos, isPublic, isExtern));
+    }
+    void popState() {
+        SaveState s = savePoints.pop();
+        pos = s.pos;
+        isPublic = s.isPublic;
+        isExtern = s.isExtern;
+    }
     override string toString() {
         string buf = "Tokens{\n";
         foreach(i, t; tokens) {
@@ -132,8 +142,17 @@ public:
 private:
     string src;
     Token[] tokens;
+    Stack!SaveState savePoints;
 
     // Modifiers - reset after each Stmt
+    bool isPublic;
+    bool isExtern;
+}
+
+private:
+
+struct SaveState {
+    int pos;
     bool isPublic;
     bool isExtern;
 }

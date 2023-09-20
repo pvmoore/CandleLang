@@ -169,6 +169,20 @@ private:
     void emit(Func n, bool asPrototype = false) {
         if(n.isExtern && !asPrototype) return;
 
+        if(n.isFuncPtr) {
+            // void* (*foo)(int*);
+            Var v = n.parent.as!Var;
+            assert(v);
+            emit(n.returnType().as!Node);
+            add(" (*%s)(", v.name);
+            foreach(i, t; n.paramTypes()) {
+                if(i>0) add(",");
+                emit(t.as!Node);
+            }
+            add(")");
+            return;
+        }
+
         if(!n.isPublic && !n.isExtern && !n.isProgramEntry) {
             add("static ");
         }
@@ -331,7 +345,9 @@ private:
         }
 
         emit(n.type().as!Node);
-        if(n.name) {
+
+        bool isFunctionPtr = n.type().as!Func !is null;
+        if(n.name && !isFunctionPtr) {
             add(" %s", n.name);
         }
         if(n.hasInitialiser()) {

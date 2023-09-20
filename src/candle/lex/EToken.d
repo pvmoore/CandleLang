@@ -67,6 +67,8 @@ enum EToken {
     LSQUARE,    // [
     RSQUARE,    // ]
     AT,         // @
+
+    RT_ARROW,   // ->
 }
 
 string stringOf(EToken t) {
@@ -121,6 +123,7 @@ string stringOf(EToken t) {
         case LSQUARE: return "[";
         case RSQUARE: return "]";
         case AT: return "@";
+        case RT_ARROW: return "->";
     }
     assert(false);
 }
@@ -175,6 +178,7 @@ int lengthOf(EToken t) {
         case PIPE_EQ:
         case PIPE_PIPE:
         case HAT_EQ:
+        case RT_ARROW:
             return 2;
         case LT_LT_EQ:
         case GT_GT_EQ:
