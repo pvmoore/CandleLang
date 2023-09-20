@@ -61,6 +61,7 @@ bool isType(Project project, Tokens t) {
  */
 int typeLength(Tokens t) {
     int pos = t.pos;
+    int offset;
 
     // function ptr
     if(t.isKind(EToken.LBRACKET)) {
@@ -78,23 +79,23 @@ int typeLength(Tokens t) {
         int end = t.pos;
         t.popState();
         log("function ptr length = %s to %s (%s)", pos, end, end-pos);
-        return end - pos;
+        offset = end - pos;
+    } else {
+        assert(t.isKind(EToken.ID));
+        offset = 1;
+
+        // std.struct
+        with(EToken) if(t.matches(ID, DOT, ID)) {
+            offset += 2;
+        }
+
+        if(t.isKind(EToken.LSQUARE)) {
+            int i = t.findEndOfScope(offset);
+            offset += i + 1;
+        }
     }
 
-    assert(t.isKind(EToken.ID));
-    int offset = 1;
-
-    // std.struct
-    with(EToken) if(t.matches(ID, DOT, ID)) {
-        offset += 2;
-    }
-
-    if(t.isKind(EToken.LSQUARE)) {
-        int i = t.findEndOfScope(offset);
-        offset += i + 1;
-    }
-
-    while(t.isKind(EToken.STAR)) {
+    while(t.isKind(EToken.STAR, offset)) {
         offset++;
     }
 

@@ -47,10 +47,6 @@ public:
             }
             t.skip(EToken.RBRACKET);
         }
-
-        if(t.isKind(EToken.SEMICOLON)) {
-            this.isStmt = true;
-        }
     }
     override void resolve() {
         if(isResolved()) return;

@@ -6,6 +6,14 @@ void parseExpr(Node parent, Tokens t) {
     logParse("parse expr %s", t.debugValue());
     parseExprLhs(parent, t);
     parseExprRhs(parent, t);
+
+    if(parent.isA!Scope || parent.isA!Unit) {
+        if(t.isKind(EToken.SEMICOLON)) {
+            t.next();
+            assert(parent.last().isA!Expr);
+            parent.last().as!Expr.isStmt = true;
+        }
+    }
 }
 void parseExprLhs(Node parent, Tokens t) {
     logParse("lhs %s", t.debugValue());
@@ -52,6 +60,7 @@ void parseExprRhs(Node parent, Tokens t) {
             case COMMA:
             case ID:        // ID, ID could be a Var or Func with an unknown Type
                 return;
+            case EQ:
             case PLUS:
             case MINUS:
             case STAR:

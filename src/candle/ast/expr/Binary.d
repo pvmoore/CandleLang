@@ -20,7 +20,8 @@ public:
     override bool isResolved() { return _type !is null && _type != TYPE_UNKNOWN; }
     override string toString() {
         string t = _type ? "%s".format(_type) : "unknown";
-        return "Binary %s (%s)".format(stringOf(op), t);
+        string s = isStmt ? ", isStmt=true" : "";
+        return "Binary %s (%s)%s".format(stringOf(op), t, s);
     }
     override void resolve() {
         if(isResolved()) return;

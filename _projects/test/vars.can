@@ -37,7 +37,8 @@ void variables() {
     // TODO - struct literals
 
     // TODO Function ptrs 
-    (int,float->void) fp;
+    (int a,float->void) fp;
+    (void->void*) fp2;
 
     // TODO Union
 }

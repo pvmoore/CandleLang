@@ -64,12 +64,40 @@ static void binary() {
   candle__assert(q, "binary.can", 34);
   s32 q2 = a < 20 || b < a;
   candle__assert(q2, "binary.can", 35);
+  a += 1;
+  candle__assert(a == 11, "binary.can", 37);
+  a -= 1;
+  candle__assert(a == 10, "binary.can", 38);
+  a *= 2;
+  candle__assert(a == 20, "binary.can", 39);
+  a /= 2;
+  candle__assert(a == 10, "binary.can", 40);
+  a %= 3;
+  candle__assert(a == 1, "binary.can", 41);
+  a <<= 1;
+  candle__assert(a == 2, "binary.can", 42);
+  a >>= 1;
+  candle__assert(a == 1, "binary.can", 43);
+  b &= 7u;
+  candle__assert(b == 4, "binary.can", 46);
+  b |= 8u;
+  candle__assert(b == 12, "binary.can", 47);
+  b ^= 15u;
+  candle__assert(b == 3u, "binary.can", 50);
+  bool boo = true;
+  boo &= false;
+  candle__assert(boo == false, "binary.can", 53);
+  boo |= true;
+  candle__assert(boo == true, "binary.can", 54);
+  s32 r = 7;
+  r = 8;
+  candle__assert(r == 8, "binary.can", 57);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 typedef struct Peach {
-  s32 a;
+s32 a;
 } Peach;
 
 static s32 wibble = 0;
@@ -105,7 +133,7 @@ void test__doSomething(s32* a, f32** b) {
 // vars.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 typedef struct MyStruct {
-  s32 a;
+s32 a;
 } MyStruct;
 
 static void variables() {
@@ -155,4 +183,5 @@ static void variables() {
   candle__assert(k2 == 10.0, "vars.can", 34);
   MyStruct l;
   void (*fp)(s32,f32) = null;
+  void* (*fp2)(void) = null;
 }

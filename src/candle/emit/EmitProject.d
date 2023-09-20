@@ -91,12 +91,23 @@ private:
         buf.add("\n#endif // %s_H\n", project.name);
     }
 
+    void beforeNode(Node n) {
+        logEmit("emit %s", n.enode());
+        Expr expr = n.as!Expr;
+        Stmt stmt = n.as!Stmt;
+        Var var = n.as!Var;
+        bool isAStmt = stmt && !expr;
+        if(var && var.isParameter()) return;
+        if(isAStmt || (expr && expr.isStmt)) {
+            writeStmt("");
+        }
+    }
     void afterExpr(Expr e) {
         if(e.isStmt) add(";\n");
     }
 
     void emit(Node n) {
-        logEmit("emit %s", n.enode());
+        beforeNode(n);
         switch(n.enode()) with(ENode) {
             case BINARY: emit(n.as!Binary); break;
             case BUILTIN_FUNC: emit(n.as!BuiltinFunc); break;
@@ -133,11 +144,7 @@ private:
     void emit(BuiltinFunc n) {
         switch(n.name) {
             case "assert":
-                if(n.isStmt) {
-                    writeStmt("candle__assert(");
-                } else {
-                    add("candle__assert(");
-                }        
+                add("candle__assert(");
                 emit(n.first());
                 add(", \"%s\", %s)", n.getUnit().filename, n.coord.line+1);
                 break;
@@ -145,14 +152,8 @@ private:
         }
     }
     void emit(Call n) {
-
         string name = getName(n);
-
-        if(n.isStmt) {
-            writeStmt(name);
-        } else {
-            add(name);
-        }
+        add(name);
         add("(");
         foreach(i, ch; n.children) {
             if(i>0) add(", ");
@@ -170,14 +171,18 @@ private:
         if(n.isExtern && !asPrototype) return;
 
         if(n.isFuncPtr) {
-            // void* (*foo)(int*);
+            // returntype (*name)(param1, param2);
             Var v = n.parent.as!Var;
             assert(v);
             emit(n.returnType().as!Node);
             add(" (*%s)(", v.name);
-            foreach(i, t; n.paramTypes()) {
+            foreach(i, p; n.params()) {
                 if(i>0) add(",");
-                emit(t.as!Node);
+                emit(p.type().as!Node);
+                // Should we use the name?
+                // if(p.name) {
+                //     add(" %s", p.name);
+                // }
             }
             add(")");
             return;
@@ -280,7 +285,7 @@ private:
         recurseChildren(n);
     }
     void emit(Return n) {
-        writeStmt("return");
+        add("return");
         if(n.hasChildren()) {
             add(" ");
             recurseChildren(n);
@@ -338,8 +343,6 @@ private:
         recurseChildren(n);
     }
     void emit(Var n) {
-        if(!n.isParameter()) writeStmt("");
-
         if(n.isGlobal()) {
             add("static ");
         }
