@@ -107,9 +107,16 @@ static void binary() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void is_() {
   candle__assert(1 == 1, "is.can", 3);
-  candle__assert(true, "is.can", 4);
-  candle__assert(1 != 0, "is.can", 6);
-  candle__assert(true, "is.can", 7);
+  candle__assert(true == true, "is.can", 4);
+  candle__assert(true, "is.can", 5);
+  candle__assert(1 != 0, "is.can", 7);
+  candle__assert(true != false, "is.can", 8);
+  candle__assert(true, "is.can", 9);
+  s32 a = 0;
+  f32 b = 0.0f;
+  candle__assert(true, "is.can", 13);
+  candle__assert(true, "is.can", 14);
+  candle__assert(true, "is.can", 15);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can

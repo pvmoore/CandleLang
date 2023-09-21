@@ -21,8 +21,9 @@ public:
     override ENode enode() { return ENode.VAR; }
     override Type type() { return first().as!Type; }
     override string toString() {
+        string l = ", line %s".format(coord.line+1);
         string n = name ? "%s".format(name) : "(unnamed)";
-        return "Var %s".format(n);
+        return "Var %s%s".format(n, l);
     }
     /**
      * VAR ::= Type [ Id [ '=' Expr ] ]

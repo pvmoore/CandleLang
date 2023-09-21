@@ -50,8 +50,9 @@ public:
         return false;
     }
     override string toString() {
+        string l = ", line %s".format(coord.line+1);
         string pub = isPublic ? ", pub" : "";
-        return "Struct %s%s".format(name, pub);
+        return "Struct %s%s%s".format(name, pub, l);
     }
     /**
      *  STRUCT ::= 'struct' Id ( BODY | ';')

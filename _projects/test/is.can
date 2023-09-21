@@ -1,8 +1,16 @@
 
 void is_() {
     @assert(1 is 1);
+    @assert(true is true);
     @assert(int is int);
 
     @assert(1 is not 0);
+    @assert(true is not false);
     @assert(int is not float);
+
+    int a;
+    float b;
+    @assert(@typeOf(a) is int);
+    @assert(@typeOf(a) is not @typeOf(b));
+    @assert(@typeOf(1+1) is byte);
 }

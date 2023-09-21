@@ -54,9 +54,11 @@ public:
             } 
             return "Func (%s->%s)".format(s, returnType());
         }
+        string l = ", line %s".format(coord.line+1);
         string pub = isPublic ? ", pub" : "";
         string extrn = isExtern ? ", extern" : "";
-        return "Func %s, %s params%s%s".format(name, numParams, pub, extrn);
+        return "Func %s, %s params%s%s%s".format(
+            name, numParams, pub, extrn, l);
     }
     /**
      * FUNC      ::= MODIFIERS Type Id '(' PARAMS ')'  [ BODY ] ';'

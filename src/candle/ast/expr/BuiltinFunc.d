@@ -29,7 +29,8 @@ public:
     override int precedence() { return 200; }
     override bool isResolved() { return _isResolved; }
     override string toString() {
-        return "BuiltinFunc %s".format(name);
+        string l = ", line %s".format(coord.line+1);
+        return "BuiltinFunc %s%s".format(name, l);
     }
     /** 
      * BUILTIN_FUNC ::= '@' name [ ARGS ]

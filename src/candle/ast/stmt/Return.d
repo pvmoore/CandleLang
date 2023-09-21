@@ -14,7 +14,8 @@ public:
     override ENode enode() { return ENode.RETURN; }
     override Type type() { return TYPE_VOID; }
     override string toString() {
-        return "Return";
+        string l = ", line %s".format(coord.line+1);
+        return "Return%s".format(l);
     }
     /**
      *  RETURN ::= 'return' [ Expr ] ';'
