@@ -106,8 +106,10 @@ private:
             writeStmt("");
         }
     }
-    void afterExpr(Expr e) {
-        if(e.isStmt) add(";\n");
+    void afterNode(Node n) {
+        if(Expr expr = n.as!Expr) {
+            if(expr.isStmt) add(";\n");
+        }
     }
 
     void emit(Node n) {
@@ -136,9 +138,7 @@ private:
             case VAR: emit(n.as!Var); break;
             default: throw new Exception("EmitProject: Handle node %s".format(n.enode()));
         }
-        if(Expr expr = n.as!Expr) {
-            afterExpr(expr);
-        }
+        afterNode(n);
     }
     void emit(As n) {
         castTo(n.type());
@@ -319,7 +319,7 @@ private:
             writeStmt("typedef struct %s {\n", name);
             push();
             foreach(v; n.getVars()) {
-                emit(v);
+                emit(v.as!Node);
             }
             pop();
             add("} %s;\n\n".format(name));

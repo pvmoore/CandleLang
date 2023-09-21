@@ -4,7 +4,7 @@
 #include "candle__common.h"
 
 typedef struct test__Apple {
-s32 a;
+  s32 a;
 } test__Apple;
 
 void test__doSomething(s32* a, f32** b);

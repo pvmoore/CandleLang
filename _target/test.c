@@ -5,6 +5,7 @@
 // Prototypes
 static void as_();
 static void binary();
+static void is_();
 s32 putchar(s32);
 s32 main();
 static void doSomethingElse();
@@ -102,10 +103,19 @@ static void binary() {
   candle__assert(r == 8, "binary.can", 57);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
+// is.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void is_() {
+  candle__assert(1 == 1, "is.can", 3);
+  candle__assert(true, "is.can", 4);
+  candle__assert(1 != 0, "is.can", 6);
+  candle__assert(true, "is.can", 7);
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 typedef struct Peach {
-s32 a;
+  s32 a;
 } Peach;
 
 static s32 wibble = 0;
@@ -121,6 +131,7 @@ s32 main() {
   variables();
   binary();
   as_();
+  is_();
   return 0;
 }
 static void doSomethingElse() {
@@ -141,7 +152,7 @@ void test__doSomething(s32* a, f32** b) {
 // vars.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 typedef struct MyStruct {
-s32 a;
+  s32 a;
 } MyStruct;
 
 static void variables() {
@@ -150,21 +161,21 @@ static void variables() {
   bool a2 = true;
   candle__assert(a2, "vars.can", 4);
   s8 b1 = 0;
-  candle__assert((s32)b1 == 0, "vars.can", 6);
+  candle__assert(b1 == 0, "vars.can", 6);
   s8 b2 = 1;
-  candle__assert((s32)b2 == 1, "vars.can", 7);
+  candle__assert(b2 == 1, "vars.can", 7);
   u8 c1 = 0;
-  candle__assert((s32)c1 == 0, "vars.can", 9);
+  candle__assert((s8)c1 == 0, "vars.can", 9);
   u8 c2 = 2u;
-  candle__assert((s32)c2 == 2, "vars.can", 10);
+  candle__assert((s8)c2 == 2, "vars.can", 10);
   s16 d1 = 0;
-  candle__assert((s32)d1 == 0, "vars.can", 12);
+  candle__assert(d1 == 0, "vars.can", 12);
   s16 d2 = 3;
-  candle__assert((s32)d2 == 3, "vars.can", 13);
+  candle__assert(d2 == 3, "vars.can", 13);
   u16 e1 = 0;
-  candle__assert((u32)e1 == 0u, "vars.can", 15);
+  candle__assert(e1 == 0u, "vars.can", 15);
   u16 e2 = 4u;
-  candle__assert((u32)e2 == 4u, "vars.can", 16);
+  candle__assert(e2 == 4u, "vars.can", 16);
   s32 f1 = 0;
   candle__assert(f1 == 0, "vars.can", 18);
   s32 f2 = 5;

@@ -11,13 +11,18 @@ public:
 
     final int numChildren() { return children.length.as!int; }
     final bool hasChildren() { return children.length > 0; }
+    final bool isAttached() { 
+        if(enode()==ENode.PROJECT) return true;
+        if(!parent) return false;
+        return parent.isAttached(); 
+    }
 
     abstract ENode enode();
     abstract Type type();
     abstract bool isResolved();
 
     void parse(Tokens tokens) {
-
+        // By default do nothing
     }
     /** Will be called in bottom-up order */
     void resolve() {

@@ -31,17 +31,17 @@ public:
         _type = getBestType(left().type(), right().type());
 
         // Binary operations with byte or short are promoted to int
-        if(Primitive p = _type.as!Primitive) {
-            switch(p.etype()) with(EType) {
-                case BYTE: case SHORT:
-                    _type = TYPE_INT;
-                    break;
-                case UBYTE: case USHORT:
-                    _type = TYPE_UINT;
-                    break;
-                default: break;
-            }
-        }
+        // if(Primitive p = _type.as!Primitive) {
+        //     switch(p.etype()) with(EType) {
+        //         case BYTE: case SHORT:
+        //             _type = TYPE_INT;
+        //             break;
+        //         case UBYTE: case USHORT:
+        //             _type = TYPE_UINT;
+        //             break;
+        //         default: break;
+        //     }
+        // }
     }
 private:
     Type _type;

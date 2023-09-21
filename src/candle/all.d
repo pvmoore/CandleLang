@@ -44,6 +44,7 @@ import candle.Linker;
 import candle.Operator;
 import candle.Parser;
 import candle.Resolver;
+import candle.Rewriter;
 import candle.statics;
 import candle.Target;
 import candle.utils;
@@ -63,6 +64,7 @@ import candle.ast.expr.Char;
 import candle.ast.expr.Dot;
 import candle.ast.expr.Expr;
 import candle.ast.expr.Id;
+import candle.ast.expr.Is;
 import candle.ast.expr.Null;
 import candle.ast.expr.Number;
 import candle.ast.expr.Parens;
@@ -88,6 +90,7 @@ import candle.ast.type.Union;
 
 import candle.errors.errors;
 import candle.errors.ResolutionError;
+import candle.errors.SemanticError;
 import candle.errors.SyntaxError;
 
 version(GC_STATS) {

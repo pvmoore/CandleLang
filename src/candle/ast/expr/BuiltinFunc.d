@@ -4,7 +4,10 @@ import candle.all;
 
 /**
  *  BuiltinFunc
- *      { Expr }    arguments
+ *      { Expr|Type }    arguments
+ *
+ * @assert(Expr)
+ * @typeOf(Expr)
  */
 final class BuiltinFunc : Expr {
 public:
@@ -14,14 +17,23 @@ public:
     Expr[] args() { return children.as!(Expr[]); }
 
     override ENode enode() { return ENode.BUILTIN_FUNC; }
-    override Type type() { return TYPE_UNKNOWN; }
+    override Type type() {
+        switch(name) {
+            case "assert": 
+                return TYPE_VOID;
+            case "typeOf":
+            default: 
+                return TYPE_UNKNOWN; 
+        } 
+    }
     override int precedence() { return 200; }
     override bool isResolved() { return _isResolved; }
     override string toString() {
         return "BuiltinFunc %s".format(name);
     }
     /** 
-     * BUILTIN_FUNC ::= '@' name '(' { Expr } ')'
+     * BUILTIN_FUNC ::= '@' name [ ARGS ]
+     * ARGS         ::= '(' [ Expr { ','  Expr} ] ')'
      */
     override void parse(Tokens t) {
         t.skip(EToken.AT);
@@ -51,23 +63,46 @@ public:
     override void resolve() {
         if(isResolved()) return;
         switch(name) {
-            case "assert":
-                _isResolved = true;
+            case "assert": resolveAssert(); break;
+            case "typeOf": resolveTypeOf(); break;
+            default:
                 break;
-            default: break;
         }
     }
     override void check() {
-        switch(name) {
-            case "assert":
-                if(numChildren()!=1) {
-                    getCandle().addError(new SyntaxError(getUnit(), coord, 
-                        "Expected 1 argument but found %s".format(numChildren())));
-                }
-                break;
-            default: break;
-        }
+        // switch(name) {
+        //     case "assert":
+        //     case "isType":
+        //         if(numChildren()!=1) {
+        //             getCandle().addError(new SyntaxError(getUnit(), coord, 
+        //                 "Expected 1 argument but found %s".format(numChildren())));
+        //         }
+        //         break;
+        //     default: break;
+        // }
     }
 private:
     bool _isResolved;
+
+    void resolveAssert() {
+        if(checkNumArgs(1)) {
+            _isResolved = true;
+        }
+    }
+    void resolveTypeOf() {
+        if(checkNumArgs(1)) {
+            if(!first().isResolved()) return;
+            TypeRef tr = makeNode!TypeRef(coord, null, first().type(), getProject());
+            Rewriter.toType(this, tr);
+        }       
+    }
+
+    bool checkNumArgs(int requiredNum) {
+        if(numChildren()!=requiredNum) {
+            getCandle().addError(new SyntaxError(getUnit(), coord, 
+                "Expected %s argument(s) but found %s".format(requiredNum, numChildren())));
+            return false;
+        }
+        return true;
+    }
 }

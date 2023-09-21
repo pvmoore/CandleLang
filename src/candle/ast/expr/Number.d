@@ -10,6 +10,11 @@ public:
     string stringValue;
     Value value;
 
+    void set(string v) {
+        this.stringValue = v;
+        this.value = Value(v);
+    }
+
     override ENode enode() { return ENode.NUMBER; }
     override Type type() { return getStaticType(value.kind); }
     override int precedence() { return 0; }
@@ -18,8 +23,8 @@ public:
         return "%s (%s)".format(value, type());
     }
     override void parse(Tokens t) {
-        this.stringValue = t.value(); t.next();
-        this.value = Value(this.stringValue);
+        set(t.value()); 
+        t.next();
     }
     override void resolve() {
         if(Var var = parent.as!Var) {

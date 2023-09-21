@@ -10,6 +10,7 @@ public:
     this(EType k) {
         this._kind = k;
     }
+
     override ENode enode() { return ENode.PRIMITIVE; }
     override EType etype() { return _kind; }
     override bool isResolved() { return _kind!=EType.UNKNOWN; }

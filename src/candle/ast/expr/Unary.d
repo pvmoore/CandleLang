@@ -23,7 +23,7 @@ public:
         this.op = toUnaryOperator(t.kind());
         t.next();
 
-        parseExprLhs(this, t);
+        parseExpr(this, t);
     }
 private:
 }

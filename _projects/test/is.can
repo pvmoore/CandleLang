@@ -1,0 +1,8 @@
+
+void is_() {
+    @assert(1 is 1);
+    @assert(int is int);
+
+    @assert(1 is not 0);
+    @assert(int is not float);
+}

@@ -60,9 +60,12 @@ private:
         foreach(ch; n.children) {
             recurseChildren(ch, allResolved);
         }
-        //if(!n.isResolved()) {
+        if(n.isAttached()) {
+            logResolve("Resolving %s", n.enode());
             n.resolve();
-            allResolved &= n.isResolved();
-        //}
+            if(n.isAttached()) {
+                allResolved &= n.isResolved();
+            }
+        }
     }
 }

@@ -22,6 +22,10 @@ public:
         string t = target ? "%s".format(target) : " unresolved";
         return "Call %s -> %s".format(name, t);
     }
+    /**
+     * CALL ::= name '(' ARGS ')'
+     * ARGS ::= [ Expr { ','  Expr} ] 
+     */
     override void parse(Tokens t) {
         this.name = t.value(); t.next();
 

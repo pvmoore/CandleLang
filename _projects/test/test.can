@@ -23,6 +23,7 @@ int main() {
     variables();
     binary();
     as_();
+    is_();
 
     return 0;
 }

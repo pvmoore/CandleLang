@@ -66,6 +66,7 @@ public:
             log("  Lexing ..... %.2f ms (%s files)", Lexer.getElapsedNanos()/1_000_000.0, Lexer.getNumLexedFiles());
             log("  Parsing .... %.2f ms", Parser.getElapsedNanos()/1_000_000.0);
             log("  Resolving .. %.2f ms", Resolver.getElapsedNanos()/1_000_000.0);
+            log("  Rewriting .. %.2f ms", Rewriter.getElapsedNanos()/1_000_000.0);
             log("  Checking ... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
             log("  Emitting ... %.2f ms", Emitter.getElapsedNanos()/1_000_000.0);
             log("  Building ... %.2f ms", Builder.getElapsedNanos()/1_000_000.0);

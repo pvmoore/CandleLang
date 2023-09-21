@@ -58,9 +58,19 @@ void parseExprRhs(Node parent, Tokens t) {
     while(!t.eof()) {
         switch(t.kind()) with(EToken) {
             case ID:        
-                As as = makeNode!As(t.coord());
-                t.next();
-                parent = attachAndRead(parent, as, t, true);
+                if(t.isValue("as")) {
+                    As as = makeNode!As(t.coord());
+                    t.next();
+                    parent = attachAndRead(parent, as, t, true);
+                } else if(t.isValue("is")) {
+                    Is is_ = makeNode!Is(t.coord());
+                    t.next();
+                    if(t.isValue("not")) {
+                        t.next();
+                        is_.negate = true;
+                    }
+                    parent = attachAndRead(parent, is_, t, true);
+                }
                 break;
             case NONE:
             case SEMICOLON:

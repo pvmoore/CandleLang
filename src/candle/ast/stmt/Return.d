@@ -22,13 +22,10 @@ public:
     override void parse(Tokens t) {
         t.skip("return");
 
-        if(t.isKind(EToken.SEMICOLON)) {
-            t.next();
-        } else {
+        if(!t.isKind(EToken.SEMICOLON)) {
             parseExpr(this, t);
-
-            t.skip(EToken.SEMICOLON);
         }
+        t.skip(EToken.SEMICOLON);
     }
 private:
 }
