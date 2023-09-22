@@ -116,9 +116,9 @@ static void binary() {
 // id.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void id() {
-  test__Apple apple;
-  Peach peach;
-  std__string str;
+  test__Apple apple = {0};
+  Peach peach = {0};
+  std__string str = {0};
   s32 appleA = apple.a;
   s32 peachA = peach.a;
 }
@@ -169,8 +169,8 @@ void test__doSomething(s32* a, f32** b) {
   s32 z = 1 / 2 + 3;
   f32 g = 1.0f;
   f32 g2 = 1.3f;
-  test__Apple apple;
-  std__PlumPublic plum;
+  test__Apple apple = {0};
+  std__PlumPublic plum = {0};
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // vars.can
@@ -220,7 +220,7 @@ static void variables() {
   candle__assert(k1 == 0.0, "vars.can", 33);
   f64 k2 = 10.0;
   candle__assert(k2 == 10.0, "vars.can", 34);
-  MyStruct l;
+  MyStruct l = {0};
   void (*fp)(s32,f32) = null;
   void* (*fp2)(void) = null;
 }

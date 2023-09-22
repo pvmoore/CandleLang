@@ -32,7 +32,6 @@ public:
             }
         } else {
             Node prev = prevLink();
-            log("  prev = %s", prev);
             if(!prev.isResolved()) return;
 
             this.target = findIdTarget(this, prev);

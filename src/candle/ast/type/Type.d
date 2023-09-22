@@ -131,6 +131,7 @@ string initStr(Type t) {
         case FUNC:
             return "null";    
         case STRUCT:
+            return "{0}";
         case UNION:
         case ARRAY:
         case ENUM:

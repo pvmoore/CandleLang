@@ -1,5 +1,8 @@
 
 void id() {
+
+    // Apple apple = {};
+
     Apple apple;    // public in test Project
     Peach peach;    // private in test Project
     std.string str; // public in std Project
