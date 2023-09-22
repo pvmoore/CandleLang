@@ -131,7 +131,7 @@ private:
             case PROJECT_ID: emit(n.as!ProjectId); break;
             case RETURN: emit(n.as!Return); break;
             case SCOPE: emit(n.as!Scope); break;
-            case STRUCT: emit(n.as!Struct); break;
+            case STRUCT: break;
             case TYPE_REF: emit(n.as!TypeRef); break;
             case UNARY: emit(n.as!Unary); break;
             case UNIT: emit(n.as!Unit); break;
@@ -179,7 +179,15 @@ private:
         add(n.stringValue);
     }
     void emit(Dot n) {
-        recurseChildren(n);
+        emit(n.left());
+        if(!n.left.isA!ProjectId) {
+            if(n.left().type().isPtr()) {
+                add("->");
+            } else {
+                add(".");
+            }
+        }
+        emit(n.right());
     }
     void emit(Func n, bool asPrototype = false) {
         if(n.isExtern && !asPrototype) return;
@@ -272,27 +280,43 @@ private:
         buf = sourceBuf;
 
         // Add includes for all dependent Projects
+        writeStmt("// Dependency Project headers\n");
         foreach(p; n.getExternalProjects()) {
             writeStmt("#include \"%s.h\"\n", p.name);
         }
 
-        // Add our own header
+        // Include our own public header
+        writeStmt("// Project header\n");
         writeStmt("#include \"%s.h\"\n", n.name);
 
         //writeStmt("static const char* candle_projectName;");// = \"%s\";", n.name);
 
+        //writeStmt("// Struct and Union Prototypes\n");
+
         // Emit Project private prototypes
-        writeStmt("// Prototypes\n");
-        foreach(u; n.getUnits()) {
-            foreach(s; u.getStructs()) {
-                //writeStmt("struct %s;\n", getName(s));
-            }
-            foreach(un; u.getUnions()) {
-                //writeStmt("union %s;\n", getName(un));
-            }
-            foreach(f; u.getFuncs()) {
-                emit(f, true);
-            }
+        writeStmt("// Private structs\n");
+        foreach(unit; n.getUnits()) {
+            unit.getStructs()
+                .filter!(it=>!it.isPublic)
+                .each!((it) {
+                    emit(it);
+                });
+        }
+        writeStmt("// Private unions\n");
+        foreach(unit; n.getUnits()) {
+            unit.getUnions()
+                .filter!(it=>!it.isPublic)
+                .each!((it) {
+                    emit(it);
+                });
+        }
+        writeStmt("// Private function prototypes\n");
+        foreach(unit; n.getUnits()) {
+            unit.getFuncs()
+                .filter!(it=>!it.isPublic)
+                .each!((it) {
+                    emit(it, true);
+                });
         }
         add("\n");
 
@@ -322,7 +346,7 @@ private:
                 emit(v.as!Node);
             }
             pop();
-            add("} %s;\n\n".format(name));
+            add("} %s;\n".format(name));
         }
     }
     void emit(TypeRef n) {
@@ -343,12 +367,14 @@ private:
         emit(n.expr());
     }
     void emit(Union n) {
-        string name = getName(n);
-        writeStmt("\ttypedef union {");
-        foreach(v; n.getVars()) {
-            emit(v);
+        if(!n.isPublic || isHeader()) {
+            string name = getName(n);
+            writeStmt("\ttypedef union {");
+            foreach(v; n.getVars()) {
+                emit(v);
+            }
+            add("} %s;\n".format(name));
         }
-        add("} %s;\n\n".format(name));
     }
     void emit(Unit n) {
         writeStmt("//──────────────────────────────────────────────────────────────────────────────────────────────────\n");

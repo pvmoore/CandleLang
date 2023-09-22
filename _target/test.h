@@ -6,7 +6,6 @@
 typedef struct test__Apple {
   s32 a;
 } test__Apple;
-
 void test__doSomething(s32* a, f32** b);
 
 #endif // test_H

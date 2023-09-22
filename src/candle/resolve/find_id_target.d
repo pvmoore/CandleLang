@@ -14,8 +14,8 @@ import candle.all;
 Target findIdTarget(Id id) {
     logResolve("findIdTarget %s", id.name);
     bool weAreInAFunc = id.hasAncestor!Func;
-    bool weAreInAStruct = id.hasAncestor!Struct;
-    bool weAreInAUnion = id.hasAncestor!Union;
+    //bool weAreInAStruct = id.hasAncestor!Struct;
+    //bool weAreInAUnion = id.hasAncestor!Union;
 
     // Check the surrounding Func if we are inside a Func
     if(weAreInAFunc) {
@@ -28,6 +28,7 @@ Target findIdTarget(Id id) {
     }
 
     // Check struct members
+    /+
     if(weAreInAStruct) {
         Struct s = id.getAncestor!Struct;
         assert(s);
@@ -37,10 +38,10 @@ Target findIdTarget(Id id) {
 
         // Func f = s.getFunc(name);
         // if(f) return new Target(f);
-    }
+    }+/
 
     // Check union members
-    if(weAreInAUnion) {
+    /+if(weAreInAUnion) {
         Union u = id.getAncestor!Union;
         assert(u);
 
@@ -49,7 +50,7 @@ Target findIdTarget(Id id) {
 
         // Func f = u.getFunc(name);
         // if(f) return new Target(f);
-    }
+    }+/
 
     // Check all Unit members
     Project project = id.getProject();
@@ -84,8 +85,8 @@ Target findIdTarget(Id id) {
  *  Find the callee Var or Func which must be a member of prev.
  *  Assume: prev must be one of:
  *    - ProjectId
- *    - Struct
- *    - Union
+ *    - Id -> Struct
+ *    - Id -> Union
  *
  *  Assume:
  *    - prev is resolved
@@ -109,9 +110,19 @@ Target findIdTarget(Id id, Node prev) {
             }
             break;
         }
-        case STRUCT:
-        case UNION:
+        case ID: {
+            Struct struct_ = prev.type().getStruct();
+            if(struct_) {
+                bool isExternal = struct_.getProject().id != id.getProject().id;
+                if(auto var = struct_.getVar(id.name, !isExternal)) {
+                    return new Target(var);
+                } 
+            } else {
+                todo("handle %s".format(prev.type().etype()));
+            }
             break;
+        }
+        case UNION:
         default: throw new Exception("findIdTarget: Handle node %s".format(prev.enode()));
     }
     return null;

@@ -18,17 +18,11 @@ public:
                        .filter!(v=>v.name==name)
                        .frontOrElse!Var(null);
     }
-    Func[] getFuncs(string name) {
-        return children.filter!(it=>it.isA!Func)
-                       .map!(it=>it.as!Func)
-                       .filter!(v=>v.name==name)
-                       .array();
-    }
     Var[] getVars() {
         return children.filter!(it=>it.isA!Var).map!(it=>it.as!Var).array;
     }
-    Func[] getFuncs() {
-        return children.filter!(it=>it.isA!Func).map!(it=>it.as!Func).array;
+    Type[] getVarTypes() {
+        return getVars().map!(it=>it.type()).array;
     }
 
     override ENode enode() { return ENode.UNION; }

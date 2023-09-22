@@ -22,12 +22,21 @@ public:
 
     Node node() { return var ? var : func; }
     Type type() { return node.type(); }
-    bool isPublic() { return var ? false : func.isPublic; }
+    bool isPublic() { return var ? var.isPublic : func.isPublic; }
+    bool isMember() { return var && var.isMember(); }
     Project project() { return node().getProject(); }
 
     override string toString() {
         string e = isExternal ? "%s::".format(node().getProject().name) : "";
-        return "[%s]".format(var ? "Var %s%s".format(e, var.name) : "Func %s%s".format(e, func.name));
+        string m;
+        if(isMember()) {
+            if(Struct s = var.parent.as!Struct) {
+                m = s.name ~ ":";
+            } else if(Union u = var.parent.as!Union) {
+                m = u.name ~ ":";
+            }
+        }
+        return "[%s]".format(var ? "Var %s%s%s".format(e, m, var.name) : "Func %s%s".format(e, func.name));
     }
 private:
 }

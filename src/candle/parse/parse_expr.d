@@ -56,6 +56,7 @@ void parseExprLhs(Node parent, Tokens t) {
 void parseExprRhs(Node parent, Tokens t) {
     logParse("rhs %s", t.debugValue());
     while(!t.eof()) {
+        //logParse("t = %s", t.debugValue());
         switch(t.kind()) with(EToken) {
             case ID:        
                 if(t.isValue("as")) {
@@ -70,6 +71,8 @@ void parseExprRhs(Node parent, Tokens t) {
                         is_.negate = true;
                     }
                     parent = attachAndRead(parent, is_, t, true);
+                } else {
+                    return;
                 }
                 break;
             case NONE:
@@ -124,7 +127,7 @@ void parseExprRhs(Node parent, Tokens t) {
             }
             default:
                 syntaxError(t, "expression rhs %s".format(t.debugValue()));
-                break;
+                return;
         }
     }
 }

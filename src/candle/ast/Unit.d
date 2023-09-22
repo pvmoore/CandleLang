@@ -54,7 +54,9 @@ public:
         return getStructs().filter!(it=>it.name == name).frontOrElse!Struct(null);
     }
     Struct[] getStructs() {
-        return children.filter!(it=>it.isA!Struct).map!(it=>it.as!Struct).array;
+        return children.filter!(it=>it.isA!Struct)
+                       .map!(it=>it.as!Struct)
+                       .array;
     }
     Union getUnion(string name) {
         return getUnions().filter!(it=>it.name == name).frontOrElse!Union(null);

@@ -1,0 +1,9 @@
+
+void id() {
+    Apple apple;    // public in test Project
+    Peach peach;    // private in test Project
+    std.string str; // public in std Project
+
+    int appleA = apple.a;
+    int peachA = peach.a;
+}

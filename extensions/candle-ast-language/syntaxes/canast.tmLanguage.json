@@ -21,7 +21,7 @@
 			"patterns": [
 				{
 					"name": "entity.name.tag.canast",
-					"match": "\\b(not comptime|comptime|type|kind|target|to|nid|params|refs|subtype|length|line|location)(\\*+|\\b)"
+					"match": "\\b(not comptime|comptime|type|kind|target|to|nid|params|refs|subtype|length|line|size|align|packed|location)(\\*+|\\b)"
 				},
 				{
 					"name": "keyword.control.canast",

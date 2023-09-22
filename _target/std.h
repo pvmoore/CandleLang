@@ -6,7 +6,10 @@
 typedef struct std__PlumPublic {
   s32 a;
 } std__PlumPublic;
-
 void std__putChar(s32 ch);
+typedef struct std__string {
+  u8* ptr;
+  u64 length;
+} std__string;
 
 #endif // std_H

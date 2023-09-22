@@ -10,6 +10,7 @@ import candle.all;
 final class Var : Stmt {
 public:
     string name;
+    bool isPublic;
 
     bool hasInitialiser() { return numChildren() > 1; }
     bool isParameter() { return parent.isA!Func; }
@@ -21,15 +22,19 @@ public:
     override ENode enode() { return ENode.VAR; }
     override Type type() { return first().as!Type; }
     override string toString() {
-        string l = ", line %s".format(coord.line+1);
         string n = name ? "%s".format(name) : "(unnamed)";
-        return "Var %s%s".format(n, l);
+        string pub = isPublic ? ", pub" : "";
+        string l = ", line %s".format(coord.line+1);
+        return "Var %s%s%s".format(n, pub, l);
     }
     /**
-     * VAR ::= Type [ Id [ '=' Expr ] ]
+     * VAR ::= ['pub'] Type [ Id [ '=' Expr ] ]
      */
     override void parse(Tokens t) {
         logParse("parseVar %s", t.debugValue());
+
+        t.consumeModifiers();
+        this.isPublic = t.getAndResetPubModifier();
 
         // Type
         parseType(this, t);

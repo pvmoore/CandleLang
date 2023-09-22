@@ -7,26 +7,26 @@ import candle.all;
  */
 Target findCallTarget(Call call) {
     logResolve("findCallTarget %s", call.name);
-    bool weAreInAStruct = call.hasAncestor!Struct;
-    bool weAreInAUnion = call.hasAncestor!Union;
+    //bool weAreInAStruct = call.hasAncestor!Struct;
+    //bool weAreInAUnion = call.hasAncestor!Union;
 
     Func[] matches;
 
     // Check struct members (if we are inside a Struct Func)
-    if(weAreInAStruct) {
-        Struct s = call.getAncestor!Struct;
-        assert(s);
+    // if(weAreInAStruct) {
+    //     Struct s = call.getAncestor!Struct;
+    //     assert(s);
 
-        matches ~= s.getFuncs(call.name);
-    }
+    //     matches ~= s.getFuncs(call.name);
+    // }
 
     // Check union members (if we are inside a Union Func)
-    if(weAreInAUnion) {
-        Union u = call.getAncestor!Union;
-        assert(u);
+    // if(weAreInAUnion) {
+    //     Union u = call.getAncestor!Union;
+    //     assert(u);
 
-        matches ~= u.getFuncs(call.name);
-    }
+    //     matches ~= u.getFuncs(call.name);
+    // }
 
     // Check all Unit members
     Project project = call.getProject();

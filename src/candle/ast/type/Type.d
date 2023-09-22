@@ -57,7 +57,14 @@ bool isArray(Type t) {
 bool isFunc(Type t) {
     return t.etype() == EType.FUNC;
 }
+Struct getStruct(Type t) {
+    if(Struct s = t.as!Struct) return s;
+    if(TypeRef tr = t.as!TypeRef) return tr.decorated.getStruct();
+    if(Pointer p = t.as!Pointer) return p.valueType().getStruct();
+    return null;
+}
 int size(Type t) {
+    if(TypeRef tr = t.as!TypeRef) return size(tr.decorated);
     if(t.isA!Pointer) return 8;
     final switch(t.etype())with(EType) {
         case VOID: return 0;
@@ -66,9 +73,9 @@ int size(Type t) {
         case INT: case UINT: case FLOAT: return 4;
         case LONG: case ULONG: case DOUBLE: case FUNC:
             return 8;
-        case STRUCT:
+        case STRUCT: return t.as!Struct.getSize();
         case UNION:
-            todo("implement size(Struct|Union)");
+            todo("implement size(Union)");
             return 0;
         case ARRAY:
             todo("implement size(Array)");
@@ -78,6 +85,30 @@ int size(Type t) {
             return 0;
         case UNKNOWN:
             throw new Exception("size(UNKNOWN)");
+    }
+}
+int alignment(Type t) {
+    if(TypeRef tr = t.as!TypeRef) return alignment(tr.decorated);
+    if(t.isPtr()) return 8;
+    final switch(t.etype()) with(EType) {
+        case UNKNOWN:
+        case VOID:
+            assert(false, "%s has no alignment".format(t.etype()));
+        case BOOL:
+        case BYTE: case UBYTE: return 1;
+        case SHORT: case USHORT: return 2;
+        case INT: case UINT: return 4;
+        case LONG: case ULONG: return 8;
+        case FLOAT: return 4;
+        case DOUBLE:
+        case FUNC: /// should always be a ptr 
+            return 8;
+        case STRUCT:
+            return t.as!Struct.getAlignment();
+        case UNION:    
+        case ARRAY: 
+        case ENUM: 
+            assert(false, "alignment %s implement me".format(t.etype()));
     }
 }
 string initStr(Type t) {

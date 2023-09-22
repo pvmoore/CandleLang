@@ -2,9 +2,10 @@
 
 ## Todo
 
-- Casting (as)
-- Cast left and right of Binary to Binary type
-- is
+- default initialise struct
+- struct literal
+
+- alias
 - Type inference - auto
 - Assign to function pointers 
 - Struct literals

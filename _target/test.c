@@ -1,15 +1,25 @@
 // Project .. test
 
+// Dependency Project headers
 #include "std.h"
+// Project header
 #include "test.h"
-// Prototypes
+// Private structs
+typedef struct Peach {
+  s32 a;
+} Peach;
+typedef struct MyStruct {
+  s32 a;
+} MyStruct;
+// Private unions
+// Private function prototypes
 static void as_();
 static void binary();
+static void id();
 static void is_();
 s32 putchar(s32);
 s32 main();
 static void doSomethingElse();
-void test__doSomething(s32* a, f32** b);
 static void variables();
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -103,6 +113,16 @@ static void binary() {
   candle__assert(r == 8, "binary.can", 57);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
+// id.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void id() {
+  test__Apple apple;
+  Peach peach;
+  std__string str;
+  s32 appleA = apple.a;
+  s32 peachA = peach.a;
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 // is.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void is_() {
@@ -121,10 +141,6 @@ static void is_() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-typedef struct Peach {
-  s32 a;
-} Peach;
-
 static s32 wibble = 0;
 static f32 foo = 1.0f;
 s32 main() {
@@ -139,6 +155,7 @@ s32 main() {
   binary();
   as_();
   is_();
+  id();
   return 0;
 }
 static void doSomethingElse() {
@@ -158,10 +175,6 @@ void test__doSomething(s32* a, f32** b) {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // vars.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-typedef struct MyStruct {
-  s32 a;
-} MyStruct;
-
 static void variables() {
   bool a1 = false;
   candle__assert(!a1, "vars.can", 3);

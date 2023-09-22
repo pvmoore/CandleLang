@@ -1,0 +1,5 @@
+
+pub struct string {
+    pub ubyte* ptr;
+    pub ulong length;
+}
