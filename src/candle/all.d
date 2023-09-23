@@ -65,6 +65,7 @@ import candle.ast.expr.Dot;
 import candle.ast.expr.Expr;
 import candle.ast.expr.Id;
 import candle.ast.expr.Is;
+import candle.ast.expr.LiteralStruct;
 import candle.ast.expr.Null;
 import candle.ast.expr.Number;
 import candle.ast.expr.Parens;

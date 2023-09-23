@@ -1,0 +1,27 @@
+
+struct TestStructLiterals {
+    int a;
+    float b;
+}
+
+void literalstruct() {
+    TestStructLiterals tsl = {};
+    @assert(tsl.a == 0);
+    @assert(tsl.b == 0);
+
+    TestStructLiterals tsl2 = { a = 1 };
+    @assert(tsl2.a == 1);
+    @assert(tsl2.b == 0);
+
+    tsl = { a=2, b=1.1f }; 
+    @assert(tsl.a == 2);
+    @assert(tsl.b == 1.1f);
+
+    tsl = { b=1.2f }; 
+    @assert(tsl.a == 0);
+    @assert(tsl.b == 1.2f);
+
+    tsl = { b=1.3f, a=9 }; 
+    @assert(tsl.a == 9);
+    @assert(tsl.b == 1.3f);
+}

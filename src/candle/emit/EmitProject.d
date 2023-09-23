@@ -123,6 +123,7 @@ private:
             case DOT: emit(n.as!Dot); break;
             case FUNC: emit(n.as!Func); break;
             case ID: emit(n.as!Id); break;
+            case LITERAL_STRUCT: emit(n.as!LiteralStruct); break;
             case NULL: emit(n.as!Null); break;
             case NUMBER: emit(n.as!Number); break;
             case PARENS: emit(n.as!Parens); break;
@@ -150,7 +151,9 @@ private:
         }
         emit(n.left());
         add(" %s ", stringOf(n.op));
-        if(!n.type().exactlyMatches(n.right().type())) {
+
+        bool isAssign = n.op.isAssign();
+        if(isAssign || !n.type().exactlyMatches(n.right().type())) {
             castTo(n.type());
         }
         emit(n.right());
@@ -233,6 +236,20 @@ private:
     }
     void emit(Id n) {
         add(getName(n));
+    }
+    void emit(LiteralStruct n) {
+        add("{");
+        if(n.names.length == 0) {
+            add("0");
+        } else {
+            Expr[] exprs = n.exprs();
+            foreach(i; 0..n.names.length) {
+                if(i>0) add(", ");
+                add(".%s = ", n.names[i]);
+                emit(exprs[i]);
+            }
+        }
+        add("}");
     }
     void emit(Null n) {
         add("null");

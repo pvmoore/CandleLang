@@ -5,6 +5,10 @@
 // Project header
 #include "test.h"
 // Private structs
+typedef struct TestStructLiterals {
+  s32 a;
+  f32 b;
+} TestStructLiterals;
 typedef struct Peach {
   s32 a;
 } Peach;
@@ -17,6 +21,7 @@ static void as_();
 static void binary();
 static void id();
 static void is_();
+static void literalstruct();
 s32 putchar(s32);
 s32 main();
 static void doSomethingElse();
@@ -83,33 +88,33 @@ static void binary() {
   candle__assert(q, "binary.can", 34);
   s32 q2 = a < 20 || b < a;
   candle__assert(q2, "binary.can", 35);
-  a += 1;
+  a += (s32)1;
   candle__assert(a == 11, "binary.can", 37);
-  a -= 1;
+  a -= (s32)1;
   candle__assert(a == 10, "binary.can", 38);
-  a *= 2;
+  a *= (s32)2;
   candle__assert(a == 20, "binary.can", 39);
-  a /= 2;
+  a /= (s32)2;
   candle__assert(a == 10, "binary.can", 40);
-  a %= 3;
+  a %= (s32)3;
   candle__assert(a == 1, "binary.can", 41);
-  a <<= 1;
+  a <<= (s32)1;
   candle__assert(a == 2, "binary.can", 42);
-  a >>= 1;
+  a >>= (s32)1;
   candle__assert(a == 1, "binary.can", 43);
-  b &= 7;
+  b &= (s32)7;
   candle__assert(b == 4, "binary.can", 46);
-  b |= 8;
+  b |= (s32)8;
   candle__assert(b == 12, "binary.can", 47);
-  b ^= 15;
+  b ^= (s32)15;
   candle__assert(b == 3, "binary.can", 50);
   bool boo = true;
-  boo &= false;
+  boo &= (bool)false;
   candle__assert(boo == false, "binary.can", 53);
-  boo |= true;
+  boo |= (bool)true;
   candle__assert(boo == true, "binary.can", 54);
   s32 r = 7;
-  r = 8;
+  r = (s32)8;
   candle__assert(r == 8, "binary.can", 57);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -139,6 +144,26 @@ static void is_() {
   candle__assert(true, "is.can", 15);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
+// literalstruct.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void literalstruct() {
+  TestStructLiterals tsl = {0};
+  candle__assert(tsl.a == 0, "literalstruct.can", 9);
+  candle__assert(tsl.b == 0.0f, "literalstruct.can", 10);
+  TestStructLiterals tsl2 = {.a = 1};
+  candle__assert(tsl2.a == 1, "literalstruct.can", 13);
+  candle__assert(tsl2.b == 0.0f, "literalstruct.can", 14);
+  tsl = (TestStructLiterals){.a = 2, .b = 1.1f};
+  candle__assert(tsl.a == 2, "literalstruct.can", 17);
+  candle__assert(tsl.b == 1.1f, "literalstruct.can", 18);
+  tsl = (TestStructLiterals){.b = 1.2f};
+  candle__assert(tsl.a == 0, "literalstruct.can", 21);
+  candle__assert(tsl.b == 1.2f, "literalstruct.can", 22);
+  tsl = (TestStructLiterals){.b = 1.3f, .a = 9};
+  candle__assert(tsl.a == 9, "literalstruct.can", 25);
+  candle__assert(tsl.b == 1.3f, "literalstruct.can", 26);
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static s32 wibble = 0;
@@ -156,6 +181,7 @@ s32 main() {
   as_();
   is_();
   id();
+  literalstruct();
   return 0;
 }
 static void doSomethingElse() {

@@ -26,9 +26,21 @@ public:
     static Type resolveTypeFromParent(Node n) {
         Type t = null;
         switch(n.parent.enode()) with(ENode) {
-            case VAR: t = n.parent.type(); break;
+            case VAR:
+                // n is a var initialiser 
+                t = n.parent.type(); 
+                break;
+            case BINARY: {
+                Binary b = n.parent.as!Binary;
+                if(n.id == b.right().id) {
+                    if(b.left().isResolved()) {
+                        t = b.left().type();
+                    }
+                }
+                break;
+            }
             case CALL: {
-                // We are an argument. We need the call to be resolved before we know what our Type is
+                // n is an argument. We need the call to be resolved before we know what our Type is
                 if(n.parent.isResolved()) {
                     int i = n.index();
                     assert(i!=-1);
@@ -48,7 +60,7 @@ public:
                 break;
             }
             default:
-                throwIf(true, "Handle ResolveProject.resolveTypeFromParent %s", n.parent.enode());
+                throwIf(true, "Handle Resolver.resolveTypeFromParent %s", n.parent.enode());
                 break;
         }
         return t;

@@ -37,9 +37,13 @@ public:
     override bool exactlyMatches(Type otherType) {
         assert(isResolved() && otherType.isResolved());
         Struct other = otherType.as!Struct;
-        if(!other) return false;
-        // TODO
-        return false;
+        if(!other) {
+            if(TypeRef tr = otherType.as!TypeRef) {
+                other = tr.decorated.as!Struct;
+            }
+            if(!other) return false;
+        }
+        return id == other.id;
     }
     override bool canImplicitlyConvertTo(Type otherType) {
         assert(isResolved() && otherType.isResolved());

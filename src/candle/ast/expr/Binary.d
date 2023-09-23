@@ -27,6 +27,12 @@ public:
         if(isResolved()) return;
         if(!left().isResolved() || !right.isResolved()) return;
 
+        if(isAssign(op)) {
+            // Take the type if the left expr
+            _type = left().type();
+            return;
+        }
+
         // Determine the Type
         _type = getBestType(left().type(), right().type());
 

@@ -192,3 +192,21 @@ Operator toBinaryOperator(EToken kind) {
     }
     assert(false);
 }
+
+bool isAssign(Operator op) {
+    switch(op) with(Operator) {
+        case ASSIGN:
+        case ADD_ASSIGN:
+        case SUB_ASSIGN:
+        case MUL_ASSIGN:
+        case DIV_ASSIGN:
+        case MOD_ASSIGN:
+        case SHL_ASSIGN:
+        case SHR_ASSIGN:
+        case AND_ASSIGN:
+        case XOR_ASSIGN:
+        case OR_ASSIGN:
+            return true;
+        default: return false;
+    }
+}

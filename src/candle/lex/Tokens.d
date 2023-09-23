@@ -56,6 +56,12 @@ public:
         if(kind() != k) syntaxError(this, "'%s'".format(stringOf(k)));
         next();
     }
+    void expectOneOf(EToken[] toks...) {
+        EToken t = kind();
+        if(!t.isOneOf(toks)) {
+            syntaxError(this, "one of %s".format(toks));
+        }
+    }
     void skip(string val) {
         if(value() != val) syntaxError(this, val);
         next();

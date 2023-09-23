@@ -132,7 +132,7 @@ public:
                 case '.':
                     if(peek(1)=='.' && peek(2)=='.') {
                         addToken(EToken.ELIPSIS);
-                    } else if(isDigit(peek(-1)) || isDigit(peek(1))) {
+                    } else if(determineKind(src[tokenStart..pos])==EToken.NUMBER) {
                         // float literal
                         pos++;
                     } else {

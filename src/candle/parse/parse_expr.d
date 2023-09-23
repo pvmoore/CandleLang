@@ -32,6 +32,12 @@ void parseExprLhs(Node parent, Tokens t) {
             parseUnary(parent, t); 
             return;
         case LBRACKET: parseParens(parent, t); return;
+        case LCURLY: {
+            auto ls = makeNode!LiteralStruct(t.coord());
+            parent.add(ls);
+            ls.parse(t); 
+            return;
+        }
         case AT: parseBuiltinFunc(parent, t); return;
         case ID:
             switch(t.value()) {
