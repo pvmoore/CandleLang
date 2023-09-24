@@ -10,7 +10,9 @@ public:
     Directory mainDirectory;
     Directory targetDirectory;
     bool nullChecks = true;
+
     bool dumpAst;
+    bool emitLineNumber;
 
     // Generated data
     Project mainProject;

@@ -12,8 +12,10 @@ void main(string[] args) {
     candle.subsystem = "console";
     candle.mainDirectory = Directory("_projects/test/");
     candle.targetDirectory = Directory("_target/");
-    candle.dumpAst = true;
     candle.nullChecks = true;
+
+    candle.dumpAst = true;
+    candle.emitLineNumber = true;
 
     if(!candle.compile()) {
         foreach(e; candle.getErrors()) {

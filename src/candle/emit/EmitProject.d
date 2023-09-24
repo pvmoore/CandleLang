@@ -32,6 +32,7 @@ private:
     Project project;
     StringBuffer buf, sourceBuf, headerBuf;
     string indent;
+    uint line;
 
     void push() { indent ~= "  "; }
     void pop() { indent = indent[0..$-2]; }
@@ -108,8 +109,16 @@ private:
     }
     void afterNode(Node n) {
         if(Expr expr = n.as!Expr) {
-            if(expr.isStmt) add(";\n");
+            if(expr.isStmt) afterStmt(expr.as!Stmt);
         }
+    }
+    void afterStmt(Stmt stmt) {
+        add(";");
+        if(candle.emitLineNumber && !isHeader() && stmt.coord.line != line) {
+            line = stmt.coord.line;
+            add(" // Line %s", line+1);
+        }
+        add("\n");
     }
 
     void emit(Node n) {
@@ -284,9 +293,7 @@ private:
         }
     }
     void emit(ProjectId n) {
-        // std.call()
-
-        // Ignore for now
+        // Do we need to do anything here?
     }
     void emit(Project n) {
         writeStmt("// Project .. %s\n\n", project.name);
@@ -345,7 +352,7 @@ private:
             add(" ");
             recurseChildren(n);
         }
-        add(";\n");
+        afterStmt(n);
     }
     void emit(Scope n) {
         add("{\n");
@@ -394,6 +401,7 @@ private:
         }
     }
     void emit(Unit n) {
+        line = 0;
         writeStmt("//──────────────────────────────────────────────────────────────────────────────────────────────────\n");
         writeStmt("// %s.can\n", n.name);
         writeStmt("//──────────────────────────────────────────────────────────────────────────────────────────────────\n");
@@ -422,7 +430,7 @@ private:
             }
         }
         if(!n.isParameter()) {
-            add(";\n");
+            afterStmt(n);
         }
     }
 }
