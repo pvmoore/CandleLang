@@ -46,6 +46,9 @@ public:
         return false;
     }
     override string toString() {
+        return "Func";
+    }
+    override string toVerboseString() {
         if(isFuncPtr) {
             string s;
             foreach(i, t; paramTypes()) {

@@ -31,6 +31,9 @@ public:
         return other && other.valueType().etype() == this.etype();
     }
     override string toString() {
+        return toVerboseString();
+    }
+    override string toVerboseString() {
         return "*".repeat(depth);
     }
 private:

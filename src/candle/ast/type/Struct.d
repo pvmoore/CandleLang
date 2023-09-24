@@ -53,6 +53,9 @@ public:
         return false;
     }
     override string toString() {
+        return "Struct %s".format(name); 
+    } 
+    override string toVerboseString() {
         string sz;
         string al;
         if(isResolved()) { 

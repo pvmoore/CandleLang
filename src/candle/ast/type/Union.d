@@ -44,6 +44,9 @@ public:
     }
 
     override string toString() {
+        return toVerboseString();
+    }
+    override string toVerboseString() {
         return "Struct %s".format(name);
     }
 private:

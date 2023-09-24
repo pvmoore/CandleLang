@@ -52,6 +52,9 @@ public:
         }
     }
     override string toString() {
+        return toVerboseString();
+    }
+    override string toVerboseString() {
         return "%s".format(etype()).toLower();
     }
 private:

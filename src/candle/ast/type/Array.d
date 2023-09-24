@@ -42,6 +42,9 @@ public:
     override Type type() { return this; }
 
     override string toString() {
+        return toVerboseString();
+    }
+    override string toVerboseString() {
         return "Array";
     }
 private:
