@@ -3,8 +3,6 @@
 ## Todo
 
 
-- Change && and || to 'and' 'or'
-
 - Type inference - auto
 
 - Function literals (lambdas)

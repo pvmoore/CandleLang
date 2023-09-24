@@ -171,8 +171,6 @@ Operator toBinaryOperator(EToken kind) {
         case EToken.AMP: return BIT_AND;
         case EToken.HAT: return BIT_XOR;
         case EToken.PIPE: return BIT_OR;
-        case EToken.AMP_AMP: return BOOL_AND;
-        case EToken.PIPE_PIPE: return BOOL_OR;
 
         case EToken.EQ: return ASSIGN;
         case EToken.PLUS_EQ: return ADD_ASSIGN;

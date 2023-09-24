@@ -88,34 +88,40 @@ static void binary() {
   candle__assert(q, "binary.can", 34);
   s32 q2 = a < 20 || b < a; // Line 35
   candle__assert(q2, "binary.can", 35);
-  a += (s32)1; // Line 37
-  candle__assert(a == 11, "binary.can", 37);
-  a -= (s32)1; // Line 38
-  candle__assert(a == 10, "binary.can", 38);
-  a *= (s32)2; // Line 39
-  candle__assert(a == 20, "binary.can", 39);
-  a /= (s32)2; // Line 40
-  candle__assert(a == 10, "binary.can", 40);
-  a %= (s32)3; // Line 41
-  candle__assert(a == 1, "binary.can", 41);
-  a <<= (s32)1; // Line 42
-  candle__assert(a == 2, "binary.can", 42);
-  a >>= (s32)1; // Line 43
-  candle__assert(a == 1, "binary.can", 43);
-  b &= (s32)7; // Line 46
-  candle__assert(b == 4, "binary.can", 46);
-  b |= (s32)8; // Line 47
-  candle__assert(b == 12, "binary.can", 47);
-  b ^= (s32)15; // Line 50
-  candle__assert(b == 3, "binary.can", 50);
-  bool boo = true; // Line 52
-  boo &= (bool)false; // Line 53
-  candle__assert(boo == false, "binary.can", 53);
-  boo |= (bool)true; // Line 54
-  candle__assert(boo == true, "binary.can", 54);
-  s32 r = 7; // Line 56
-  r = (s32)8; // Line 57
-  candle__assert(r == 8, "binary.can", 57);
+  bool q3 = false || true; // Line 37
+  candle__assert(q3, "binary.can", 37);
+  bool q4 = true && false; // Line 38
+  candle__assert(!q4, "binary.can", 38);
+  bool q5 = true && true; // Line 39
+  candle__assert(q5, "binary.can", 39);
+  a += (s32)1; // Line 41
+  candle__assert(a == 11, "binary.can", 41);
+  a -= (s32)1; // Line 42
+  candle__assert(a == 10, "binary.can", 42);
+  a *= (s32)2; // Line 43
+  candle__assert(a == 20, "binary.can", 43);
+  a /= (s32)2; // Line 44
+  candle__assert(a == 10, "binary.can", 44);
+  a %= (s32)3; // Line 45
+  candle__assert(a == 1, "binary.can", 45);
+  a <<= (s32)1; // Line 46
+  candle__assert(a == 2, "binary.can", 46);
+  a >>= (s32)1; // Line 47
+  candle__assert(a == 1, "binary.can", 47);
+  b &= (s32)7; // Line 50
+  candle__assert(b == 4, "binary.can", 50);
+  b |= (s32)8; // Line 51
+  candle__assert(b == 12, "binary.can", 51);
+  b ^= (s32)15; // Line 54
+  candle__assert(b == 3, "binary.can", 54);
+  bool boo = true; // Line 56
+  boo &= (bool)false; // Line 57
+  candle__assert(boo == false, "binary.can", 57);
+  boo |= (bool)true; // Line 58
+  candle__assert(boo == true, "binary.can", 58);
+  s32 r = 7; // Line 60
+  r = (s32)8; // Line 61
+  candle__assert(r == 8, "binary.can", 61);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // id.can

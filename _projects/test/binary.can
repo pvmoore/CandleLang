@@ -31,8 +31,12 @@ void binary() {
     int p = a == (b-10); @assert(p);
     int p2 = a != 0; @assert(p2);
 
-    int q = a < 20 && b > a; @assert(q);
-    int q2 = a < 20 || b < a; @assert(q2);
+    int q = a < 20 and b > a; @assert(q);
+    int q2 = a < 20 or b < a; @assert(q2);
+
+    bool q3 = false or true; @assert(q3);
+    bool q4 = true and false; @assert(not q4);
+    bool q5 = true and true; @assert(q5);
 
     a += 1; @assert(a==11);
     a -= 1; @assert(a==10);

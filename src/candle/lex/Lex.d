@@ -97,18 +97,14 @@ public:
                     }
                     break;
                 case '&':
-                    if(peek(1)=='&') {
-                        addToken(EToken.AMP_AMP);
-                    } else if(peek(1)=='=') {
+                    if(peek(1)=='=') {
                         addToken(EToken.AMP_EQ);
                     } else {
                         addToken(EToken.AMP);
                     }
                     break;
                 case '|':
-                    if(peek(1)=='|') {
-                        addToken(EToken.PIPE_PIPE);
-                    } else if(peek(1)=='=') {
+                    if(peek(1)=='=') {
                         addToken(EToken.PIPE_EQ);
                     } else {
                         addToken(EToken.PIPE);

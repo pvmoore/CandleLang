@@ -46,11 +46,9 @@ enum EToken {
 
     AMP,        // &
     AMP_EQ,     // &=
-    AMP_AMP,    // &&
 
     PIPE,       // |
     PIPE_EQ,    // |=
-    PIPE_PIPE,  // ||
 
     HAT,        // ^
     HAT_EQ,     // ^=
@@ -105,10 +103,8 @@ string stringOf(EToken t) {
         case PERCENT_EQ: return "%=";
         case AMP: return "&";
         case AMP_EQ: return "&=";
-        case AMP_AMP: return "&&";
         case PIPE: return "|";
         case PIPE_EQ: return "|=";
-        case PIPE_PIPE: return "||";
         case HAT: return "^";
         case HAT_EQ: return "^=";
         case TILDE: return "~";
@@ -174,9 +170,7 @@ int lengthOf(EToken t) {
         case MINUS_EQ:
         case PERCENT_EQ:
         case AMP_EQ:
-        case AMP_AMP:
         case PIPE_EQ:
-        case PIPE_PIPE:
         case HAT_EQ:
         case RT_ARROW:
             return 2;

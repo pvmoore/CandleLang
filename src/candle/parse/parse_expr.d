@@ -63,24 +63,26 @@ void parseExprRhs(Node parent, Tokens t) {
     logParse("rhs %s", t.debugValue());
     while(!t.eof()) {
         //logParse("t = %s", t.debugValue());
-        switch(t.kind()) with(EToken) {
-            case ID:        
-                if(t.isValue("as")) {
-                    As as = makeNode!As(t.coord());
-                    t.next();
-                    parent = attachAndRead(parent, as, t, true);
-                } else if(t.isValue("is")) {
-                    Is is_ = makeNode!Is(t.coord());
-                    t.next();
-                    if(t.isValue("not")) {
-                        t.next();
-                        is_.negate = true;
+        sw:switch(t.kind()) with(EToken) {
+            case ID:  
+                switch(t.value()) {
+                    case "as":
+                        As as = parseAndReturnAs(t);
+                        parent = attachAndRead(parent, as, t, true);
+                        break sw;
+                    case "is":
+                        Is is_ = parseAndReturnIs(t);
+                        parent = attachAndRead(parent, is_, t, true);
+                        break sw;
+                    case "and":
+                    case "or": {
+                        auto b = parseAndReturnBinary(t);
+                        parent = attachAndRead(parent, b, t, true);
+                        break sw;
                     }
-                    parent = attachAndRead(parent, is_, t, true);
-                } else {
-                    return;
-                }
-                break;
+                    default: 
+                        return;   
+                }   
             case NONE:
             case SEMICOLON:
             case RCURLY:
@@ -110,8 +112,6 @@ void parseExprRhs(Node parent, Tokens t) {
             case HAT_EQ:
             case LT_LT_EQ:
             case GT_GT_EQ:
-            case AMP_AMP:
-            case PIPE_PIPE:
 
             case LT:
             case GT:
@@ -119,15 +119,12 @@ void parseExprRhs(Node parent, Tokens t) {
             case GT_EQ:
             case EQ_EQ:
             case EXCLAIM_EQ: {
-                auto b = makeNode!Binary(t.coord());
-                b.op = toBinaryOperator(t.kind());
-                t.next();
+                auto b = parseAndReturnBinary(t);
                 parent = attachAndRead(parent, b, t, true);
                 break;
             }
             case DOT: {
-                Dot dot = makeNode!Dot(t.coord());
-                t.skip(EToken.DOT);
+                Dot dot = parseAndReturnDot(t);
                 parent = attachAndRead(parent, dot, t, true);
                 break;
             }
@@ -174,6 +171,38 @@ Expr attachAndRead(Node parent, Expr newExpr, Tokens t, bool andRead) {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 private:
 
+Binary parseAndReturnBinary(Tokens t) {
+    auto b = makeNode!Binary(t.coord());
+    if(t.isValue("and")) {
+        b.op = Operator.BOOL_AND;
+    } else if(t.isValue("or")) {
+        b.op = Operator.BOOL_OR;
+    } else {
+        b.op = toBinaryOperator(t.kind());
+    }
+    t.next();
+    return b;
+}
+Dot parseAndReturnDot(Tokens t) {
+    Dot dot = makeNode!Dot(t.coord());
+    t.skip(EToken.DOT);
+    return dot;
+}
+As parseAndReturnAs(Tokens t) {
+    As as = makeNode!As(t.coord());
+    t.next();
+    return as;
+}
+Is parseAndReturnIs(Tokens t) {
+    Is is_ = makeNode!Is(t.coord());
+    t.next();
+    if(t.isValue("not")) {
+        t.next();
+        is_.negate = true;
+    }
+    return is_;
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 void parseNumber(Node parent, Tokens t) {
     Number num = makeNode!Number(t.coord());
     parent.add(num);
