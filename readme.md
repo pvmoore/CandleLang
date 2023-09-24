@@ -2,13 +2,10 @@
 
 ## Todo
 
-- give each Type a toVerboseString() method for use in ast dump
-  and make toString return less data
-
-- Type inference - auto
 
 - Change && and || to 'and' 'or'
-- Change unary ! to 'not
+
+- Type inference - auto
 
 - Function literals (lambdas)
 - Assign to function pointers 
@@ -18,3 +15,16 @@
 - Enums
 - Unions
 - Templates
+
+
+### Idea - Function Literals
+
+function literal::
+```
+ (type,type->type) {}
+```
+
+ Maybe do the same for function declarations::
+```
+ foo (type,type->type) {}
+```

@@ -20,7 +20,11 @@ public:
         return "Unary %s".format(stringOf(op));
     }
     override void parse(Tokens t) {
-        this.op = toUnaryOperator(t.kind());
+        if(t.isValue("not")) {
+            this.op = Operator.BOOL_NOT;
+        } else {
+            this.op = toUnaryOperator(t.kind());
+        }
         t.next();
 
         parseExpr(this, t);

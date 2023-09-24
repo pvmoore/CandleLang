@@ -145,7 +145,6 @@ int precedenceOf(Operator op) {
 Operator toUnaryOperator(EToken kind) {
     switch(kind) with(Operator) {
         case EToken.MINUS: return NEG;
-        case EToken.EXCLAIM: return BOOL_NOT;
         case EToken.TILDE: return BIT_NOT;
 
         default:

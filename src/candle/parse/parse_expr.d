@@ -26,7 +26,6 @@ void parseExprLhs(Node parent, Tokens t) {
         case NUMBER: parseNumber(parent, t); return;
         case CHAR: parseChar(parent, t); return;
         case STRING: parseString(parent, t); return;
-        case EXCLAIM: parseUnary(parent, t); return;
         case TILDE:
         case MINUS: 
             parseUnary(parent, t); 
@@ -44,6 +43,7 @@ void parseExprLhs(Node parent, Tokens t) {
                 case "true":
                 case "false": parseNumber(parent, t); return;
                 case "null": parseNull(parent, t); return;
+                case "not": parseUnary(parent, t); return;
                 default: break;
             }
 

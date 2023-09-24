@@ -37,7 +37,7 @@ void doSomethingElse() {
 
 // public local function
 pub void doSomething(int* a, float** b) {
-    bool c = !true;
+    bool c = not true;
 
     int d = 'a';
     long e = 0xff;
