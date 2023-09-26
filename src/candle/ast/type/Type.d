@@ -64,6 +64,12 @@ Struct getStruct(Type t) {
     if(Pointer p = t.as!Pointer) return p.valueType().getStruct();
     return null;
 }
+Union getUnion(Type t) {
+    if(Union u = t.as!Union) return u;
+    if(TypeRef tr = t.as!TypeRef) return tr.decorated.getUnion();
+    if(Pointer p = t.as!Pointer) return p.valueType().getUnion();
+    return null;
+}
 int size(Type t) {
     if(TypeRef tr = t.as!TypeRef) return size(tr.decorated);
     if(t.isA!Pointer) return 8;

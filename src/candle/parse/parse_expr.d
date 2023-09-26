@@ -141,11 +141,9 @@ Expr attachAndRead(Node parent, Expr newExpr, Tokens t, bool andRead) {
     //
     // Swap expressions according to operator precedence
     //
-    bool doPrecedenceCheck = prev.isA!Expr;
-    if(doPrecedenceCheck) {
+    if(Expr prevExpr = prev.as!Expr) {
 
         // Adjust to account for operator precedence
-        Expr prevExpr = prev.as!Expr;
         while(prevExpr.parent && newExpr.precedence() < prevExpr.precedence()) {
 
             if(!prevExpr.parent.isA!Expr) {

@@ -315,9 +315,7 @@ private:
 
         //writeStmt("static const char* candle_projectName;");// = \"%s\";", n.name);
 
-        //writeStmt("// Struct and Union Prototypes\n");
-
-        // Emit Project private prototypes
+        // Emit Project private structs, unions and functions
         writeStmt("// Private structs\n");
         foreach(unit; n.getUnits()) {
             unit.getStructs()
@@ -334,7 +332,7 @@ private:
                     emit(it);
                 });
         }
-        writeStmt("// Private function prototypes\n");
+        writeStmt("// Private functions\n");
         foreach(unit; n.getUnits()) {
             unit.getFuncs()
                 .filter!(it=>!it.isPublic)

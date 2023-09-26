@@ -9,19 +9,29 @@ typedef struct TestStructLiterals {
   s32 a; // Line 3
   f32 b; // Line 4
 } TestStructLiterals;
+typedef struct Inner {
+  s64 a; // Line 22
+  s64 b; // Line 23
+} Inner;
+typedef struct Local {
+  s8 a; // Line 16
+  f32 b; // Line 17
+  Inner inner; // Line 18
+} Local;
 typedef struct Peach {
-  s32 a; // Line 71
+  s32 a; // Line 72
 } Peach;
 typedef struct MyStruct {
   s32 a; // Line 47
 } MyStruct;
 // Private unions
-// Private function prototypes
+// Private functions
 static void as_();
 static void binary();
 static void id();
 static void is_();
 static void literalstruct();
+static void struct_();
 s32 putchar(s32);
 s32 main();
 static void doSomethingElse();
@@ -170,10 +180,17 @@ static void literalstruct() {
   candle__assert(tsl.b == 1.3f, "literalstruct.can", 26); // Line 26
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
+// struct.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void struct_() {
+  Local local = {0}; // Line 4
+  Local local2 = {0}; // Line 5
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static s32 wibble = 0; // Line 5
-static f32 foo = 1.0f; // Line 62
+static f32 foo = 1.0f; // Line 63
 s32 main() {
   s32 a = 6; // Line 8
   s32* b = null; // Line 10
@@ -188,21 +205,22 @@ s32 main() {
   is_(); // Line 26
   id(); // Line 27
   literalstruct(); // Line 28
-  return 0; // Line 30
+  struct_(); // Line 29
+  return 0; // Line 31
 }
 static void doSomethingElse() {
 }
 void test__doSomething(s32* a, f32** b) {
-  bool c = !true; // Line 40
-  s32 d = 'a'; // Line 42
-  s64 e = -1LL; // Line 43
-  f32 f = foo; // Line 44
-  s32 y = 1 + 2 / 3; // Line 46
-  s32 z = 1 / 2 + 3; // Line 47
-  f32 g = 1.0f; // Line 48
-  f32 g2 = 1.3f; // Line 49
-  test__Apple apple = {0}; // Line 51
-  std__PlumPublic plum = {0}; // Line 53
+  bool c = !true; // Line 41
+  s32 d = 'a'; // Line 43
+  s64 e = -1LL; // Line 44
+  f32 f = foo; // Line 45
+  s32 y = 1 + 2 / 3; // Line 47
+  s32 z = 1 / 2 + 3; // Line 48
+  f32 g = 1.0f; // Line 49
+  f32 g2 = 1.3f; // Line 50
+  test__Apple apple = {0}; // Line 52
+  std__PlumPublic plum = {0}; // Line 54
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // vars.can

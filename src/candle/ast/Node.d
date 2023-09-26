@@ -26,11 +26,11 @@ public:
     }
     /** Will be called in bottom-up order */
     void resolve() {
-        // By default do nothing
+        
     }
     /** Will be called in bottom-up order */
     void check() {
-        // By default do nothing
+       
     }
 
     final void add(Node n) {

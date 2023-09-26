@@ -8,7 +8,7 @@ typedef struct PlumPrivate {
   s32 a; // Line 13
 } PlumPrivate;
 // Private unions
-// Private function prototypes
+// Private functions
 s32 putchar(s32);
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────

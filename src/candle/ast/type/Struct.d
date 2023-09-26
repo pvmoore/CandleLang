@@ -25,6 +25,18 @@ public:
     Type[] getVarTypes() {
         return getVars().map!(it=>it.type()).array;
     }
+    Struct[] getContainedStructValues() {
+        return getVarTypes().filter!(it=>!it.isPtr())
+                            .map!(it=>it.getStruct())
+                            .filter!(it=>it !is null)
+                            .array;
+    }
+    Union[] getContainedUnionValues() {
+        return getVarTypes().filter!(it=>!it.isPtr())
+                            .map!(it=>it.getUnion())
+                            .filter!(it=>it !is null)
+                            .array;
+    }
     uint getSize() { return calculateSize(); }
     int getAlignment() { return calculateAlignment(); }
 

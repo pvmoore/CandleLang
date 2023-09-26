@@ -40,9 +40,13 @@ public:
             if(!parseAndResolve()) {
                 return false;
             }
+            afterResolution();
+            if(hasErrors()) return false;
 
             checkAllProjects();
             if(hasErrors()) return false;
+
+            // After this point we should not get any more CandleErrors
 
             emitAllProjects();
 
@@ -56,24 +60,7 @@ public:
                 }
             }    
 
-            //  🌩🌧🌤🌻🍒🌹🍓🍔✒✕✖✗✘✓✔🗹♏
-
-            log("\n════════════════════════════════════════════════════════════════════════════════════════");
-            log("Projects:");
-            foreach(p; allProjects()) {
-                log("  %s", p);
-            }
-            log("════════════════════════════════════════════════════════════════════════════════════════");
-            log("Timing:");
-            log("  Lexing ..... %.2f ms (%s files)", Lexer.getElapsedNanos()/1_000_000.0, Lexer.getNumLexedFiles());
-            log("  Parsing .... %.2f ms", Parser.getElapsedNanos()/1_000_000.0);
-            log("  Resolving .. %.2f ms", Resolver.getElapsedNanos()/1_000_000.0);
-            log("  Rewriting .. %.2f ms", Rewriter.getElapsedNanos()/1_000_000.0);
-            log("  Checking ... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
-            log("  Emitting ... %.2f ms", Emitter.getElapsedNanos()/1_000_000.0);
-            log("  Building ... %.2f ms", Builder.getElapsedNanos()/1_000_000.0);
-            log("  Linking .... %.2f ms", Linker.getElapsedNanos()/1_000_000.0);
-            log("════════════════════════════════════════════════════════════════════════════════════════");
+            dumpStats();
 
         }catch(AbortCompilation e) {
             return false;
@@ -114,7 +101,7 @@ private:
     }
     bool parseAndResolve() {
         bool resolved = false;
-        int maxPasses = 2;
+        int maxPasses = 3;
         for(int pass = 0; !resolved && pass < maxPasses; pass++) {
             // Run a parse phase on all Projects
             parseAllProjects(pass);
@@ -134,12 +121,12 @@ private:
         }
         return resolved;
     }
-
+    void afterResolution() {
+        Resolver.afterAllResolved(allProjects());
+    }
     void parseAllProjects(int pass) {
         logParse("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         foreach(p; allProjects()) {
-            logParse("  Parse %s", p);
-
             Parser.parse(p);
         }
     }
@@ -147,8 +134,6 @@ private:
         logResolve("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         bool allResolved = true;
         foreach(p; allProjects()) {
-            logResolve("  Resolve %s", p);
-
             allResolved &= Resolver.resolve(p);
         }
         logResolve("  All resolved = %s", allResolved);
@@ -184,5 +169,24 @@ private:
      */
     bool link() {
         return Linker.link(this);
+    }
+    void dumpStats() {
+        //  🌩🌧🌤🌻🍒🌹🍓🍔✒✕✖✗✘✓✔🗹♏
+        log("\n════════════════════════════════════════════════════════════════════════════════════════");
+        log("Projects:");
+        foreach(p; allProjects()) {
+            log("  %s", p);
+        }
+        log("════════════════════════════════════════════════════════════════════════════════════════");
+        log("Timing:");
+        log("  Lexing ........... %.2f ms (%s files)", Lexer.getElapsedNanos()/1_000_000.0, Lexer.getNumLexedFiles());
+        log("  Parsing .......... %.2f ms", Parser.getElapsedNanos()/1_000_000.0);
+        log("  Resolving ........ %.2f ms", Resolver.getElapsedNanos()/1_000_000.0);
+        log("  Rewriting ........ %.2f ms", Rewriter.getElapsedNanos()/1_000_000.0);
+        log("  Checking ......... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
+        log("  Emitting ......... %.2f ms", Emitter.getElapsedNanos()/1_000_000.0);
+        log("  Building ......... %.2f ms", Builder.getElapsedNanos()/1_000_000.0);
+        log("  Linking ........... %.2f ms", Linker.getElapsedNanos()/1_000_000.0);
+        log("════════════════════════════════════════════════════════════════════════════════════════");
     }
 }

@@ -1,0 +1,24 @@
+
+
+void struct_() {
+    Local local;
+    Local local2 = {};
+
+    // @sizeOf(S)
+    // @offsetOf(S, field)
+    // @alignOf(S, field)
+}
+
+// Must have at least 1 member
+//struct Empty {}
+
+struct Local {
+    byte a;
+    float b;
+    Inner inner;
+}
+
+struct Inner {
+    long a;
+    long b;
+}

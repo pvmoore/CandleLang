@@ -108,7 +108,7 @@ private:
      * } 
      */
     bool loadProjectJson5() {
-        auto projectFile = Filepath(directory, Filename("project.json5"));
+        auto projectFile = Filepath(directory, Filename("candle.json"));
         if(!projectFile.exists()) return false;
 
         auto root = JSON5.fromFile(projectFile.value);

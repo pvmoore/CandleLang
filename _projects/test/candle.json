@@ -1,0 +1,8 @@
+{
+    "dependencies": {
+        "std": "_projects/std",
+        "test2": "_projects/test2",
+        "vulkan": "_projects/vulkan"
+    },
+    "name": "test"
+}

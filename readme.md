@@ -3,17 +3,16 @@
 ## Todo
 
 
+- Alias
 - Type inference - auto
 
 - Function literals (lambdas)
 - Assign to function pointers 
 
-- Alias
 - Arrays
 - Enums
 - Unions
 - Templates
-
 
 ### Idea - Function Literals
 
