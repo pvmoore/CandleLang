@@ -27,6 +27,7 @@ int main() {
     id();
     literalstruct();
     struct_();
+    alias_();
 
     return 0;
 }

@@ -23,6 +23,7 @@ enum EType {
     UNION,
     FUNC,
     ARRAY,
-    ENUM
+    ENUM,
+    ALIAS
 }
 

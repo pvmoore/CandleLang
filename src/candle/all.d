@@ -75,6 +75,7 @@ import candle.ast.stmt.Return;
 import candle.ast.stmt.Stmt;
 import candle.ast.stmt.Var;
 
+import candle.ast.type.Alias;
 import candle.ast.type.Array;
 import candle.ast.type.Enum;
 import candle.ast.type.EType;

@@ -19,13 +19,14 @@ typedef struct Local {
   Inner inner; // Line 18
 } Local;
 typedef struct Peach {
-  s32 a; // Line 72
+  s32 a; // Line 73
 } Peach;
 typedef struct MyStruct {
-  s32 a; // Line 47
+  s32 a; // Line 48
 } MyStruct;
 // Private unions
 // Private functions
+static void alias_();
 static void as_();
 static void binary();
 static void id();
@@ -37,6 +38,11 @@ s32 main();
 static void doSomethingElse();
 static void variables();
 
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+// alias.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void alias_() {
+}
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // as.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -190,7 +196,7 @@ static void struct_() {
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static s32 wibble = 0; // Line 5
-static f32 foo = 1.0f; // Line 63
+static f32 foo = 1.0f; // Line 64
 s32 main() {
   s32 a = 6; // Line 8
   s32* b = null; // Line 10
@@ -206,71 +212,72 @@ s32 main() {
   id(); // Line 27
   literalstruct(); // Line 28
   struct_(); // Line 29
-  return 0; // Line 31
+  alias_(); // Line 30
+  return 0; // Line 32
 }
 static void doSomethingElse() {
 }
 void test__doSomething(s32* a, f32** b) {
-  bool c = !true; // Line 41
-  s32 d = 'a'; // Line 43
-  s64 e = -1LL; // Line 44
-  f32 f = foo; // Line 45
-  s32 y = 1 + 2 / 3; // Line 47
-  s32 z = 1 / 2 + 3; // Line 48
-  f32 g = 1.0f; // Line 49
-  f32 g2 = 1.3f; // Line 50
-  test__Apple apple = {0}; // Line 52
-  std__PlumPublic plum = {0}; // Line 54
+  bool c = !true; // Line 42
+  s32 d = 'a'; // Line 44
+  s64 e = -1LL; // Line 45
+  f32 f = foo; // Line 46
+  s32 y = 1 + 2 / 3; // Line 48
+  s32 z = 1 / 2 + 3; // Line 49
+  f32 g = 1.0f; // Line 50
+  f32 g2 = 1.3f; // Line 51
+  test__Apple apple = {0}; // Line 53
+  std__PlumPublic plum = {0}; // Line 55
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // vars.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void variables() {
-  bool a1 = false; // Line 3
-  candle__assert(!a1, "vars.can", 3);
-  bool a2 = true; // Line 4
-  candle__assert(a2, "vars.can", 4);
-  s8 b1 = 0; // Line 6
-  candle__assert(b1 == 0, "vars.can", 6);
-  s8 b2 = 1; // Line 7
-  candle__assert(b2 == 1, "vars.can", 7);
-  u8 c1 = 0; // Line 9
-  candle__assert((s8)c1 == 0, "vars.can", 9);
-  u8 c2 = 2u; // Line 10
-  candle__assert((s8)c2 == 2, "vars.can", 10);
-  s16 d1 = 0; // Line 12
-  candle__assert(d1 == 0, "vars.can", 12);
-  s16 d2 = 3; // Line 13
-  candle__assert(d2 == 3, "vars.can", 13);
-  u16 e1 = 0; // Line 15
-  candle__assert(e1 == 0u, "vars.can", 15);
-  u16 e2 = 4u; // Line 16
-  candle__assert(e2 == 4u, "vars.can", 16);
-  s32 f1 = 0; // Line 18
-  candle__assert(f1 == 0, "vars.can", 18);
-  s32 f2 = 5; // Line 19
-  candle__assert(f2 == 5, "vars.can", 19);
-  u32 g1 = 0; // Line 21
-  candle__assert(g1 == 0u, "vars.can", 21);
-  u32 g2 = 6u; // Line 22
-  candle__assert(g2 == 6u, "vars.can", 22);
-  s64 h1 = 0; // Line 24
-  candle__assert(h1 == 0LL, "vars.can", 24);
-  s64 h2 = 7LL; // Line 25
-  candle__assert(h2 == 7LL, "vars.can", 25);
-  u64 i1 = 0; // Line 27
-  candle__assert(i1 == 0LLU, "vars.can", 27);
-  u64 i2 = 8LLU; // Line 28
-  candle__assert(i2 == 8LLU, "vars.can", 28);
-  f32 j1 = 0.0f; // Line 30
-  candle__assert(j1 == 0.0f, "vars.can", 30);
-  f32 j2 = 9.1f; // Line 31
-  candle__assert(j2 == 9.1f, "vars.can", 31);
-  f64 k1 = 0.0; // Line 33
-  candle__assert(k1 == 0.0, "vars.can", 33);
-  f64 k2 = 10.0; // Line 34
-  candle__assert(k2 == 10.0, "vars.can", 34);
-  MyStruct l = {0}; // Line 36
-  void (*fp)(s32,f32) = null; // Line 40
-  void* (*fp2)(void) = null; // Line 41
+  bool a1 = false; // Line 4
+  candle__assert(!a1, "vars.can", 4);
+  bool a2 = true; // Line 5
+  candle__assert(a2, "vars.can", 5);
+  s8 b1 = 0; // Line 7
+  candle__assert(b1 == 0, "vars.can", 7);
+  s8 b2 = 1; // Line 8
+  candle__assert(b2 == 1, "vars.can", 8);
+  u8 c1 = 0; // Line 10
+  candle__assert((s8)c1 == 0, "vars.can", 10);
+  u8 c2 = 2u; // Line 11
+  candle__assert((s8)c2 == 2, "vars.can", 11);
+  s16 d1 = 0; // Line 13
+  candle__assert(d1 == 0, "vars.can", 13);
+  s16 d2 = 3; // Line 14
+  candle__assert(d2 == 3, "vars.can", 14);
+  u16 e1 = 0; // Line 16
+  candle__assert(e1 == 0u, "vars.can", 16);
+  u16 e2 = 4u; // Line 17
+  candle__assert(e2 == 4u, "vars.can", 17);
+  s32 f1 = 0; // Line 19
+  candle__assert(f1 == 0, "vars.can", 19);
+  s32 f2 = 5; // Line 20
+  candle__assert(f2 == 5, "vars.can", 20);
+  u32 g1 = 0; // Line 22
+  candle__assert(g1 == 0u, "vars.can", 22);
+  u32 g2 = 6u; // Line 23
+  candle__assert(g2 == 6u, "vars.can", 23);
+  s64 h1 = 0; // Line 25
+  candle__assert(h1 == 0LL, "vars.can", 25);
+  s64 h2 = 7LL; // Line 26
+  candle__assert(h2 == 7LL, "vars.can", 26);
+  u64 i1 = 0; // Line 28
+  candle__assert(i1 == 0LLU, "vars.can", 28);
+  u64 i2 = 8LLU; // Line 29
+  candle__assert(i2 == 8LLU, "vars.can", 29);
+  f32 j1 = 0.0f; // Line 31
+  candle__assert(j1 == 0.0f, "vars.can", 31);
+  f32 j2 = 9.1f; // Line 32
+  candle__assert(j2 == 9.1f, "vars.can", 32);
+  f64 k1 = 0.0; // Line 34
+  candle__assert(k1 == 0.0, "vars.can", 34);
+  f64 k2 = 10.0; // Line 35
+  candle__assert(k2 == 10.0, "vars.can", 35);
+  MyStruct l = {0}; // Line 37
+  void (*fp)(s32,f32) = null; // Line 41
+  void* (*fp2)(void) = null; // Line 42
 }

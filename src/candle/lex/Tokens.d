@@ -50,10 +50,14 @@ public:
         return pos >= tokens.length;
     }
     void next(int count = 1) {
-        pos += count;
+        pos += count; 
     }
     void skip(EToken k) {
         if(kind() != k) syntaxError(this, "'%s'".format(stringOf(k)));
+        next();
+    }
+    void skip(string val) {
+        if(value() != val) syntaxError(this, val);
         next();
     }
     void expectOneOf(EToken[] toks...) {
@@ -61,10 +65,6 @@ public:
         if(!t.isOneOf(toks)) {
             syntaxError(this, "one of %s".format(toks));
         }
-    }
-    void skip(string val) {
-        if(value() != val) syntaxError(this, val);
-        next();
     }
     void skipOptional(EToken k) {
         if(kind() == k) next();

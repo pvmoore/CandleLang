@@ -73,14 +73,17 @@ Union getUnion(Type t) {
 int size(Type t) {
     if(TypeRef tr = t.as!TypeRef) return size(tr.decorated);
     if(t.isA!Pointer) return 8;
-    final switch(t.etype())with(EType) {
+    final switch(t.etype()) with(EType) {
         case VOID: return 0;
         case BOOL: case BYTE: case UBYTE: return 1;
         case SHORT: case USHORT: return 2;
         case INT: case UINT: case FLOAT: return 4;
         case LONG: case ULONG: case DOUBLE: case FUNC:
             return 8;
-        case STRUCT: return t.as!Struct.getSize();
+        case ALIAS:
+            return t.as!Alias.toType().size();
+        case STRUCT: 
+            return t.as!Struct.getSize();
         case UNION:
             todo("implement size(Union)");
             return 0;
@@ -110,6 +113,8 @@ int alignment(Type t) {
         case DOUBLE:
         case FUNC: /// should always be a ptr 
             return 8;
+        case ALIAS:
+            return t.as!Alias.toType().alignment();    
         case STRUCT:
             return t.as!Struct.getAlignment();
         case UNION:    
@@ -139,6 +144,8 @@ string initStr(Type t) {
             return "null";    
         case STRUCT:
             return "{0}";
+        case ALIAS:
+            return t.as!Alias.toType().initStr();
         case UNION:
         case ARRAY:
         case ENUM:

@@ -23,6 +23,7 @@ void parseStmt(Node parent, Tokens t) {
             case ID:
                 switch(t.value()) {
                     case "struct": parseStruct(parent, t); return;
+                    case "alias": parseAlias(parent, t); return;
                     default: break;
                 }
                 break;
@@ -100,4 +101,9 @@ void parseStruct(Node parent, Tokens t) {
     Struct s = makeNode!Struct(t.coord());
     parent.add(s);
     s.parse(t);
+}
+void parseAlias(Node parent, Tokens t) {
+    Alias a = makeNode!Alias(t.coord());
+    parent.add(a);
+    a.parse(t);
 }

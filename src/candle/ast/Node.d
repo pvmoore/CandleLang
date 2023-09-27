@@ -117,12 +117,6 @@ public:
         assert(parent);
         return parent.getCandle();
     }
-    final void dump(string indent = "") {
-        log("%s%s", indent, this);
-        foreach(ch; children) {
-            ch.dump(indent ~ "  ");
-        }
-    }
     final string dumpToString(string indent = "") {
         string s = "%s%s\n".format(indent, this);
         foreach(ch; children) {
