@@ -6,6 +6,8 @@
 - Alias
 - Type inference - auto
 
+- (type,type->type) {}
+
 - Function literals (lambdas)
 - Assign to function pointers 
 
@@ -15,13 +17,23 @@
 - Templates
 
 ### Idea - Function Literals
-
-function literal::
 ```
- (type,type->type) {}
+(type,type->type) {}
 ```
 
  Maybe do the same for function declarations::
 ```
  foo (type,type->type) {}
+```
+
+### Multiple return values
+
+```
+
+```
+
+### Tuples
+
+```
+
 ```

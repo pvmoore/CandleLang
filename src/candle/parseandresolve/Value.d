@@ -3,22 +3,8 @@ module candle.parseandresolve.Value;
 import candle.all;
 import std.conv : to;
 
-// Assume any calculations will be done as int or higher
 struct Value {
-    union Val {
-        bool b;
-        byte by;
-        ubyte uby;
-        short s;
-        ushort us;
-        int i;
-        uint ui;
-        long l;
-        ulong ul;
-        float f;
-        double d;
-    }
-    Val value;
+    Value_T value;
     EType kind;
 
     this(string s) {
@@ -81,6 +67,19 @@ struct Value {
         }
     }
 private:
+    union Value_T {
+        bool b;
+        byte by;
+        ubyte uby;
+        short s;
+        ushort us;
+        int i;
+        uint ui;
+        long l;
+        ulong ul;
+        float f;
+        double d;
+    }
     bool asBool() {
         return value.ul != 0;
     }
