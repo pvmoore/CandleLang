@@ -23,9 +23,9 @@ public:
     override Type type() { return this; }
 
     override string toString() {
-        return toVerboseString();
+        return "Enum";
     }
-    override string toVerboseString() {
+    override string getASTSummary() {
         return "Enum";
     }
 private:

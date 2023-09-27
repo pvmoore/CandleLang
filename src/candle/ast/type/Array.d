@@ -42,9 +42,9 @@ public:
     override Type type() { return this; }
 
     override string toString() {
-        return toVerboseString();
+        return "Array";
     }
-    override string toVerboseString() {
+    override string getASTSummary() {
         return "Array";
     }
 private:

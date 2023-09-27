@@ -44,10 +44,10 @@ public:
     }
 
     override string toString() {
-        return toVerboseString();
+        return "%s".format(name);
     }
-    override string toVerboseString() {
-        return "Struct %s".format(name);
+    override string getASTSummary() {
+        return "Union %s".format(name);
     }
 private:
 }

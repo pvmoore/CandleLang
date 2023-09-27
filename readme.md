@@ -3,7 +3,11 @@
 ## Todo
 
 
-- Alias
+- Alias tests
+- Use Alias instead of TypeRef for struct/union/enum ?
+
+
+
 - Type inference - auto
 
 - (type,type->type) {}

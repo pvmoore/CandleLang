@@ -30,10 +30,10 @@ public:
     override string toString() {
         return "Alias %s".format(name);
     }
-    override string toVerboseString() {
+    override string getASTSummary() {
         string l = ", line %s".format(coord.line+1);
         string pub = isPublic ? ", pub" : "";
-        return "Alias %s%s%s".format(name, l, pub);
+        return "Alias %s%s%s".format(name, pub, l);
     }
     /**
      * ALIAS ::= 'alias' name '=' Type ';' 

@@ -52,9 +52,9 @@ public:
         }
     }
     override string toString() {
-        return toVerboseString();
+        return "%s".format(etype()).toLower();
     }
-    override string toVerboseString() {
+    override string getASTSummary() {
         return "%s".format(etype()).toLower();
     }
 private:

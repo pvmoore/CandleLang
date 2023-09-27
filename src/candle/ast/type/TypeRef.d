@@ -34,7 +34,7 @@ public:
     override string toString() {
         return "TypeRef %s".format(name);
     }
-    override string toVerboseString() {
+    override string getASTSummary() {
         string p = isExternal ? ", Project %s".format(project.name) : "";
         string s = decorated ? "%s".format(decorated)
                              : "'%s'".format(name);

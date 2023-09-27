@@ -46,16 +46,24 @@ public:
         return false;
     }
     override string toString() {
-        return "Func";
-    }
-    override string toVerboseString() {
         if(isFuncPtr) {
             string s;
             foreach(i, t; paramTypes()) {
                 if(i>0) s ~= ",";
                 s ~= "%s".format(t);
             } 
-            return "Func (%s->%s)".format(s, returnType());
+            return "Func ptr (%s->%s)".format(s, returnType());
+        }
+        return "Func %s".format(name);
+    }
+    override string getASTSummary() {
+        if(isFuncPtr) {
+            string s;
+            foreach(i, t; paramTypes()) {
+                if(i>0) s ~= ",";
+                s ~= "%s".format(t);
+            } 
+            return "Func ptr (%s->%s)".format(s, returnType());
         }
         string l = ", line %s".format(coord.line+1);
         string pub = isPublic ? ", pub" : "";

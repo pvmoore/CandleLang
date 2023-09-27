@@ -65,15 +65,11 @@ public:
         return false;
     }
     override string toString() {
-        return "Struct %s".format(name); 
+        return "%s".format(name); 
     } 
-    override string toVerboseString() {
-        string sz;
-        string al;
-        if(isResolved()) { 
-            sz = ", size %s".format(calculateSize());
-            al = ", align %s".format(calculateAlignment());
-        }
+    override string getASTSummary() {
+        string sz = ", size %s".format(calculateSize());
+        string al = ", align %s".format(calculateAlignment());
         string pk = isPacked ? ", packed" : "";
         string l = ", line %s".format(coord.line+1);
         string pub = isPublic ? ", pub" : "";
@@ -125,8 +121,10 @@ private:
         uint offset  = 0;
         uint largest = 1;
 
-        foreach(t; getVarTypes()) {
-            assert(t.isResolved());
+        auto types = getVarTypes();
+        if(!areResolved(types)) return 0;
+
+        foreach(t; types) {
             uint align_    = t.alignment();
             uint and       = (align_-1);
             uint newOffset = (offset + and) & ~and;
@@ -148,7 +146,11 @@ private:
             _alignment = 1;
         } else {
             import std.algorithm.searching;
-            _alignment = getVarTypes().map!(it=>alignment(it)).maxElement;
+
+            auto types = getVarTypes();
+            if(!areResolved(types)) return 0;
+
+            _alignment = types.map!(it=>alignment(it)).maxElement;
         }
         return _alignment;
     }

@@ -7,7 +7,7 @@ interface Type {
     bool isResolved();
     bool canImplicitlyConvertTo(Type other);
     bool exactlyMatches(Type other);
-    string toVerboseString();
+    string getASTSummary();
 }
 
 Type copy(Type t) {

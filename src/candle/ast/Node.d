@@ -118,7 +118,7 @@ public:
         return parent.getCandle();
     }
     final string dumpToString(string indent = "") {
-        string s = "%s%s\n".format(indent, this);
+        string s = "%s%s\n".format(indent, this.isA!Type ? this.as!Type.getASTSummary() : this.toString());
         foreach(ch; children) {
             s ~= ch.dumpToString(indent ~ "  ");
         }
@@ -146,7 +146,7 @@ private:
 }
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-bool areResolved(T)(T[] nodes) if(is(T:Node)) {
+bool areResolved(T)(T[] nodes) if(is(T:Node) || is(T:Type)) {
     foreach(n; nodes) if(!n.isResolved()) return false;
     return true;
 }
