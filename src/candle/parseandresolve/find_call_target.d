@@ -1,4 +1,4 @@
-module candle.resolve.find_call_target;
+module candle.parseandresolve.find_call_target;
 
 import candle.all;
 

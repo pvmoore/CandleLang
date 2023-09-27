@@ -1,4 +1,4 @@
-module candle.Builder;
+module candle.emitandbuild.Builder;
 
 import candle.all;
 

@@ -1,4 +1,4 @@
-module candle.parse.parse_type;
+module candle.parseandresolve.parse_type;
 
 import candle.all;
 

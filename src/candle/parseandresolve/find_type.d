@@ -1,4 +1,4 @@
-module candle.resolve.find_type;
+module candle.parseandresolve.find_type;
 
 import candle.all;
 

@@ -1,4 +1,4 @@
-module candle.parse.parse_stmt;
+module candle.parseandresolve.parse_stmt;
 
 import candle.all;
 

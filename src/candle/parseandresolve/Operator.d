@@ -1,4 +1,4 @@
-module candle.Operator;
+module candle.parseandresolve.Operator;
 
 import candle.all;
 

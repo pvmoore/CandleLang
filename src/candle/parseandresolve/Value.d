@@ -1,4 +1,4 @@
-module candle.Value;
+module candle.parseandresolve.Value;
 
 import candle.all;
 import std.conv : to;

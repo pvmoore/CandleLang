@@ -23,31 +23,29 @@ import candle.lex.Lex;
 import candle.lex.Token;
 import candle.lex.Tokens;
 
-import candle.parse.parse_expr;
-import candle.parse.parse_type;
-import candle.parse.parse_stmt;
+import candle.emitandbuild.Builder;
+import candle.emitandbuild.BuildProject;
+import candle.emitandbuild.EmitProject;
+import candle.emitandbuild.Emitter;
 
-import candle.resolve.find_call_target;
-import candle.resolve.find_id_target;
-import candle.resolve.find_type;
+import candle.parseandresolve.find_call_target;
+import candle.parseandresolve.find_id_target;
+import candle.parseandresolve.find_type;
+import candle.parseandresolve.Operator;
+import candle.parseandresolve.parse_expr;
+import candle.parseandresolve.parse_type;
+import candle.parseandresolve.parse_stmt;
+import candle.parseandresolve.Parser;
+import candle.parseandresolve.Resolver;
+import candle.parseandresolve.Rewriter;
+import candle.parseandresolve.Target;
+import candle.parseandresolve.Value;
 
-import candle.emit.EmitProject;
-
-import candle.build.BuildProject;
-
-import candle.Builder;
 import candle.Checker;
-import candle.Emitter;
 import candle.Lexer;
 import candle.Linker;
-import candle.Operator;
-import candle.Parser;
-import candle.Resolver;
-import candle.Rewriter;
 import candle.statics;
-import candle.Target;
 import candle.utils;
-import candle.Value;
 
 import candle.ast.ENode;
 import candle.ast.node_builder;
