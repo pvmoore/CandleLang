@@ -101,12 +101,14 @@ private:
         bool resolved = false;
         int maxPasses = 3;
         for(int pass = 0; !resolved && !hasErrors() && pass < maxPasses; pass++) {
+
             // Run a parse phase on all Projects
             parseAllProjects(pass);
 
             // Run a resolve phase on all Projects
             resolved = resolveAllProjects(pass);
         }
+        // Convert unresolved nodes to ResolutionErrors
         if(!resolved) {
             Node[] nodes;
             foreach(p; allProjects()) {
@@ -118,9 +120,6 @@ private:
             assert(errors, "Where are the resolution errors?");
         }
         return resolved;
-    }
-    void afterResolution() {
-        Resolver.afterAllResolved(allProjects());
     }
     void parseAllProjects(int pass) {
         logParse("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
@@ -137,6 +136,9 @@ private:
         logResolve("  All resolved = %s", allResolved);
         return allResolved;
     }
+    void afterResolution() {
+        Resolver.afterAllResolved(allProjects());
+    }
     void checkAllProjects() {
         logCheck("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
         foreach(p; allProjects()) {
@@ -146,7 +148,7 @@ private:
     }
     void emitAllProjects() {
         logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        new CommonHeader(this).emit();  
+        Emitter.emitCommonHeader(this); 
         foreach(p; allProjects()) {
             Emitter.emit(p);
         }

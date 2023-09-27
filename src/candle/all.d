@@ -31,7 +31,6 @@ import candle.resolve.find_call_target;
 import candle.resolve.find_id_target;
 import candle.resolve.find_type;
 
-import candle.emit.CommonHeader;
 import candle.emit.EmitProject;
 
 import candle.build.BuildProject;
