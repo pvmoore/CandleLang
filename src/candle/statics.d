@@ -10,6 +10,8 @@ enum LOG_CHECK   = !true;
 enum LOG_EMIT    = !true;
 enum LOG_BUILD   = true;
 
+enum ONE_MILLION = 1_000_000.0;
+
 File logFile;
 
 Type TYPE_VOID;

@@ -52,11 +52,9 @@ public:
 
             if(buildAllProjects()) {
                 if(link()) {
-                    // Success
-                    log("OK " ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
+                    log(ansiWrap("Success ", Ansi.GREEN) ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
                 } else {
-                    // Fail
-                    log("Failed " ~ Ansi.RED_BOLD ~ "✘✘✘" ~ Ansi.RESET);
+                    log(ansiWrap("Failed ", Ansi.RED) ~ Ansi.RED_BOLD ~ "✘✘✘" ~ Ansi.RESET);
                 }
             }    
 
@@ -102,7 +100,7 @@ private:
     bool parseAndResolve() {
         bool resolved = false;
         int maxPasses = 3;
-        for(int pass = 0; !resolved && pass < maxPasses; pass++) {
+        for(int pass = 0; !resolved && !hasErrors() && pass < maxPasses; pass++) {
             // Run a parse phase on all Projects
             parseAllProjects(pass);
 
@@ -172,21 +170,21 @@ private:
     }
     void dumpStats() {
         //  🌩🌧🌤🌻🍒🌹🍓🍔✒✕✖✗✘✓✔🗹♏
-        log("\n════════════════════════════════════════════════════════════════════════════════════════");
-        log("Projects:");
+        log("╔═════════════════════════════════════════════════════════════════════");
+        log("║ " ~ ansiWrap("Projects", Ansi.BLUE_BOLD));
         foreach(p; allProjects()) {
-            log("  %s", p);
+            log("║ %s", p);
         }
-        log("════════════════════════════════════════════════════════════════════════════════════════");
-        log("Timing:");
-        log("  Lexing ........... %.2f ms (%s files)", Lexer.getElapsedNanos()/1_000_000.0, Lexer.getNumLexedFiles());
-        log("  Parsing .......... %.2f ms", Parser.getElapsedNanos()/1_000_000.0);
-        log("  Resolving ........ %.2f ms", Resolver.getElapsedNanos()/1_000_000.0);
-        log("  Rewriting ........ %.2f ms", Rewriter.getElapsedNanos()/1_000_000.0);
-        log("  Checking ......... %.2f ms", Checker.getElapsedNanos()/1_000_000.0);
-        log("  Emitting ......... %.2f ms", Emitter.getElapsedNanos()/1_000_000.0);
-        log("  Building ......... %.2f ms", Builder.getElapsedNanos()/1_000_000.0);
-        log("  Linking ........... %.2f ms", Linker.getElapsedNanos()/1_000_000.0);
-        log("════════════════════════════════════════════════════════════════════════════════════════");
+        log("╟─────────────────────────────────────────────────────────────────────");
+        log("║ " ~ ansiWrap("Timings", Ansi.BLUE_BOLD));
+        log("║ Lexing ...... %.2f ms (%s files)", Lexer.getElapsedNanos()/ONE_MILLION, Lexer.getNumLexedFiles());
+        log("║ Parsing ..... %.2f ms", Parser.getElapsedNanos()/ONE_MILLION);
+        log("║ Resolving ... %.2f ms", Resolver.getElapsedNanos()/ONE_MILLION);
+        log("║ Rewriting ... %.2f ms", Rewriter.getElapsedNanos()/ONE_MILLION);
+        log("║ Checking .... %.2f ms", Checker.getElapsedNanos()/ONE_MILLION);
+        log("║ Emitting .... %.2f ms", Emitter.getElapsedNanos()/ONE_MILLION);
+        log("║ Building .... %.2f ms", Builder.getElapsedNanos()/ONE_MILLION);
+        log("║ Linking ..... %.2f ms", Linker.getElapsedNanos()/ONE_MILLION);
+        log("╚═════════════════════════════════════════════════════════════════════");
     }
 }
