@@ -65,15 +65,13 @@ static void candle__assert(s32 value, const char* unitName, u32 line) {
     }
     static void emit(Project project) {
         
-        moveTopLevelTypesToProjectRoot(project);
-
-        // Move all structs, unions, enums and aliases to Project and
-        // Sort them by dependency
-        // Then emit them all
+        //moveTopLevelTypesToProjectRoot(project);
 
         foreach(u; project.getUnits()) {
             reorderTopLevelTypes(u);
         }
+
+        moveTopLevelTypesToProjectRoot(project);
 
         new EmitProject(project).emit();
     }
@@ -81,14 +79,19 @@ static void candle__assert(s32 value, const char* unitName, u32 line) {
      * Move all struct, union, enum and alias nodes to the Project node so that we can order them properly.
      */
     static void moveTopLevelTypesToProjectRoot(Project project) {
-
-    }
-
-    /** 
-     * Emit all struct, union, enum and alias nodes.
-     */
-    static void emitTopLevelTypes(Project project) {
-
+        foreach(unit; project.getUnits()) {
+            foreach(ch; unit.children.dup) {
+                if(Struct s = ch.as!Struct) {
+                    project.add(s);
+                } else if(Union u = ch.as!Union) {
+                    project.add(u);
+                } else if(Enum e = ch.as!Enum) {
+                    project.add(e);
+                } else if(Alias a = ch.as!Alias) {
+                    project.add(a);
+                }
+            }
+        }
     }
 
     /** 

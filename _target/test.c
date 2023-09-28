@@ -2,29 +2,37 @@
 
 // Dependency Project headers
 #include "std.h"
+
 // Project header
 #include "test.h"
-// Private structs
+
+typedef s32 AA;
+
 typedef struct TestStructLiterals {
-  s32 a; // Line 3
-  f32 b; // Line 4
+  s32 a;
+  f32 b;
 } TestStructLiterals;
+
 typedef struct Inner {
-  s64 a; // Line 22
-  s64 b; // Line 23
+  s64 a;
+  s64 b;
 } Inner;
+
 typedef struct Local {
-  s8 a; // Line 16
-  f32 b; // Line 17
-  Inner inner; // Line 18
+  s8 a;
+  f32 b;
+  Inner inner;
 } Local;
+
 typedef struct Peach {
-  s32 a; // Line 73
+  s32 a;
 } Peach;
+
 typedef struct MyStruct {
-  s32 a; // Line 48
+  s32 a;
 } MyStruct;
-// Private unions
+
+
 // Private functions
 static void alias_();
 static void as_();
@@ -41,7 +49,6 @@ static void variables();
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // alias.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-typedef s32 AA; // Line 2
 static void alias_() {
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────

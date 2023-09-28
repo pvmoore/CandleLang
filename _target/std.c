@@ -3,11 +3,12 @@
 // Dependency Project headers
 // Project header
 #include "std.h"
-// Private structs
+
 typedef struct PlumPrivate {
-  s32 a; // Line 13
+  s32 a;
 } PlumPrivate;
-// Private unions
+
+
 // Private functions
 s32 putchar(s32);
 

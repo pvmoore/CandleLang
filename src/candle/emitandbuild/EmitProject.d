@@ -12,9 +12,14 @@ public:
     }
     void emit() {
         logEmit("🕯 Emit %s", project.name);
+
+        // Emit header '<project_name>.h'
+        buf = headerBuf;
+        emitHeader();
+
+        // Emit body '<project_name>.c'
         buf = sourceBuf;
-        
-        emit(project);
+        emitBody();
 
         // Write the file now
         string filename = project.name ~ ".c";
@@ -34,6 +39,7 @@ private:
     StringBuffer buf, sourceBuf, headerBuf;
     string indent;
     uint line;
+    bool emitLineNumbers;
 
     void push() { indent ~= "  "; }
     void pop() { indent = indent[0..$-2]; }
@@ -73,17 +79,32 @@ private:
         buf.add("#ifndef %s_H\n", project.name);
         buf.add("#define %s_H\n\n", project.name);
         buf.add("#include \"candle__common.h\"\n\n");
-        foreach(u; project.getUnits()) {
-            foreach(s; u.getStructs()) {
+
+        foreach(ch; project.children) {
+            if(Struct s = ch.as!Struct) {
                 if(s.isPublic) {
                     emit(s);
+                    add("\n");
+                }
+            } else if(Union u = ch.as!Union) {
+                if(u.isPublic) {
+                    emit(u);
+                    add("\n");
+                }
+            } else if(Enum e = ch.as!Enum) {
+                if(e.isPublic) {
+                    emit(e);
+                    add("\n");
+                }
+            } else if(Alias a = ch.as!Alias) {
+                if(a.isPublic) {
+                    emit(a);
+                    add("\n");
                 }
             }
-            foreach(un; u.getUnions()) {
-                if(un.isPublic) {
-                    emit(un);
-                }
-            }
+        }
+
+        foreach(u; project.getUnits()) {
             foreach(f; u.getFuncs()) {
                 if(f.isPublic) {
                     emit(f, true);
@@ -91,6 +112,65 @@ private:
             }
         }
         buf.add("\n#endif // %s_H\n", project.name);
+    }
+    void emitBody() {
+        writeStmt("// Project .. %s\n\n", project.name);
+
+        // Add includes for all dependent Projects
+        writeStmt("// Dependency Project headers\n");
+        foreach(p; project.getExternalProjects()) {
+            writeStmt("#include \"%s.h\"\n\n", p.name);
+        }
+
+        // Include our own public header
+        writeStmt("// Project header\n");
+        writeStmt("#include \"%s.h\"\n\n", project.name);
+
+        //writeStmt("static const char* candle_projectName;");// = \"%s\";", n.name);
+
+        foreach(ch; project.children) {
+            if(Struct s = ch.as!Struct) {
+                if(!s.isPublic) {
+                    emit(s);
+                    add("\n");
+                }
+            } else if(Union u = ch.as!Union) {
+                if(!u.isPublic) {
+                    emit(u);
+                    add("\n");
+                }
+            } else if(Enum e = ch.as!Enum) {
+                if(!e.isPublic) {
+                    emit(e);
+                    add("\n");
+                }
+            } else if(Alias a = ch.as!Alias) {
+                if(!a.isPublic) {
+                    emit(a);
+                    add("\n");
+                }
+            } else if(Unit u = ch.as!Unit) {
+                // Emit this later
+            } else {
+                assert(false, "what is this node? %s".format(ch.enode()));
+            }
+        }
+
+        writeStmt("\n// Private functions\n");
+        foreach(unit; project.getUnits()) {
+            unit.getFuncs()
+                .filter!(it=>!it.isPublic)
+                .each!((it) {
+                    emit(it, true);
+                });
+        }
+        add("\n");
+
+        emitLineNumbers = true;
+
+        foreach(u; project.getUnits()) {
+            emit(u);
+        }
     }
     void castTo(Type t) {
         add("(");
@@ -115,7 +195,7 @@ private:
     }
     void afterStmt(Stmt stmt) {
         add(";");
-        if(candle.emitLineNumber && !isHeader() && stmt.coord.line != line) {
+        if(candle.emitLineNumber && emitLineNumbers && !isHeader() && stmt.coord.line != line) {
             line = stmt.coord.line;
             add(" // Line %s", line+1);
         }
@@ -302,55 +382,6 @@ private:
     }
     void emit(ProjectId n) {
         // Do we need to do anything here?
-    }
-    void emit(Project n) {
-        writeStmt("// Project .. %s\n\n", project.name);
-
-        // Emit header '<project_name>.h'
-        buf = headerBuf;
-        emitHeader();
-        buf = sourceBuf;
-
-        // Add includes for all dependent Projects
-        writeStmt("// Dependency Project headers\n");
-        foreach(p; n.getExternalProjects()) {
-            writeStmt("#include \"%s.h\"\n", p.name);
-        }
-
-        // Include our own public header
-        writeStmt("// Project header\n");
-        writeStmt("#include \"%s.h\"\n", n.name);
-
-        //writeStmt("static const char* candle_projectName;");// = \"%s\";", n.name);
-
-        // Emit Project private structs, unions and functions
-        writeStmt("// Private structs\n");
-        foreach(unit; n.getUnits()) {
-            unit.getStructs()
-                .filter!(it=>!it.isPublic)
-                .each!((it) {
-                    emit(it);
-                });
-        }
-        writeStmt("// Private unions\n");
-        foreach(unit; n.getUnits()) {
-            unit.getUnions()
-                .filter!(it=>!it.isPublic)
-                .each!((it) {
-                    emit(it);
-                });
-        }
-        writeStmt("// Private functions\n");
-        foreach(unit; n.getUnits()) {
-            unit.getFuncs()
-                .filter!(it=>!it.isPublic)
-                .each!((it) {
-                    emit(it, true);
-                });
-        }
-        add("\n");
-
-        recurseChildren(n);
     }
     void emit(Return n) {
         add("return");

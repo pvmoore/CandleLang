@@ -17,6 +17,7 @@ public:
     // Generated data
     Project mainProject;
     Project[string] projects;
+    bool astDumped;
     
     Project[] allProjects() { return projects.values(); }
     bool hasErrors() { return errors.length > 0; }
@@ -43,6 +44,8 @@ public:
             afterResolution();
             if(hasErrors()) return false;
 
+            doDumpAST();
+
             checkAllProjects();
             if(hasErrors()) return false;
 
@@ -66,13 +69,7 @@ public:
             log("Exception: %s", e);
             return false;
         }finally{
-            if(dumpAst) {
-                foreach(p; allProjects()) {
-                    foreach(u; p.getUnits()) {
-                        writeAst(u);
-                    }
-                }
-            }
+            doDumpAST();
         }
         return true;
     }
@@ -95,6 +92,16 @@ private:
             dir.create();
         } else {
             // Clean it?
+        }
+    }
+    void doDumpAST() {
+        if(dumpAst && !astDumped) {
+            astDumped = true;
+            foreach(p; allProjects()) {
+                foreach(u; p.getUnits()) {
+                    writeAst(u);
+                }
+            }
         }
     }
     bool parseAndResolve() {

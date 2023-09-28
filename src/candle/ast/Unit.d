@@ -50,6 +50,9 @@ public:
     Func[] getFuncs() {
         return children.filter!(it=>it.isA!Func).map!(it=>it.as!Func).array;
     }
+    Enum[] getEnums() {
+        return children.filter!(it=>it.isA!Enum).map!(it=>it.as!Enum).array;
+    }
     Struct getStruct(string name) {
         return getStructs().filter!(it=>it.name == name).frontOrElse!Struct(null);
     }

@@ -8,6 +8,9 @@
 
 
 Emitter.emit(Project):
+
+reorderTopLevelTypes(project)
+
 Write all struct, union, enum or aliases to Project parent so that we can order them properly
 Then order them all with respect to each other
 Then emit them all before emitting any units

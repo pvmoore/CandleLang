@@ -8,6 +8,9 @@ import candle.all;
  */
 final class Enum : Stmt, Type {
 public:
+    string name;
+    bool isPublic;
+
     override ENode enode() { return ENode.ENUM; }
     override EType etype() { return EType.ENUM; }
     override bool isResolved() { return true; }
@@ -23,10 +26,12 @@ public:
     override Type type() { return this; }
 
     override string toString() {
-        return "Enum";
+        return "Enum %s".format(name);
     }
     override string getASTSummary() {
-        return "Enum";
+        string l = ", line %s".format(coord.line+1);
+        string pub = isPublic ? ", pub" : "";
+        return "Enum %s%s%s".format(name, pub, l);
     }
 private:
 }
