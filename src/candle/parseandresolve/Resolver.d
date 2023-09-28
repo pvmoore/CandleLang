@@ -23,11 +23,7 @@ public:
         StopWatch watch;
         watch.start();
 
-        foreach(p; allProjects) {
-            foreach(u; p.getUnits()) {
-                moveStructs(u);
-            }
-        }
+        // Nothing to do at the moment
 
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
@@ -91,46 +87,6 @@ private:
             n.resolve();
             if(n.isAttached()) {
                 allResolved &= n.isResolved();
-            }
-        }
-    }
-    /** 
-     * Move structs so that a struct value that is included in another struct is defined first.
-     * If there is a circular dependency then throw a SemanticError
-     */
-    static void moveStructs(Unit unit) {
-        logResolve("Moving structs %s", unit.name);
-        bool[ulong] mustComeBefore;
-        bool updated = true;
-
-        ulong makeKey(uint a, uint b) { return (a.as!ulong << 32) | b.as!ulong; }
-
-        bool moveStruct(Struct v, Struct s) {
-            ulong key = makeKey(v.id, s.id);
-            if(key in mustComeBefore) {
-                // Circular dependency
-                s.getCandle().addError(new SemanticError(s, "Circular dependency between %s and %s".format(s.name, v.name)));
-                return false;
-            }
-            mustComeBefore[key] = true;
-            unit.moveToIndex(s.index(), v);
-            logResolve("Moving struct %s above struct %s", v.name, s.name);
-            return true;
-        }
-
-        while(updated) {
-            updated = false;
-
-            foreach(s; unit.getStructs()) {
-                foreach(v; s.getContainedStructValues()) {
-                    // Ensure v is before s
-                    auto indexOfS = s.index();
-                    auto indexOfV = v.index();
-                    if(indexOfV > indexOfS) {
-                        if(!moveStruct(v, s)) return;
-                        updated = true;
-                    }
-                }
             }
         }
     }

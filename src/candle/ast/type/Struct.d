@@ -6,7 +6,7 @@ import candle.all;
  *  Struct
  *      { Var }
  */
-final class Struct : Node, Type {
+final class Struct : Stmt, Type {
 public:
     string name;
     bool isPublic;

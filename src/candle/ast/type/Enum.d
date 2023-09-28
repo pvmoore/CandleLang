@@ -6,7 +6,7 @@ import candle.all;
  *  Enum
  *      { Id Expr }     values
  */
-final class Enum : Node, Type {
+final class Enum : Stmt, Type {
 public:
     override ENode enode() { return ENode.ENUM; }
     override EType etype() { return EType.ENUM; }

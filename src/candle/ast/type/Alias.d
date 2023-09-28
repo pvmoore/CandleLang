@@ -6,7 +6,7 @@ import candle.all;
  *  Alias
  *      Type
  */
-final class Alias : Node, Type {
+final class Alias : Stmt, Type {
 public:
     string name;
     bool isPublic;

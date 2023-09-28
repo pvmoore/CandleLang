@@ -7,7 +7,7 @@ import candle.all;
  *      { Var }
  *      { Func }
  */
-final class Union : Node, Type {
+final class Union : Stmt, Type {
 public:
     string name;
     bool isPublic;

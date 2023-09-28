@@ -13,6 +13,7 @@ public:
     void emit() {
         logEmit("🕯 Emit %s", project.name);
         buf = sourceBuf;
+        
         emit(project);
 
         // Write the file now
@@ -124,6 +125,7 @@ private:
     void emit(Node n) {
         beforeNode(n);
         switch(n.enode()) with(ENode) {
+            case ALIAS: emit(n.as!Alias); break;
             case AS: emit(n.as!As); break;
             case BINARY: emit(n.as!Binary); break;
             case BUILTIN_FUNC: emit(n.as!BuiltinFunc); break;
@@ -149,6 +151,12 @@ private:
             default: throw new Exception("EmitProject: Handle node %s".format(n.enode()));
         }
         afterNode(n);
+    }
+    void emit(Alias n) {
+        add("typedef ");
+        emit(n.toType().as!Node);
+        add(" %s", n.name);
+        afterStmt(n.as!Stmt);
     }
     void emit(As n) {
         castTo(n.type());

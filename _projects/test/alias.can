@@ -1,4 +1,6 @@
 
+alias AA = int;
+
 
 void alias_() {
 

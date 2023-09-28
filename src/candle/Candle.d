@@ -148,10 +148,7 @@ private:
     }
     void emitAllProjects() {
         logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        Emitter.emitCommonHeader(this); 
-        foreach(p; allProjects()) {
-            Emitter.emit(p);
-        }
+        Emitter.emit(this);
     }
     /** 
      * Build all Projects into one object file per project
