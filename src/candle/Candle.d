@@ -98,8 +98,10 @@ private:
         if(dumpAst && !astDumped) {
             astDumped = true;
             foreach(p; allProjects()) {
+                writeAst(this, p, p.name, null);
+
                 foreach(u; p.getUnits()) {
-                    writeAst(u);
+                    writeAst(this, u, p.name, u.name);
                 }
             }
         }

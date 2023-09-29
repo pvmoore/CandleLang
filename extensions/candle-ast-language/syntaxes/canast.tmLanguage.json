@@ -12,94 +12,93 @@
 			"include": "#strings-single"
 		},
 		{
-			"include" : "#number-literals"
+			"include": "#number-literals"
 		}
 	],
 	"repository": {
-
 		"keywords": {
 			"patterns": [
 				{
-					"name": "entity.name.tag.canast",
-					"match": "\\b(not comptime|comptime|type|kind|target|to|nid|params|refs|subtype|length|line|size|align|packed|location)(\\*+|\\b)"
+					"match": "\\b(not comptime|comptime|type|kind|target|to|nid|params|refs|subtype|length|line|size|align|packed|location)(\\*+|\\b)",
+					"name": "entity.name.tag.canast"
 				},
 				{
-					"name": "keyword.control.canast",
-					"match": "\\b(const|if|while|return|import|assert|not|is|as|and|or|else|break|continue|loop|choose)\\b"
+					"match": "\\b(const|if|while|return|import|assert|not|is|as|and|or|else|break|continue|loop|choose)\\b",
+					"name": "keyword.control.canast"
 				},
 				{
-					"name": "storage.type.canast",
-					"match": "\\b(bool|byte|ubyte|short|ushort|int|uint|long|ulong|float|half|double|void|struct|enum)(\\*+|\\b)"
+					"match": "\\b(bool|byte|ubyte|short|ushort|int|uint|long|ulong|float|half|double|void|struct|enum)(\\*+|\\b)",
+					"name": "storage.type.canast"
 				},
 				{
-					"name": "keyword.control.canast",
-					"match": "\\b(As|Binary|BuiltinFunc|Break|Call|Case|Continue|Dot|Enum|Func|Id|Import|NodeRef|LiteralStruct|Null|Number|Project|ProjectId|Return|Scope|Struct|TypeRef|Unary|Union|Unit|UnresolvedType|Var)(\\*+|\\b)"
+					"match": "\\b(Alias|As|Binary|BuiltinFunc|Break|Call|Case|Continue|Dot|Enum|Func|Id|Import|NodeRef|LiteralStruct|Null|Number|Project|ProjectId|Return|Scope|Struct|TypeRef|Unary|Union|Unit|UnresolvedType|Var)(\\*+|\\b)",
+					"name": "keyword.control.canast"
 				},
 				{
-					"name" : "error.canast",
-					"match": "\\b(unresolved)\\b"
+					"match": "\\b(unresolved)\\b",
+					"name": "error.canast"
 				},
 				{
-					"name" : "storage.modifier.canast",
-					"match": "\\b(pub|extern|returns)\\b"
+					"match": "\\b(pub|extern|returns)\\b",
+					"name": "storage.modifier.canast"
 				},
 				{
-					"name" : "support.function.canast",
-					"match" : "@[_\\w]+\\b"
+					"match": "@[_\\w]+\\b",
+					"name": "support.function.canast"
 				},
 				{
-					"name" : "entity.name.tag.canast",
-					"match" : "\\[\\[.*\\]\\]"
+					"match": "\\[\\[.*\\]\\]",
+					"name": "entity.name.tag.canast"
 				},
 				{
-					"name": "constant.numeric",
-					"match": "\\b(true|false|null)(\\**|\\b)"
+					"match": "\\b(true|false|null)(\\**|\\b)",
+					"name": "constant.numeric"
 				},
 				{
-					"name": "entity.other.this.canast",
-					"match": "\\b(this)(\\**|\\b)"
-				}
-			]
-		},
-		"strings-double": {
-			"name": "string.quoted.double.canast",
-			"begin": "'",
-			"end": "'",
-			"patterns": [
-				{
-					"name": "constant.character.escape.canast",
-					"match": "\\\\."
-				}
-			]
-		},
-		"strings-single": {
-			"name": "string.quoted.single.canast",
-			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.canast",
-					"match": "\\\\."
+					"match": "\\b(this)(\\**|\\b)",
+					"name": "entity.other.this.canast"
 				}
 			]
 		},
 		"number-literals": {
 			"patterns": [
 				{
-					"name"  : "constant.numeric.float",
-					"match" : "\\b([\\d_]+\\.[\\d_]+(f|d|h)?)\\b"
+					"match": "\\b([\\d_]+\\.[\\d_]+(f|d|h)?)\\b",
+					"name": "constant.numeric.float"
 				},
 				{
-					"name"  : "constant.numeric",
-					"match" : "\\b[\\d_]+\\b"
+					"match": "\\b[\\d_]+\\b",
+					"name": "constant.numeric"
 				},
 				{
-					"name"  : "constant.numeric.binary",
-					"match" : "\\b0b[0-1_]+\\b"
+					"match": "\\b0b[0-1_]+\\b",
+					"name": "constant.numeric.binary"
 				},
 				{
-					"name"  : "constant.numeric.hex",
-					"match" : "\\b0x[\\d_a-fA-F]+\\b"
+					"match": "\\b0x[\\d_a-fA-F]+\\b",
+					"name": "constant.numeric.hex"
+				}
+			]
+		},
+		"strings-double": {
+			"begin": "'",
+			"end": "'",
+			"name": "string.quoted.double.canast",
+			"patterns": [
+				{
+					"match": "\\\\.",
+					"name": "constant.character.escape.canast"
+				}
+			]
+		},
+		"strings-single": {
+			"begin": "\"",
+			"end": "\"",
+			"name": "string.quoted.single.canast",
+			"patterns": [
+				{
+					"match": "\\\\.",
+					"name": "constant.character.escape.canast"
 				}
 			]
 		}

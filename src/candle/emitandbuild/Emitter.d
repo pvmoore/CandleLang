@@ -65,13 +65,8 @@ static void candle__assert(s32 value, const char* unitName, u32 line) {
     }
     static void emit(Project project) {
         
-        //moveTopLevelTypesToProjectRoot(project);
-
-        foreach(u; project.getUnits()) {
-            reorderTopLevelTypes(u);
-        }
-
         moveTopLevelTypesToProjectRoot(project);
+        reorderTopLevelTypes(project);
 
         new EmitProject(project).emit();
     }
@@ -93,42 +88,79 @@ static void candle__assert(s32 value, const char* unitName, u32 line) {
             }
         }
     }
-
     /** 
-     * Move structs so that a struct value that is included in another struct is defined first.
+     * Move private structs, unions, enums and aliases so that:
+     * - a struct, union, enum or alias that is included in another struct|union is defined first.
+     *
      * If there is a circular dependency then throw a SemanticError
      */
-    static void reorderTopLevelTypes(Unit unit) {
-        logResolve("Moving structs %s", unit.name);
+    static void reorderTopLevelTypes(Project project) {
+        logResolve("Reordering top level structs, unions, enums and aliases %s", project.name);
         bool[ulong] mustComeBefore;
         bool updated = true;
+        Candle candle = project.candle;
 
         ulong makeKey(uint a, uint b) { return (a.as!ulong << 32) | b.as!ulong; }
 
-        bool moveStruct(Struct v, Struct s) {
+        bool moveNode(Node v, Node s) {
             ulong key = makeKey(v.id, s.id);
             if(key in mustComeBefore) {
                 // Circular dependency
-                s.getCandle().addError(new SemanticError(s, "Circular dependency between %s and %s".format(s.name, v.name)));
+                candle.addError(new SemanticError(s, "Circular dependency between %s and %s".format(s, v)));
                 return false;
             }
             mustComeBefore[key] = true;
-            unit.moveToIndex(s.index(), v);
-            logResolve("Moving struct %s above struct %s", v.name, s.name);
+            project.moveToIndex(s.index(), v);
+            logResolve("Moving %s above %s", v, s);
             return true;
+        }
+        Type getValueType(Type t) {
+            if(Struct s = t.as!Struct) return s.as!Struct;
+            if(Union u = t.as!Union) return u.as!Union;
+            if(Enum e = t.as!Enum) return e.as!Enum;
+            if(Alias a = t.as!Alias) return a.as!Alias;
+            if(TypeRef tr = t.as!TypeRef) return getValueType(tr.decorated);
+            return null;
+        }
+        bool isInOrder(Type a, Type b) {
+            auto indexOfA = a.as!Node.index();
+            auto indexOfB = b.as!Node.index();
+            return indexOfA < indexOfB;
         }
 
         while(updated) {
             updated = false;
 
-            foreach(s; unit.getStructs()) {
-                foreach(v; s.getContainedStructValues()) {
-                    // Ensure v is before s
-                    auto indexOfS = s.index();
-                    auto indexOfV = v.index();
-                    if(indexOfV > indexOfS) {
-                        if(!moveStruct(v, s)) return;
-                        updated = true;
+            foreach(ch; project.children) {
+                if(Struct s = ch.as!Struct) {
+                    if(!s.isPublic) {
+                        foreach(v; s.getContainedStructValues()) {
+                            if(v.isPublic) continue;
+                            // Ensure v is before s
+                            auto indexOfS = s.index();
+                            auto indexOfV = v.index();
+                            if(indexOfV > indexOfS) {
+                                if(!moveNode(v, s)) return;
+                                updated = true;
+                            }
+                        }
+                    }
+                } else if(Union u = ch.as!Union) {
+                    if(!u.isPublic) {
+                     
+                    }
+                } else if(Enum e = ch.as!Enum) {
+                    if(!e.isPublic) {
+                     
+                    }
+                } else if(Alias a = ch.as!Alias) {
+                    if(!a.isPublic) {
+                        if(Type t = getValueType(a.toType())) {
+                            if(!isPublic(t) && !isInOrder(t, a)) {
+                                if(!moveNode(t.as!Node, a)) return;
+                                updated = true;
+                            }
+                        }
                     }
                 }
             }

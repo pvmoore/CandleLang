@@ -1,5 +1,8 @@
 
 alias AA = int;
+alias BB = AA;
+alias CC = DD;
+alias DD = float;
 
 
 void alias_() {

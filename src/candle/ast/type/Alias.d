@@ -46,5 +46,8 @@ public:
         parseType(this, t);
         t.skip(EToken.SEMICOLON);
     }
+    override void resolve() {
+        
+    }
 private:
 }

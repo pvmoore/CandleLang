@@ -6,7 +6,13 @@
 // Project header
 #include "test.h"
 
-typedef s32 AA;
+typedef s32 AA;	// AA = s32;
+
+typedef AA BB;	// BB = AA;
+
+typedef f32 DD;	// DD = f32;
+
+typedef DD CC;	// CC = DD;
 
 typedef struct TestStructLiterals {
   s32 a;

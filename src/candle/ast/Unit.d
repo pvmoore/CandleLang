@@ -67,6 +67,12 @@ public:
     Union[] getUnions() {
         return children.filter!(it=>it.isA!Union).map!(it=>it.as!Union).array;
     }
+    Alias getAlias(string name) {
+        return getAliases().filter!(it=>it.name == name).frontOrElse!Alias(null);
+    }
+    Alias[] getAliases() {
+        return children.filter!(it=>it.isA!Alias).map!(it=>it.as!Alias).array;
+    }
     override string toString() {
         return "Unit %s (Project %s)".format(name, getProject().name);
     }
@@ -81,7 +87,6 @@ public:
             lastPos = t.pos;
         }
         isParsed = true;
-        writeAst(this);
     }
 private:
     void readSource() {
@@ -98,6 +103,9 @@ private:
                 bool isPublic = t.isValue("pub", -1);
                 string structName = t.value(1);
                 project.scannedTypes[structName] = isPublic;
+            } else if(t.isValue("alias")) {
+                bool isPublic = t.isValue("pub", -1);
+                project.scannedTypes[t.value(1)] = isPublic;
             } else {
                 switch(t.kind()) with(EToken) {
                     case LBRACKET:

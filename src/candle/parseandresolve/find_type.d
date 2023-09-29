@@ -16,6 +16,10 @@ Type findType(Project project, string name) {
             logResolve("    found %s", u);
             return u;
         }
+        if(Alias a = unit.getAlias(name)) {
+            logResolve("    found %s", a);
+            return a;
+        }
     }
 
     foreach(p; project.getExternalProjects()) {

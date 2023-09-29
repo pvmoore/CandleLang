@@ -71,6 +71,9 @@ private:
     string getName(Union n) {
         return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
     }
+    string getName(Alias n) {
+        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
+    }
     string getName(Func n) {
         return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
     }
@@ -236,7 +239,11 @@ private:
         add("typedef ");
         emit(n.toType().as!Node);
         add(" %s", n.name);
-        afterStmt(n.as!Stmt);
+        //afterStmt(n.as!Stmt);
+
+        add(";\t// %s = ", n.name);
+        emit(n.toType().as!Node);
+        add(";\n");
     }
     void emit(As n) {
         castTo(n.type());
@@ -413,13 +420,16 @@ private:
     void emit(TypeRef n) {
         switch(n.decorated.etype()) with(EType) {
             case STRUCT:
-                add("%s".format(getName(n.decorated.as!Struct)));
+                add(getName(n.decorated.as!Struct));
                 break;
             case UNION:
                 add(getName(n.decorated.as!Union));
                 break;
+            case ALIAS:
+                add(getName(n.decorated.as!Alias));
+                break;
             default:
-                throwIf(true, "EmitProject: Handle %s", n.decorated.etype());
+                throwIf(true, "EmitProject.emit(TypeRef): Handle %s", n.decorated.etype());
                 break;
         }
     }

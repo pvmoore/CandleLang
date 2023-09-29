@@ -156,3 +156,15 @@ void recurse(Node n, void delegate(Node n) callback) {
         recurse(ch, callback);
     }
 }
+bool isPublic(T)(T n) if(is(T:Node) || is(T:Type)) {
+    if(Struct s = n.as!Struct) return s.isPublic;
+    if(Union u = n.as!Union) return u.isPublic;
+    if(Enum e = n.as!Enum) return e.isPublic;
+    if(Alias a = n.as!Alias) return a.isPublic;
+    if(Func f = n.as!Func) return f.isPublic;
+    if(Var v = n.as!Var) return v.isPublic;
+    assert(false, "isPublic %s".format(n));
+}
+bool isPrivate(T)(T n) if(is(T:Node) || is(T:Type)) {
+    return !isPublic(n);
+}

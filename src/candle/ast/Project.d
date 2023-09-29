@@ -26,6 +26,11 @@ public:
         //dumpProperties();
     }
 
+    // Alias[] getAliases() { }
+    // Struct[] getStructs() {}
+    // Union[] getUnions() {}
+    // Enum[] getEnums() {}
+
     Project getDependency(string name) {
         // Is it a Project we know about?
         auto dptr = name in dependencies;

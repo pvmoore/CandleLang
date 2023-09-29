@@ -39,12 +39,12 @@ bool isDigit(char c) {
     return c >= '0' && c <= '9';
 }
 
-void writeAst(Unit unit) {
-    Candle candle = unit.project.candle;
+void writeAst(Candle candle, Node node, string projectName, string unitName) {
     if(candle.dumpAst) {
-        Filepath path = Filepath(candle.targetDirectory.add(Directory("ast")),
-                                 Filename("%s__%s.canast".format(unit.project.name, unit.name)));
-        path.write(unit.dumpToString());
+        string name = unitName ? "%s__%s.canast".format(projectName, unitName)
+                               : "%s.canast".format(projectName);
+        Filepath path = Filepath(candle.targetDirectory.add(Directory("ast")), Filename(name));
+        path.write(node.dumpToString());
     }
 }
 
