@@ -44,7 +44,7 @@ public:
             afterResolution();
             if(hasErrors()) return false;
 
-            doDumpAST();
+            writeAllUnitAsts(this);
 
             checkAllProjects();
             if(hasErrors()) return false;
@@ -52,6 +52,8 @@ public:
             // After this point we should not get any more CandleErrors
 
             emitAllProjects();
+
+            writeAllProjectASTs(this);
 
             if(buildAllProjects()) {
                 if(link()) {
@@ -69,7 +71,7 @@ public:
             log("Exception: %s", e);
             return false;
         }finally{
-            doDumpAST();
+            writeAllUnitAsts(this);
         }
         return true;
     }
@@ -92,18 +94,6 @@ private:
             dir.create();
         } else {
             // Clean it?
-        }
-    }
-    void doDumpAST() {
-        if(dumpAst && !astDumped) {
-            astDumped = true;
-            foreach(p; allProjects()) {
-                writeAst(this, p, p.name, null);
-
-                foreach(u; p.getUnits()) {
-                    writeAst(this, u, p.name, u.name);
-                }
-            }
         }
     }
     bool parseAndResolve() {

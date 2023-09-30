@@ -150,12 +150,6 @@ bool areResolved(T)(T[] nodes) if(is(T:Node) || is(T:Type)) {
     foreach(n; nodes) if(!n.isResolved()) return false;
     return true;
 }
-void recurse(Node n, void delegate(Node n) callback) {
-    callback(n);
-    foreach(ch; n.children) {
-        recurse(ch, callback);
-    }
-}
 bool isPublic(T)(T n) if(is(T:Node) || is(T:Type)) {
     if(Struct s = n.as!Struct) return s.isPublic;
     if(Union u = n.as!Union) return u.isPublic;
@@ -168,3 +162,41 @@ bool isPublic(T)(T n) if(is(T:Node) || is(T:Type)) {
 bool isPrivate(T)(T n) if(is(T:Node) || is(T:Type)) {
     return !isPublic(n);
 }
+void recurse(Node n, void delegate(Node n) callback) {
+    callback(n);
+    foreach(ch; n.children) {
+        recurse(ch, callback);
+    }
+}
+void writeAllUnitAsts(Candle candle) {
+    foreach(p; candle.allProjects()) {
+        writeAllUnitAsts(candle, p);
+    }
+}
+void writeAllUnitAsts(Candle candle, Project project) {
+    if(candle.dumpAst) {
+        foreach(u; project.getUnits()) {
+            string name = "%s__%s.canast".format(project.name, u.name);
+            Filepath path = Filepath(candle.targetDirectory.add(Directory("ast")), Filename(name));
+
+            path.write(u.dumpToString());
+        }
+    }
+}
+void writeAllProjectASTs(Candle candle) {
+    if(candle.dumpAst) {
+        foreach(p; candle.allProjects()) {
+            string name = "%s.canast".format(p.name);
+            Filepath path = Filepath(candle.targetDirectory.add(Directory("ast")), Filename(name));
+            
+            string buf;
+            foreach(ch; p.children) {
+                if(!ch.isA!Unit) {
+                    buf ~= ch.dumpToString("");
+                }
+            }
+            path.write(buf);
+        }
+    }
+}
+
