@@ -14,6 +14,8 @@ typedef f32 DD;	// DD = f32;
 
 typedef DD CC;	// CC = DD;
 
+typedef DD** EE;	// EE = DD**;
+
 typedef struct TestStructLiterals {
   s32 a;
   f32 b;

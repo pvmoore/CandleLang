@@ -3,10 +3,6 @@
 ## Todo
 
 
-- Alias tests
-
-- Type inference - auto
-
 - (type,type->type) {}
 
 - Function literals (lambdas)
@@ -16,6 +12,8 @@
 - Enums
 - Unions
 - Templates
+
+- Type inference - auto
 
 ### Idea - Function Literals
 ```

@@ -3,6 +3,10 @@ alias AA = int;
 alias BB = AA;
 alias CC = DD;
 alias DD = float;
+alias EE = DD**; 
+
+pub alias PA1 = PA2;
+pub alias PA2 = int*;
 
 
 void alias_() {

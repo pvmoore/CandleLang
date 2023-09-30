@@ -238,7 +238,7 @@ private:
     void emit(Alias n) {
         add("typedef ");
         emit(n.toType().as!Node);
-        add(" %s", n.name);
+        add(" %s", getName(n));
         //afterStmt(n.as!Stmt);
 
         add(";\t// %s = ", n.name);
