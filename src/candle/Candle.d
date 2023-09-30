@@ -41,8 +41,6 @@ public:
             if(!parseAndResolve()) {
                 return false;
             }
-            afterResolution();
-            if(hasErrors()) return false;
 
             writeAllUnitAsts(this);
 
@@ -121,44 +119,22 @@ private:
         return resolved;
     }
     void parseAllProjects(int pass) {
-        logParse("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
-        foreach(p; allProjects()) {
-            Parser.parse(p);
-        }
+        Parser.parseAllProjects(this, pass);
     }
     bool resolveAllProjects(int pass) {
-        logResolve("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
-        bool allResolved = true;
-        foreach(p; allProjects()) {
-            allResolved &= Resolver.resolve(p);
-        }
-        logResolve("  All resolved = %s", allResolved);
-        return allResolved;
-    }
-    void afterResolution() {
-        Resolver.afterAllResolved(allProjects());
+        return Resolver.resolveAllProjects(this, pass);
     }
     void checkAllProjects() {
-        logCheck("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        foreach(p; allProjects()) {
-            logCheck("  Check %s", p.name);
-            Checker.check(p);
-        }
+        Checker.checkAllProjects(this);
     }
     void emitAllProjects() {
-        logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        Emitter.emit(this);
+        Emitter.emitAllProjects(this);
     }
     /** 
      * Build all Projects into one object file per project
      */
     bool buildAllProjects() {
-        logBuild("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        foreach(p; allProjects()) {
-            bool result = Builder.build(p);
-            if(!result) return false;
-        }
-        return true;
+        return Builder.buildAllProjects(this);
     }
     /** 
      * Link all object files together

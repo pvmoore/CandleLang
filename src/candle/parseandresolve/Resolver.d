@@ -6,27 +6,19 @@ final class Resolver {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
-    static bool resolve(Project project) {
-        StopWatch watch;
-        watch.start();
-        logResolve("  Resolving %s", project);
+    static bool resolveAllProjects(Candle candle, int pass) {
+        logResolve("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         bool allResolved = true;
-
-        foreach(u; project.getUnits()) {
-            recurseChildren(u, allResolved);
+        foreach(p; candle.allProjects()) {
+            allResolved &= Resolver.resolve(p);
         }
-        watch.stop();
-        atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
+        logResolve("  All resolved = %s", allResolved);
+
+        if(allResolved && candle.hasErrors()) {
+            afterAllResolved(candle.allProjects());
+        }
+
         return allResolved;
-    }
-    static void afterAllResolved(Project[] allProjects) {
-        StopWatch watch;
-        watch.start();
-
-        // Nothing to do at the moment
-
-        watch.stop();
-        atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
     }
     /**
      * Try to resolve the type of a Node using the parent's type.
@@ -78,6 +70,28 @@ public:
 private:
     shared static ulong totalNanos;
 
+    static bool resolve(Project project) {
+        StopWatch watch;
+        watch.start();
+        logResolve("  Resolving %s", project);
+        bool allResolved = true;
+
+        foreach(u; project.getUnits()) {
+            recurseChildren(u, allResolved);
+        }
+        watch.stop();
+        atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
+        return allResolved;
+    }
+    static void afterAllResolved(Project[] allProjects) {
+        StopWatch watch;
+        watch.start();
+
+        // Nothing to do at the moment
+
+        watch.stop();
+        atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
+    }
     static void recurseChildren(Node n, ref bool allResolved) {
         foreach(ch; n.children) {
             recurseChildren(ch, allResolved);

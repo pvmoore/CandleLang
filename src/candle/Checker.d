@@ -5,6 +5,16 @@ import candle.all;
 final class Checker {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
+
+    static void checkAllProjects(Candle candle) {
+        logCheck("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
+        foreach(p; candle.allProjects()) {
+            check(p);
+        }
+    }
+private:
+    shared static ulong totalNanos;
+    
     /** 
      * Check all Stmt Nodes from the bottom up
      */
@@ -17,9 +27,6 @@ public:
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
     }
-private:
-    shared static ulong totalNanos;
-
     static void recurseChildren(Node n) {
         foreach(ch; n.children) {
             recurseChildren(ch);

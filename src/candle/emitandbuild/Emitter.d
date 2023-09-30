@@ -6,9 +6,10 @@ final class Emitter {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
-    static void emit(Candle candle) {
+    static void emitAllProjects(Candle candle) {
         StopWatch watch;
         watch.start();
+        logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
 
         emitCommonHeader(candle); 
 

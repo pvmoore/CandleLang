@@ -6,6 +6,15 @@ final class Parser {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
+    static void parseAllProjects(Candle candle, int pass) {
+        logParse("Parse (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
+        foreach(p; candle.allProjects()) {
+            parse(p);
+        }
+    }
+private:
+    shared static ulong totalNanos;
+    
     static void parse(Project project) {
         StopWatch watch;
         watch.start();
@@ -22,6 +31,4 @@ public:
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
     }
-private:
-    shared static ulong totalNanos;
 }
