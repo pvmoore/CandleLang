@@ -106,7 +106,6 @@ static void candle__assert(s32 value, const char* unitName, u32 line) {
         bool moveNode(Node v, Node s) {
             ulong key = makeKey(v.id, s.id);
             if(key in mustComeBefore) {
-                // Circular dependency
                 candle.addError(new SemanticError(s, "Circular dependency between %s and %s".format(s, v)));
                 return false;
             }
@@ -134,33 +133,29 @@ static void candle__assert(s32 value, const char* unitName, u32 line) {
 
             foreach(ch; project.children) {
                 if(Struct s = ch.as!Struct) {
-                    if(!s.isPublic) {
-                        foreach(v; s.getContainedStructValues()) {
-                            if(v.isPublic) continue;
-                            // Ensure v is before s
-                            auto indexOfS = s.index();
-                            auto indexOfV = v.index();
-                            if(indexOfV > indexOfS) {
-                                if(!moveNode(v, s)) return;
-                                updated = true;
-                            }
+                    bool pubFlag = s.isPublic;
+
+                    foreach(vt; s.getVarTypes()) {
+                        Type v = getValueType(vt);
+                        if(v && isPublic(v) == pubFlag && !isInOrder(v, s)) {
+                            if(!moveNode(v.as!Node, s)) return;
+                            updated = true;
                         }
                     }
                 } else if(Union u = ch.as!Union) {
-                    if(!u.isPublic) {
+                    bool pubFlag = u.isPublic;
                      
-                    }
+                    
                 } else if(Enum e = ch.as!Enum) {
-                    if(!e.isPublic) {
-                     
-                    }
+                    bool pubFlag = e.isPublic;
+
                 } else if(Alias a = ch.as!Alias) {
-                    if(!a.isPublic) {
-                        if(Type t = getValueType(a.toType())) {
-                            if(!isPublic(t) && !isInOrder(t, a)) {
-                                if(!moveNode(t.as!Node, a)) return;
-                                updated = true;
-                            }
+                    bool pubFlag = a.isPublic;
+
+                    if(Type t = getValueType(a.toType())) {
+                        if(pubFlag == isPublic(t) && !isInOrder(t, a)) {
+                            if(!moveNode(t.as!Node, a)) return;
+                            updated = true;
                         }
                     }
                 }

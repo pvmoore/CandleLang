@@ -2,8 +2,6 @@
 
 ## Todo
 
-move public types to top level and sort them
-
 
 - Alias tests
 
