@@ -31,47 +31,59 @@ public:
     override bool isResolved() { return true; }
     override Type type() { return TYPE_UNKNOWN; }
 
-    Var getVar(string name) {
+    Var getVar(string name, Visibility v) {
+        return getVars(v).filter!(it=>it.name==name).frontOrElse!Var(null);
+    }
+    Var[] getVars(Visibility v) {
         return children.filter!(it=>it.isA!Var)
                        .map!(it=>it.as!Var)
-                       .filter!(v=>v.name==name)
-                       .frontOrElse!Var(null);
-    }
-    Var[] getVars() {
-        return children.filter!(it=>it.isA!Var).map!(it=>it.as!Var).array;
-    }
-    Func[] getFuncs(string name, bool includePrivate) {
-        return children.filter!(it=>it.isA!Func)
-                       .map!(it=>it.as!Func)
-                       .filter!(v=>v.name==name)
-                       .filter!(v=>v.isPublic || includePrivate)
-                       .array();
-    }
-    Func[] getFuncs() {
-        return children.filter!(it=>it.isA!Func).map!(it=>it.as!Func).array;
-    }
-    Enum[] getEnums() {
-        return children.filter!(it=>it.isA!Enum).map!(it=>it.as!Enum).array;
-    }
-    Struct getStruct(string name) {
-        return getStructs().filter!(it=>it.name == name).frontOrElse!Struct(null);
-    }
-    Struct[] getStructs() {
-        return children.filter!(it=>it.isA!Struct)
-                       .map!(it=>it.as!Struct)
+                       .filter!(it=>it.hasVisibility(v))
                        .array;
     }
-    Union getUnion(string name) {
-        return getUnions().filter!(it=>it.name == name).frontOrElse!Union(null);
+    Func[] getFuncs(string name, Visibility v) {
+        return getFuncs(v).filter!(it=>it.name==name).array;
     }
-    Union[] getUnions() {
-        return children.filter!(it=>it.isA!Union).map!(it=>it.as!Union).array;
+    Func[] getFuncs(Visibility v) {
+        return children.filter!(it=>it.isA!Func)
+                       .map!(it=>it.as!Func)
+                       .filter!(it=>it.hasVisibility(v))
+                       .array;
     }
-    Alias getAlias(string name) {
-        return getAliases().filter!(it=>it.name == name).frontOrElse!Alias(null);
+    Enum getEnum(string name, Visibility v) {
+        return getEnums(v).filter!(it=>it.name == name).frontOrElse!Enum(null);
     }
-    Alias[] getAliases() {
-        return children.filter!(it=>it.isA!Alias).map!(it=>it.as!Alias).array;
+    Enum[] getEnums(Visibility v) {
+        return children.filter!(it=>it.isA!Enum)
+                       .map!(it=>it.as!Enum)
+                       .filter!(it=>it.hasVisibility(v))
+                       .array;
+    }
+    Struct getStruct(string name, Visibility v) {
+        return getStructs(v).filter!(it=>it.name == name).frontOrElse!Struct(null);
+    }
+    Struct[] getStructs(Visibility v) {
+        return children.filter!(it=>it.isA!Struct)
+                       .map!(it=>it.as!Struct)
+                       .filter!(it=>it.hasVisibility(v))
+                       .array;
+    }
+    Union getUnion(string name, Visibility v) {
+        return getUnions(v).filter!(it=>it.name == name).frontOrElse!Union(null);
+    }
+    Union[] getUnions(Visibility v) {
+        return children.filter!(it=>it.isA!Union)
+                       .map!(it=>it.as!Union)
+                       .filter!(it=>it.hasVisibility(v))
+                       .array;
+    }
+    Alias getAlias(string name, Visibility v) {
+        return getAliases(v).filter!(it=>it.name == name).frontOrElse!Alias(null);
+    }
+    Alias[] getAliases(Visibility v) {
+        return children.filter!(it=>it.isA!Alias)
+                       .map!(it=>it.as!Alias)
+                       .filter!(it=>it.hasVisibility(v))
+                       .array;
     }
     override string toString() {
         return "Unit %s (Project %s)".format(name, getProject().name);

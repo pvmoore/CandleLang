@@ -26,10 +26,13 @@ public:
         //dumpProperties();
     }
 
-    // Alias[] getAliases() { }
-    // Struct[] getStructs() {}
-    // Union[] getUnions() {}
-    // Enum[] getEnums() {}
+    Unit[] getUnits() { return children.filter!(it=>it.isA!Unit).map!(it=>it.as!Unit).array(); }
+    Alias[] getAliases(Visibility v) { return getUnits().map!(it=>it.getAliases(v)).join; }
+    Struct[] getStructs(Visibility v) { return getUnits().map!(it=>it.getStructs(v)).join; }
+    Union[] getUnions(Visibility v) { return getUnits().map!(it=>it.getUnions(v)).join; }
+    Enum[] getEnums(Visibility v) { return getUnits().map!(it=>it.getEnums(v)).join; }
+
+    Project[] getExternalProjects() { return externalProjects.values(); }
 
     Project getDependency(string name) {
         // Is it a Project we know about?
@@ -53,18 +56,8 @@ public:
         return (value in scannedTypes) !is null;
     }
 
-    Project[] getExternalProjects() {
-        return externalProjects.values();
-    }
-
     bool isProjectName(string name) {
         return (name in dependencies) !is null;
-    }
-
-    Unit[] getUnits() {
-        return children.filter!(it=>it.isA!Unit)
-                       .map!(it=>it.as!Unit)
-                       .array();
     }
 
     void dumpProperties() {

@@ -32,6 +32,8 @@ uint IDS = 0;
 
 private Type[EType] staticTypes;
 
+enum Visibility { ALL, PUBLIC, PRIVATE }
+
 static this() {
     import std : exists, mkdir;
     if(!exists(".logs/")) mkdir(".logs/");

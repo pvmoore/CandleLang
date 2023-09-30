@@ -55,10 +55,10 @@ Target findIdTarget(Id id) {
     // Check all Unit members
     Project project = id.getProject();
     foreach(unit; project.getUnits()) {
-        Var v = unit.getVar(id.name);
+        Var v = unit.getVar(id.name, Visibility.ALL);
         if(v) return new Target(v);
 
-        Func[] f = unit.getFuncs(id.name, true);
+        Func[] f = unit.getFuncs(id.name, Visibility.ALL);
         if(f.length==1) return new Target(f[0]);
         if(f.length > 1) {
             // We have more then one name match. This is ambiguous since we only have the name
@@ -70,7 +70,7 @@ Target findIdTarget(Id id) {
     foreach(p; project.getExternalProjects()) {
         foreach(unit; p.getUnits()) {
             // We only want public Funcs here
-            Func[] f = unit.getFuncs(id.name, false);
+            Func[] f = unit.getFuncs(id.name, Visibility.PUBLIC);
             if(f.length==1) return new Target(f[0]);
             if(f.length > 1) {
                 // We have more then one name match. This is ambiguous since we only have the name
@@ -99,9 +99,10 @@ Target findIdTarget(Id id, Node prev) {
             Project project = pid.project;
             foreach(u; project.getUnits()) {
 
-                if(auto var = u.getVar(id.name)) return new Target(var).setExternal();
-
-                Func[] funcs = u.getFuncs(id.name, false);
+                if(auto var = u.getVar(id.name, Visibility.PUBLIC)) { 
+                    return new Target(var).setExternal();
+                }
+                Func[] funcs = u.getFuncs(id.name, Visibility.PUBLIC);
                 if(funcs.length == 1) return new Target(funcs[0]).setExternal();
                 if(funcs.length > 1) {
                     // We have more then one name match. This is ambiguous since we only have the name

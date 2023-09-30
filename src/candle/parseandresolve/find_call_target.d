@@ -28,17 +28,17 @@ Target findCallTarget(Call call) {
     //     matches ~= u.getFuncs(call.name);
     // }
 
-    // Check all Unit members
+    // Check all Project functions
     Project project = call.getProject();
     foreach(unit; project.getUnits()) {
-        matches ~= unit.getFuncs(call.name, true);
+        matches ~= unit.getFuncs(call.name, Visibility.ALL);
     }
 
     // Check external Projects
     foreach(p; project.getExternalProjects()) {
         foreach(unit; p.getUnits()) {
             // We only want public Funcs here
-            matches ~= unit.getFuncs(call.name, false);
+            matches ~= unit.getFuncs(call.name, Visibility.PUBLIC);
         }
     }
 
@@ -85,7 +85,7 @@ Target findCallTarget(Call call, Node prev) {
             Project project = pid.project;
             foreach(u; project.getUnits()) {
 
-                Func[] funcs = u.getFuncs(call.name, false);
+                Func[] funcs = u.getFuncs(call.name, Visibility.PUBLIC);
                 if(funcs.length == 1) return new Target(funcs[0]).setExternal();
                 if(funcs.length > 1) {
                     // We have more then one name match

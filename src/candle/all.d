@@ -10,7 +10,7 @@ import core.atomic              : atomicLoad, atomicOp;
 import std.format               : format;
 import std.algorithm            : all, map, filter, each, maxElement;
 import std.range                : array;
-import std.array                : replace;
+import std.array                : replace, join;
 import std.stdio                : File, writefln;
 import std.string               : toLower;
 import std.datetime.stopwatch   : StopWatch;

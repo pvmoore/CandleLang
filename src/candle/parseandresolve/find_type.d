@@ -8,15 +8,15 @@ Type findType(Project project, string name) {
 
     foreach(unit; project.getUnits()) {
         logResolve("  Checking unit %s", unit.name);
-        if(Struct s = unit.getStruct(name)) {
+        if(Struct s = unit.getStruct(name, Visibility.ALL)) {
             logResolve("    found %s", s);
             return s;
         }
-        if(Union u = unit.getUnion(name)) {
+        if(Union u = unit.getUnion(name, Visibility.ALL)) {
             logResolve("    found %s", u);
             return u;
         }
-        if(Alias a = unit.getAlias(name)) {
+        if(Alias a = unit.getAlias(name, Visibility.ALL)) {
             logResolve("    found %s", a);
             return a;
         }

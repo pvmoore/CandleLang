@@ -108,10 +108,8 @@ private:
         }
 
         foreach(u; project.getUnits()) {
-            foreach(f; u.getFuncs()) {
-                if(f.isPublic) {
-                    emit(f, true);
-                }
+            foreach(f; u.getFuncs(Visibility.PUBLIC)) {
+                emit(f, true);
             }
         }
         buf.add("\n#endif // %s_H\n", project.name);
@@ -161,8 +159,7 @@ private:
 
         writeStmt("\n// Private functions\n");
         foreach(unit; project.getUnits()) {
-            unit.getFuncs()
-                .filter!(it=>!it.isPublic)
+            unit.getFuncs(Visibility.PRIVATE)
                 .each!((it) {
                     emit(it, true);
                 });

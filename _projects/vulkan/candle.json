@@ -1,6 +1,6 @@
 {
     "dependencies": {
-        "std": "_projects/vulkan"
+        "std": "_projects/std"
     },
     "name": "vulkan"
 }

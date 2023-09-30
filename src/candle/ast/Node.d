@@ -162,6 +162,12 @@ bool isPublic(T)(T n) if(is(T:Node) || is(T:Type)) {
 bool isPrivate(T)(T n) if(is(T:Node) || is(T:Type)) {
     return !isPublic(n);
 }
+bool hasVisibility(T)(T n, Visibility v) if(is(T:Node) || is(T:Type)) {
+    if(v == Visibility.ALL) return true;
+    bool isPub = isPublic(n);
+    bool visPub = v == Visibility.PUBLIC; 
+    return isPub == visPub;
+}
 void recurse(Node n, void delegate(Node n) callback) {
     callback(n);
     foreach(ch; n.children) {
