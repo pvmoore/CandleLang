@@ -95,7 +95,7 @@
 					"name": "keyword.control.candle"
 				},
 				{
-					"match": "\\b(alias|bool|byte|ubyte|short|ushort|int|uint|long|ulong|float|double|void|struct|enum)(\\*+|\\b)",
+					"match": "\\b(alias|bool|byte|ubyte|short|ushort|int|uint|long|ulong|float|double|void|struct|func|enum)(\\*+|\\b)",
 					"name": "storage.type.candle"
 				},
 				{

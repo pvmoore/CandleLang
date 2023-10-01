@@ -63,16 +63,16 @@ static void alias_() {
 // as.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void as_() {
-  s32 a = 10; // Line 3
-  f32 b = 3.0f; // Line 4
-  s32 c = (s32)10.3f; // Line 6
-  candle__assert(c == 10, "as.can", 6);
-  f64 d = 10.9 + (f64)(s32)2.9; // Line 7
-  candle__assert(d == 12.9, "as.can", 7);
-  s32 e = (s32)(10.9 + 2.9); // Line 8
-  candle__assert(e == 13, "as.can", 8);
-  s32 f = (s32)10.9 + (s32)2.9; // Line 9
-  candle__assert(f == 12, "as.can", 9);
+  s32 a = 10; // Line 5
+  f32 b = 3.0f; // Line 6
+  s32 c = (s32)10.3f; // Line 8
+  candle__assert(c == 10, "as.can", 8);
+  f64 d = 10.9 + (f64)(s32)2.9; // Line 9
+  candle__assert(d == 12.9, "as.can", 9);
+  s32 e = (s32)(10.9 + 2.9); // Line 10
+  candle__assert(e == 13, "as.can", 10);
+  s32 f = (s32)10.9 + (s32)2.9; // Line 11
+  candle__assert(f == 12, "as.can", 11);
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // binary.can

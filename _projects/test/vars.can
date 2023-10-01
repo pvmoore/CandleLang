@@ -1,6 +1,6 @@
 
 
-void variables() {
+func variables() {
     bool a1; @assert(not a1);
     bool a2 = true; @assert(a2);
 

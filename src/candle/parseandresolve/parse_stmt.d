@@ -24,6 +24,7 @@ void parseStmt(Node parent, Tokens t) {
                 switch(t.value()) {
                     case "struct": parseStruct(parent, t); return;
                     case "alias": parseAlias(parent, t); return;
+                    case "func": parseFunc(parent, t); return;
                     default: break;
                 }
                 break;

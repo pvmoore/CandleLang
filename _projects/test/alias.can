@@ -9,6 +9,6 @@ pub alias PA1 = PA2;
 pub alias PA2 = int*;
 
 
-void alias_() {
+func alias_() {
 
 }

@@ -11,3 +11,7 @@ void syntaxError(Tokens t, string expected) {
     candle.addError(new SyntaxError(t, expected));
     throw new AbortCompilation();
 }
+
+void warn(Node n, string msg) {
+    log("WARN: [%s '%s.can' line %s] %s", n.getProject().name, n.getUnit().name, n.coord.line+1, msg);
+}

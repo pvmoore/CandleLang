@@ -4,7 +4,7 @@ struct TestStructLiterals {
     float b;
 }
 
-void literalstruct() {
+func literalstruct() {
     TestStructLiterals tsl = {};
     @assert(tsl.a == 0);
     @assert(tsl.b == 0);

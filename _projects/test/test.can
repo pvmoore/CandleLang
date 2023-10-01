@@ -1,10 +1,10 @@
 
-extern int putchar(int); 
+extern func putchar(int->int); 
 
 
 int wibble;
 
-int main() {
+func main(void->int) {
     int a = 6;
 
     int* b = null;
@@ -33,12 +33,12 @@ int main() {
 }
 
 // private local function
-void doSomethingElse() {
+func doSomethingElse() {
 
 }
 
 // public local function
-pub void doSomething(int* a, float** b) {
+pub func doSomething(int* a, float** b) {
     bool c = not true;
 
     int d = 'a';

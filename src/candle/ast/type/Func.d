@@ -71,18 +71,18 @@ public:
         return "Func %s, %s params%s%s%s".format(name, numParams, pub, extrn, l);
     }
     /**
-     * FUNC      ::= MODIFIERS Type Id '(' PARAMS ')'  [ BODY ] ';'
-     * MODIFIERS ::= [pub] [extern]
-     * PARAMS    ::= [ Type Id ] { ',' Type Id }
-     * BODY      ::= '{' {Stmt} '}'
+     * FUNC         ::= MODIFIERS 'func' Id '(' PARAMS RETURN_TYPE ')'  [ BODY ] ';'
+     * MODIFIERS    ::= [pub] [extern]
+     * PARAMS       ::= [ Type Id ] { ',' Type Id }
+     * RETURN_TYPE  ::= [ '->' Type ] 
+     * BODY         ::= '{' {Stmt} '}'
      */
     override void parse(Tokens t) {
         // Modifiers
         this.isPublic = t.getAndResetPubModifier();
         this.isExtern = t.getAndResetExternModifier();
 
-        // Return type
-        parseType(this, t);
+        t.skip("func");
 
         // Name
         this.name = t.value(); t.next();
@@ -90,12 +90,35 @@ public:
 
         // Parameters
         t.skip(EToken.LBRACKET);
-        while(!t.isKind(EToken.RBRACKET)) {
-            this.numParams++;
-            parseVar(this, t);
 
-            t.skipOptional(EToken.COMMA);
+        bool isSingleVoidParam = t.isValue("void") && (t.isKind(EToken.RT_ARROW, 1) || t.isKind(EToken.RBRACKET, 1));
+
+        if(isSingleVoidParam) {
+            t.next();
+        } else {
+            while(!t.isKind(EToken.RBRACKET) && !t.isKind(EToken.RT_ARROW)) {
+                this.numParams++;
+                parseVar(this, t);
+
+                t.skipOptional(EToken.COMMA);
+            }
         }
+
+        // return type
+        if(t.isKind(EToken.RT_ARROW)) {
+            t.next();
+
+            parseType(this, t);
+
+            // Move the return type to be the first child
+            if(numParams > 0) {
+                this.insertAt(0, last());
+            }
+        } else {
+            // inferred as void
+            this.insertAt(0, makeNode!Primitive(coord, EType.VOID));
+        }
+
         t.skip(EToken.RBRACKET);
 
         // Body
@@ -116,6 +139,7 @@ public:
             // Must be an extern function
             t.skip(EToken.SEMICOLON);
         }
+        return;
     }
 private:
 }

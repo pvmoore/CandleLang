@@ -1,5 +1,5 @@
 
-void is_() {
+func is_() {
     @assert(1 is 1);
     @assert(true is true);
     @assert(int is int);

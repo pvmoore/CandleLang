@@ -1,5 +1,5 @@
 
-void id() {
+func id() {
 
     // Apple apple = {};
 

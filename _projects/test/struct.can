@@ -1,6 +1,6 @@
 
 
-void struct_() {
+func struct_() {
     Local local;
     Local local2 = {};
 

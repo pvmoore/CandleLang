@@ -3,8 +3,6 @@
 ## Todo
 
 
-- (type,type->type) {}
-
 - Function literals (lambdas)
 - Assign to function pointers 
 

@@ -1,8 +1,8 @@
 // std
 
-extern int putchar(int);
+extern func putchar(int->int);
 
-pub void putChar(int ch) {
+pub func putChar(int ch) {
     putchar(ch);
 }
 
