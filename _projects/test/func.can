@@ -1,0 +1,11 @@
+/*
+    FUNC    ::= 'func' name '(' PARAMS RETTYPE ')' BODY
+    PARAMS  ::= [ Var { , Var } ]
+    RETTYPE ::= [ '->' Type ]
+    BODY    ::= [ '{' {Stmt} '}' ]
+*/
+
+
+func func_() {
+
+}

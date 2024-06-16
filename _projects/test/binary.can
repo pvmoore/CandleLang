@@ -1,42 +1,42 @@
 
 func binary() {
-    int a = 10;
-    int b = 20;
+    a:int = 10;
+    b:int = 20;
 
-    int c = a + b; @assert(c == 30);
-    int d = a - b; @assert(d == -10);
-    int e = a * b; @assert(e == 200);
-    int f = b / a; @assert(f == 2);
-    int f2 = b % 3; @assert(f2 == 2);
+    c:int = a + b; @assert(c == 30);
+    d:int = a - b; @assert(d == -10);
+    e:int = a * b; @assert(e == 200);
+    f:int = b / a; @assert(f == 2);
+    f2:int = b % 3; @assert(f2 == 2);
 
-    int g = a << 1; @assert(g == 20);
-    int h = a >> 1; @assert(h == 5);
+    g:int = a << 1; @assert(g == 20);
+    h:int = a >> 1; @assert(h == 5);
 
     // 10 = 1010
-    int i = a & 2; @assert(i == 2);
-    int j = a | 1; @assert(j == 11);
-    int k = a ^ 0b11; @assert(k == 9);
+    i:int = a & 2; @assert(i == 2);
+    j:int = a | 1; @assert(j == 11);
+    k:int = a ^ 0b11; @assert(k == 9);
 
     // ~1010 = 11110101 = 245u = -11
-    int l = ~a; @assert(l == -11);
+    l:int = ~a; @assert(l == -11);
 
-    int m = -a; @assert(m == -10);
+    m:int = -a; @assert(m == -10);
 
-    int n = a < 20; @assert(n);
-    int n2 = a <= 10; @assert(n2);
+    n:int = a < 20; @assert(n);
+    n2:int = a <= 10; @assert(n2);
 
-    int o = a > 5; @assert(o);
-    int o2 = a >= 10; @assert(o2);
+    o:int = a > 5; @assert(o);
+    o2:int = a >= 10; @assert(o2);
 
-    int p = a == (b-10); @assert(p);
-    int p2 = a != 0; @assert(p2);
+    p:int = a == (b-10); @assert(p);
+    p2:int = a != 0; @assert(p2);
 
-    int q = a < 20 and b > a; @assert(q);
-    int q2 = a < 20 or b < a; @assert(q2);
+    q:int = a < 20 and b > a; @assert(q);
+    q2:int = a < 20 or b < a; @assert(q2);
 
-    bool q3 = false or true; @assert(q3);
-    bool q4 = true and false; @assert(not q4);
-    bool q5 = true and true; @assert(q5);
+    q3:bool = false or true; @assert(q3);
+    q4:bool = true and false; @assert(not q4);
+    q5:bool = true and true; @assert(q5);
 
     a += 1; @assert(a==11);
     a -= 1; @assert(a==10);
@@ -53,10 +53,10 @@ func binary() {
     // b = 12 = 0b1100
     b ^= 0b1111; @ assert(b==0b11);
 
-    bool boo = true;
+    boo:bool = true;
     boo &= false; @assert(boo==false);
     boo |= true; @assert(boo==true);
 
-    int r = 7;
+    r:int = 7;
     r = 8; @assert(r==8);
 }

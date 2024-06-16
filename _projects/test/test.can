@@ -2,12 +2,11 @@
 extern func putchar(int->int); 
 
 
-int wibble;
+wibble:int;
 
 func main(void->int) {
-    int a = 6;
-
-    int* b = null;
+    a:int  = 6;
+    b:int* = null;
 
 
     putchar('a');
@@ -27,6 +26,7 @@ func main(void->int) {
     id();
     literalstruct();
     struct_();
+    func_();
     alias_();
 
     return 0;
@@ -38,21 +38,21 @@ func doSomethingElse() {
 }
 
 // public local function
-pub func doSomething(int* a, float** b) {
-    bool c = not true;
+pub func doSomething(a:int*, b:float**) {
+    c:bool = not true;
 
-    int d = 'a';
-    long e = 0xff;
-    float f = foo;
+    d:int = 'a';
+    e:long = 0xff;
+    f:float = foo;
 
-    int y = 1 + 2 / 3;
-    int z = 1 / 2 + 3;
-    float g = 1.0;
-    float g2 = 1.3f;
+    y:int = 1 + 2 / 3;
+    z:int = 1 / 2 + 3;
+    g:float = 1.0;
+    g2:float = 1.3f;
 
-    Apple apple;
+    apple:Apple;
 
-    std.PlumPublic plum;
+    plum:std.PlumPublic;
     //PlumPublic plum;
     //PlumPrivate plum2;
     //std.PlumPrivate plum2;
@@ -61,16 +61,16 @@ pub func doSomething(int* a, float** b) {
 }
 
 // all variables are private
-float foo = 1;
+foo:float = 1;
 
 // public local struct
 pub struct Apple {
-    int a;
+    a:int;
 }
 
 // private local struct
 struct Peach {
-    int a;
+    a:int;
 }
 
 

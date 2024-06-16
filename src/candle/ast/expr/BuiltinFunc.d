@@ -8,6 +8,10 @@ import candle.all;
  *
  * @assert(Expr)
  * @typeOf(Expr)
+ *
+ * TODO:
+ *   @sizeOf @offsetOf @alignOf 
+ *   @isPointer @isInteger @isValue 
  */
 final class BuiltinFunc : Expr {
 public:

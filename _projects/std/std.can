@@ -2,13 +2,13 @@
 
 extern func putchar(int->int);
 
-pub func putChar(int ch) {
+pub func putChar(ch:int) {
     putchar(ch);
 }
 
 pub struct PlumPublic {
-    int a;
+    a:int;
 }
 struct PlumPrivate {
-    int a;
+    a:int;
 }

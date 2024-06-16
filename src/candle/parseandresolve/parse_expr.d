@@ -15,6 +15,10 @@ void parseExpr(Node parent, Tokens t) {
         }
     }
 }
+
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+private:
+
 void parseExprLhs(Node parent, Tokens t) {
     logParse("lhs %s", t.debugValue());
     Project project = t.unit.project;

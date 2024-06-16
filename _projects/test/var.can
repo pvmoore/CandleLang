@@ -1,0 +1,47 @@
+
+func variables() {
+    a1:bool; @assert(not a1);
+    a2:bool = true; @assert(a2);
+
+    b1:byte; @assert(b1==0);
+    b2:byte = 1; @assert(b2==1);
+
+    c1:ubyte; @assert(c1==0);
+    c2:ubyte = 2; @assert(c2==2);
+
+    d1:short; @assert(d1==0);
+    d2:short = 3; @assert(d2==3);
+
+    e1:ushort; @assert(e1==0);
+    e2:ushort = 4; @assert(e2==4);
+
+    f1:int; @assert(f1==0);
+    f2:int = 5; @assert(f2==5);
+
+    g1:uint; @assert(g1==0);
+    g2:uint = 6; @assert(g2==6);
+
+    h1:long; @assert(h1==0);
+    h2:long = 7; @assert(h2==7);
+
+    i1:ulong; @assert(i1==0);
+    i2:ulong = 8; @assert(i2==8);
+
+    j1:float; @assert(j1==0.0f);
+    j2:float = 9.1; @assert(j2==9.1f);
+
+    k1:double; @assert(k1==0.0);
+    k2:double = 10; @assert(k2==10.0);
+
+    l:MyStruct;
+
+    // TODO Function ptrs 
+    fp:func(a:int,float->void);
+    fp2:func(void->void*);
+
+    // TODO Union
+}
+
+struct MyStruct {
+    a:int;
+}

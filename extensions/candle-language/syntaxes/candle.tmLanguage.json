@@ -21,9 +21,6 @@
 			"include": "#block-comment"
 		},
 		{
-			"include": "#named_arguments"
-		},
-		{
 			"include": "#number-literals"
 		},
 		{
@@ -132,6 +129,7 @@
 				}
 			]
 		},
+
 		"named_arguments": {
 			"patterns": [
 				{
@@ -144,6 +142,7 @@
 				}
 			]
 		},
+		
 		"number-literals": {
 			"patterns": [
 				{

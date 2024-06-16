@@ -8,8 +8,8 @@ func is_() {
     @assert(true is not false);
     @assert(int is not float);
 
-    int a;
-    float b;
+    a:int;
+    b:float;
     @assert(@typeOf(a) is int);
     @assert(@typeOf(a) is not @typeOf(b));
     @assert(@typeOf(1+1) is byte);

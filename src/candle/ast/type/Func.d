@@ -98,7 +98,7 @@ public:
         } else {
             while(!t.isKind(EToken.RBRACKET) && !t.isKind(EToken.RT_ARROW)) {
                 this.numParams++;
-                parseVar(this, t);
+                parseParam(this, t);
 
                 t.skipOptional(EToken.COMMA);
             }

@@ -41,10 +41,13 @@ Type findType(Project project, string name) {
 }
 
 bool isType(Project project, Tokens t) {
-    if(t.kind() == EToken.LBRACKET) {
-         return isFunctionPtr(project, t);
-    }
+    // if(t.kind() == EToken.LBRACKET) {
+    //     bool ifp = isFunctionPtr(project, t);
+    //     if(ifp) syntaxError(t, "fp syntax");
+    //     return ifp;
+    // }
     if(t.kind() != EToken.ID) return false;
+    if(isFunctionPtrNew(project, t)) return true;
     if(isPrimitiveType(t)) return true;
     if(isUserType(project, t)) return true;
 
@@ -68,7 +71,28 @@ int typeLength(Tokens t) {
     int offset;
 
     // function ptr
-    if(t.isKind(EToken.LBRACKET)) {
+    if(t.isValue("func")) {
+        t.pushState();
+        t.skip(EToken.ID);
+        t.skip(EToken.LBRACKET);
+
+        while(!t.isKind(EToken.RBRACKET)) {
+            int len = typeLength(t);
+            assert(len != 0);
+            t.next(len);
+            t.skipOptional(EToken.ID);
+            t.skipOptional(EToken.COMMA);
+            t.skipOptional(EToken.RT_ARROW);
+        }
+        t.skip(EToken.RBRACKET);
+        int end = t.pos;
+        t.popState();
+        log("function ptr length = %s to %s (%s)", pos, end, end-pos);
+        offset = end - pos;
+
+    } else if(t.isKind(EToken.LBRACKET)) {
+        // function ptr old
+
         t.pushState();
         t.next();
         while(!t.isKind(EToken.RBRACKET)) {
@@ -111,29 +135,42 @@ int typeLength(Tokens t) {
 private:
 
 /**
+ * eg. func(void->void) 
+ *     func(int a, int b -> int)
+ */
+bool isFunctionPtrNew(Project project, Tokens t) {
+    return t.isValue("func") && t.isKind(EToken.LBRACKET, 1);
+}
+
+/**
  * eg. (void->void) 
  *     (int a, int b -> int)
  */
-bool isFunctionPtr(Project project, Tokens t) {
-    if(t.kind() != EToken.LBRACKET) return false;
-    t.pushState();
-    t.skip(EToken.LBRACKET);
-    bool happy = true;
-    while(happy && !t.isKind(EToken.RBRACKET)) {
-        if(isType(project, t)) {
-            int len = typeLength(t);
-            t.next(len);
-        } else {
-            happy = false;
-            break;
-        }
-        t.skipOptional(EToken.ID);
-        t.skipOptional(EToken.COMMA);
-        t.skipOptional(EToken.RT_ARROW);
-    }
-    t.popState();
-    return happy;
-}
+// bool isFunctionPtr(Project project, Tokens t) {
+//     if(t.kind() != EToken.LBRACKET) return false;
+//     t.pushState();
+
+//     // (
+//     t.skip(EToken.LBRACKET);
+
+//     // () is not a function ptr
+//     bool happy = !t.isKind(EToken.RBRACKET);
+
+//     while(happy && !t.isKind(EToken.RBRACKET)) {
+//         if(isType(project, t)) {
+//             int len = typeLength(t);
+//             t.next(len);
+//         } else {
+//             happy = false;
+//             break;
+//         }
+//         t.skipOptional(EToken.ID);
+//         t.skipOptional(EToken.COMMA);
+//         t.skipOptional(EToken.RT_ARROW);
+//     }
+//     t.popState();
+//     return happy;
+// }
 
 bool isPrimitiveType(Tokens t) {
     switch(t.value()) {

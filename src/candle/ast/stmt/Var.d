@@ -27,8 +27,25 @@ public:
         string l = ", line %s".format(coord.line+1);
         return "Var %s%s%s".format(n, pub, l);
     }
+
+    /** 
+     * VAR ::= [Id ':' ] Type
+     */
+    void parseParam(Tokens t) {
+        logParse("parseParam(param) %s", t.debugValue());
+
+        if(t.isKind(EToken.COLON, 1)) {
+            this.name = t.value(); t.next();
+
+            t.skip(EToken.COLON);
+        }
+   
+        // Type
+        parseType(this, t);
+    }
+
     /**
-     * VAR ::= ['pub'] Type [ Id [ '=' Expr ] ]
+     * VAR ::= ['pub'] Id ':' Type [ '=' Expr ] 
      */
     override void parse(Tokens t) {
         logParse("parseVar %s", t.debugValue());
@@ -36,19 +53,19 @@ public:
         t.consumeModifiers();
         this.isPublic = t.getAndResetPubModifier();
 
+        // Name
+        this.name = t.value(); t.next();
+
+        t.skip(EToken.COLON);
+
         // Type
         parseType(this, t);
 
-        // Name (optional)
-        if(t.isKind(EToken.ID)) {
-            this.name = t.value(); t.next();
+        // Expression
+        if(t.isKind(EToken.EQ)) {
+            t.next();
 
-            // Expression
-            if(t.isKind(EToken.EQ)) {
-                t.next();
-
-                parseExpr(this, t);
-            }
+            parseExpr(this, t);
         }
 
         if(t.isKind(EToken.SEMICOLON)) {

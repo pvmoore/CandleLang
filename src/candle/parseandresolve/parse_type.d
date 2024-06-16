@@ -9,8 +9,8 @@ void parseType(Node parent, Tokens t) {
 
     Node type;
 
-    // function ptr?
-    if(t.isKind(EToken.LBRACKET)) {
+    // function ptr
+    if(t.isValue("func")) {
         type = parseFunctionPtr(parent, t);
     }
 
@@ -78,24 +78,27 @@ void parseType(Node parent, Tokens t) {
         parent.add(type);
     }
     
-    logParse("  type = %s", type);
+    logParse(" type = %s", type);
 }
 
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 private:
 
 /** 
- * (int->void)
- * (int a, bool b->int)
+ * func(int->void)
+ * func(a:int, b:bool->int)
  */
 Func parseFunctionPtr(Node parent, Tokens t) {
     auto fp = makeNode!Func(t.coord());
     fp.isFuncPtr = true;
     parent.add(fp);
 
+    t.skip("func");
+
     t.skip(EToken.LBRACKET);   
     while(!t.isKind(EToken.RT_ARROW)) {
         fp.numParams++;
-        parseVar(fp, t);
+        parseParam(fp, t);
         t.skipOptional(EToken.COMMA);
     }
     // return type

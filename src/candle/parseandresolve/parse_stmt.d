@@ -8,12 +8,12 @@ void parseStmt(Node parent, Tokens t) {
     Project project = parent.getProject();
     bool isProjectScope = parent.isA!Unit;
 
-    // Some Stmts can only appear at Project scope for example:
+    // Some Stmts can only appear at Project scope:
+    // - Alias
+    // - Enum
     // - Func
     // - Struct
     // - Union
-    // - Enum
-    // - Typedef
     if(isProjectScope) {
 
         // pub extern
@@ -46,32 +46,39 @@ void parseStmt(Node parent, Tokens t) {
                 case "return": parseReturn(parent, t); return;
                 default: break;
             }
-            if(isType(project, t)) {
-                logParse("  isType %s", t.debugValue());
-                int afterType = typeLength(t);
-                logParse("afterType = %s .. %s", afterType, t.debugValue(afterType));
 
-                // Type Id (
-                if(t.kind(afterType)==EToken.ID && t.kind(afterType+1)==EToken.LBRACKET) {
-                    parseFunc(parent, t);
-                    return;
-                }
-
-                // Assume it is a var
+            // name : Type
+            if(t.isKind(EToken.COLON, 1)) {
                 parseVar(parent, t);
                 return;
-            } else {
-                logParse("  not a type %s", t.debugValue());
             }
+
+            // if(isType(project, t)) {
+            //     logParse("  isType %s", t.debugValue());
+            //     int afterType = typeLength(t);
+            //     logParse("afterType = %s .. %s", afterType, t.debugValue(afterType));
+
+            //     // Type Id (
+            //     if(t.kind(afterType)==EToken.ID && t.kind(afterType+1)==EToken.LBRACKET) {
+            //         parseFunc(parent, t);
+            //         return;
+            //     }
+
+            //     // Assume it is a var
+            //     parseVar(parent, t);
+            //     return;
+            // } else {
+            //     logParse("  not a type %s", t.debugValue());
+            // }
 
             break;
-        case LBRACKET:
-            // function ptr
-            if(isType(project, t)) {
-                parseVar(parent, t);
-                return;
-            }
-            break;    
+        // case LBRACKET:
+        //     // function ptr
+        //     if(isType(project, t)) {
+        //         parseVar(parent, t);
+        //         return;
+        //     }
+        //     break;    
         case SEMICOLON:
             t.next();
             return;
@@ -86,6 +93,12 @@ void parseVar(Node parent, Tokens t) {
     Var v = makeNode!Var(t.coord());
     parent.add(v);
     v.parse(t);
+}
+void parseParam(Node parent, Tokens t) {
+    logParse("parseParam %s", t.debugValue());
+    Var v = makeNode!Var(t.coord());
+    parent.add(v);
+    v.parseParam(t);
 }
 void parseFunc(Node parent, Tokens t) {
     logParse("parseFunc %s", t.debugValue());

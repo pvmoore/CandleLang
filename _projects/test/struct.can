@@ -1,8 +1,10 @@
-
+/*
+    STRUCT ::= 'struct' name '{' { Var } '}'
+*/
 
 func struct_() {
-    Local local;
-    Local local2 = {};
+    local:Local;
+    local2:Local = {};
 
     // @sizeOf(S)
     // @offsetOf(S, field)
@@ -13,12 +15,12 @@ func struct_() {
 //struct Empty {}
 
 struct Local {
-    byte a;
-    float b;
-    Inner inner;
+    a:byte;
+    b:float;
+    inner:Inner;
 }
 
 struct Inner {
-    long a;
-    long b;
+    a:long;
+    b:long;
 }
