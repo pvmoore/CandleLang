@@ -84,7 +84,7 @@ private:
 
     void logo() {
         log("\n══════════════════════");
-        log(" " ~ ansiWrap("🕯", Ansi.WHITE_BOLD) ~"Candle Lang %s", 0.1);
+        log(" " ~ ansiWrap("🕯", Ansi.WHITE_BOLD) ~"Candle Lang %s", Version.stringOf);
         log("══════════════════════\n");
     }
     void ensureDirectoryExists(Directory dir) {

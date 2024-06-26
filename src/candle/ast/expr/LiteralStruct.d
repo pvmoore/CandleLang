@@ -5,6 +5,11 @@ import candle.all;
 /**
  *  LiteralStruct
  *      { Expr }
+ *
+ *  eg.
+ *
+ *  { name = 5, key = 7 }
+ *
  */
 final class LiteralStruct : Expr {
 public:
@@ -21,27 +26,41 @@ public:
     }
     /**
      * LITERAL ::= '{' EXPRS '}'
-     * EXPRS   ::= [ name '=' Expr { ',' name '=' Expr } ]
+     * EXPR    ::= name '=' Expr
+     * EXPRS   ::= [ EXPR { ',' EXPR } ]
      */
     override void parse(Tokens t) {
+        // {
         t.skip(EToken.LCURLY);
 
         while(!t.isKind(EToken.RCURLY)) {
+            // name
             names ~= t.value(); t.next();
+
+            // =
             t.skip(EToken.EQ);
+
+            // Expr
             parseExpr(this, t);
+
+            // , or }
             t.expectOneOf(EToken.COMMA, EToken.RCURLY);
             t.skipOptional(EToken.COMMA);
         }
-
+        // }
         t.skip(EToken.RCURLY);
     }
     override void resolve() {
         if(isResolved()) return;
 
+        // The Type must always be resolved from the parent
         Type t = Resolver.resolveTypeFromParent(this);
         struct_ = getStruct(t);
     }
+    /**
+     * - name must exist as a Var of the Struct
+     * - name must be visible
+     */
     override void check() {
 
     }

@@ -49,6 +49,7 @@ static void func_();
 static void id();
 static void is_();
 static void literalstruct();
+static void strings();
 static void struct_();
 s32 putchar(s32);
 s32 main();
@@ -208,6 +209,12 @@ static void literalstruct() {
   candle__assert(tsl.b == 1.3f, "literalstruct.can", 26); // Line 26
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
+// strings.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void strings() {
+  std__putChar('s'); // Line 4
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 // struct.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void struct_() {
@@ -218,7 +225,7 @@ static void struct_() {
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static s32 wibble = 0; // Line 5
-static f32 foo = 1.0f; // Line 64
+static f32 foo = 1.0f; // Line 65
 s32 main() {
   s32 a = 6; // Line 8
   s32* b = null; // Line 9
@@ -236,21 +243,22 @@ s32 main() {
   struct_(); // Line 28
   func_(); // Line 29
   alias_(); // Line 30
-  return 0; // Line 32
+  strings(); // Line 31
+  return 0; // Line 33
 }
 static void doSomethingElse() {
 }
 void test__doSomething(s32* a, f32** b) {
-  bool c = !true; // Line 42
-  s32 d = 'a'; // Line 44
-  s64 e = -1LL; // Line 45
-  f32 f = foo; // Line 46
-  s32 y = 1 + 2 / 3; // Line 48
-  s32 z = 1 / 2 + 3; // Line 49
-  f32 g = 1.0f; // Line 50
-  f32 g2 = 1.3f; // Line 51
-  test__Apple apple = {0}; // Line 53
-  std__PlumPublic plum = {0}; // Line 55
+  bool c = !true; // Line 43
+  s32 d = 'a'; // Line 45
+  s64 e = -1LL; // Line 46
+  f32 f = foo; // Line 47
+  s32 y = 1 + 2 / 3; // Line 49
+  s32 z = 1 / 2 + 3; // Line 50
+  f32 g = 1.0f; // Line 51
+  f32 g2 = 1.3f; // Line 52
+  test__Apple apple = {0}; // Line 54
+  std__PlumPublic plum = {0}; // Line 56
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // var.can

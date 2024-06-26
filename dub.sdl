@@ -11,7 +11,7 @@ buildType "release" {
 
 configuration "test" {
 	targetType "executable"
-	targetName "demo"
+	targetName "candle"
 }
 configuration "library" {
 	targetType "library"

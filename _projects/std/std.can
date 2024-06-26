@@ -1,6 +1,11 @@
 // std
 
+// stdio
 extern func putchar(int->int);
+
+// todo - handle const parameters
+// warning C4028: formal parameter 1 different from declaration
+//extern func puts (byte*->int);
 
 pub func putChar(ch:int) {
     putchar(ch);

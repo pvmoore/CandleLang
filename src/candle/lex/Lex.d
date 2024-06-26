@@ -148,7 +148,13 @@ public:
                 case '[': addToken(EToken.LSQUARE); break;
                 case ']': addToken(EToken.RSQUARE); break;
                 default:
-                    pos++;
+                    // raw string?
+                    if(ch=='r' && peek(1)=='"') {
+                        addToken();
+                        dquote();
+                    } else {
+                        pos++;
+                    }
                     break;
             }
         }
@@ -228,7 +234,13 @@ private:
         }
     }
     void dquote() {
-        // " string "
+        // "string"
+        // r"string"
+        bool isRaw = peek(0) == 'r';
+        if(isRaw) {
+            pos++;
+            // todo - Handle raw. We don't want to escape anything for raw strings 
+        }
         pos++;
         while(pos<src.length) {
             if(peek(0)=='\\' && peek(1)=='\\') {
@@ -246,8 +258,8 @@ private:
     }
     EToken determineKind(string s) {
         if(s.length==0) return EToken.ID;
-        if(s[0]=='\'' || s.startsWith("L'")) return EToken.CHAR;
-        if(s[0]=='"' || s.startsWith("L\"")) return EToken.STRING;
+        if(s[0]=='\'') return EToken.CHAR;
+        if(s[0]=='"' || s.startsWith("r\"")) return EToken.STRING;
         if(isDigit(s[0])) return EToken.NUMBER;
         if(s.length>1 && s[0]=='-' && isDigit(s[1])) return EToken.NUMBER;
         if(s.length>1 && s[0]=='.' && isDigit(s[1])) return EToken.NUMBER;

@@ -28,6 +28,7 @@ func main(void->int) {
     struct_();
     func_();
     alias_();
+    strings();
 
     return 0;
 }

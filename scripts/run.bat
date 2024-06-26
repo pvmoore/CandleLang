@@ -3,33 +3,33 @@ cls
 chcp 65001
 
 if "%1"=="" (
-    set NAME=projects\test
+    set PROJECT=_projects\test
 ) else (
-    set NAME=projects\%1
-)
+    set PROJECT=_projects\%1
+) 
 
 rem cd ..
 
 
-del /Q %NAME%\.target\*.exe
+del /Q _target\build\*.*
 
 if not exist "candle.exe" goto COMPILE
-del ppl.exe
+del candle.exe
 
 :COMPILE
 dub build --parallel --build=debug --config=test --arch=x86_64 --compiler=dmd
 
 
 if not exist "candle.exe" goto FAIL
-ppl.exe %NAME%
+candle.exe %PROJECT%
 
 
-if not exist "%NAME%\target\test.exe" goto FAIL
-call getfilesize.bat %NAME%\target\test.exe
+if not exist "_target\build\test.exe" goto FAIL
+call getfilesize.bat _target\build\test.exe
 echo.
-echo Running %NAME%\.target\test.exe (%filesize% bytes)
+echo Running _target\build\test.exe (%filesize% bytes)
 echo.
-%NAME%\target\test.exe
+_target\build\test.exe
 IF %ERRORLEVEL% NEQ 0 (
   echo.
   echo.
@@ -44,3 +44,6 @@ echo Compile or config error
 
 
 :END
+
+echo. 
+echo. 

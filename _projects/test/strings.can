@@ -1,0 +1,5 @@
+
+
+func strings() {
+    std.putChar('s');
+}

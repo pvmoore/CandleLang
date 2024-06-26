@@ -26,6 +26,19 @@
             "problemMatcher": []
         },
         {
+            "label": "**** Compile and run test ****",
+            "type": "shell",
+            "windows": {
+                "command": "scripts\\run.bat"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "**** ### Update extensions ### ****",
             "type": "shell",
             "windows": {

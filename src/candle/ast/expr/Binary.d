@@ -28,7 +28,7 @@ public:
         if(!left().isResolved() || !right.isResolved()) return;
 
         if(isAssign(op)) {
-            // Take the type if the left expr
+            // Take the type of the left expr
             _type = left().type();
             return;
         }

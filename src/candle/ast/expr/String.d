@@ -4,10 +4,15 @@ import candle.all;
 
 /**
  *  String
+ *
+ * eg.
+ *    "string"
+ *   r"raw string"
  */
 final class String : Expr {
 public:
     string stringValue;
+    bool isRaw;
 
     override ENode enode() { return ENode.STRING; }
     override Type type() { return TYPE_UNKNOWN; }
@@ -17,9 +22,15 @@ public:
         return "\"%s\"".format(stringValue);
     }
     override void parse(Tokens t) {
+        this.isRaw = t.value()[0] == 'r';
+        const n = isRaw ? 2 : 1;
+
         // Gather all sequential strings into one
         while(t.isKind(EToken.STRING)) {
-            this.stringValue ~= t.value()[1..$-1]; t.next();
+            if((t.value()[0] == 'r') != isRaw) {
+                break;
+            }
+            this.stringValue ~= t.value()[n..$-1]; t.next();
         }
     }
 private:
