@@ -4,14 +4,14 @@
 #include "candle__common.h"
 
 typedef struct std__PlumPublic {
-  s32 a;
+  __s32 a;
 } std__PlumPublic;
 
 typedef struct std__string {
-  u8* ptr;
-  u64 length;
+  __u8* ptr;
+  __u64 length;
 } std__string;
 
-void std__putChar(s32 ch);
+void std__putChar(__s32 ch);
 
 #endif // std_H

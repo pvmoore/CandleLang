@@ -369,17 +369,17 @@ private:
     }
     void emit(Primitive n) {
         switch(n.etype()) with(EType) {
-            case BOOL: buf.add("bool"); break;
-            case UBYTE: buf.add("u8"); break;
-            case BYTE: buf.add("s8"); break;
-            case USHORT: buf.add("u16"); break;
-            case SHORT: buf.add("s16"); break;
-            case UINT: buf.add("u32"); break;
-            case INT: buf.add("s32"); break;
-            case ULONG: buf.add("u64"); break;
-            case LONG: buf.add("s64"); break;
-            case FLOAT: buf.add("f32"); break;
-            case DOUBLE: buf.add("f64"); break;
+            case BOOL: buf.add("__bool"); break;
+            case UBYTE: buf.add("__u8"); break;
+            case BYTE: buf.add("__s8"); break;
+            case USHORT: buf.add("__u16"); break;
+            case SHORT: buf.add("__s16"); break;
+            case UINT: buf.add("__u32"); break;
+            case INT: buf.add("__s32"); break;
+            case ULONG: buf.add("__u64"); break;
+            case LONG: buf.add("__s64"); break;
+            case FLOAT: buf.add("__f32"); break;
+            case DOUBLE: buf.add("__f64"); break;
             case VOID: buf.add("void"); break;
             default: throw new Exception("EmitUnit: Handle Primitive %s".format(n.etype()));
         }
