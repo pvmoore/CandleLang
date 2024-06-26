@@ -43,6 +43,7 @@ typedef struct MyStruct {
 
 // Private functions
 static void alias_();
+static void arrays();
 static void as_();
 static void binary();
 static void func_();
@@ -60,6 +61,11 @@ static void variables();
 // alias.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void alias_() {
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+// arrays.can
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+static void arrays() {
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // as.can
@@ -213,6 +219,7 @@ static void literalstruct() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void strings() {
   std__putChar('s'); // Line 4
+  __s8* a = "one"; // Line 6
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // struct.can
@@ -225,7 +232,7 @@ static void struct_() {
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static __s32 wibble = 0; // Line 5
-static __f32 foo = 1.0f; // Line 65
+static __f32 foo = 1.0f; // Line 66
 __s32 main() {
   __s32 a = 6; // Line 8
   __s32* b = null; // Line 9
@@ -244,21 +251,22 @@ __s32 main() {
   func_(); // Line 29
   alias_(); // Line 30
   strings(); // Line 31
-  return 0; // Line 33
+  arrays(); // Line 32
+  return 0; // Line 34
 }
 static void doSomethingElse() {
 }
 void test__doSomething(__s32* a, __f32** b) {
-  __bool c = !true; // Line 43
-  __s32 d = 'a'; // Line 45
-  __s64 e = -1LL; // Line 46
-  __f32 f = foo; // Line 47
-  __s32 y = 1 + 2 / 3; // Line 49
-  __s32 z = 1 / 2 + 3; // Line 50
-  __f32 g = 1.0f; // Line 51
-  __f32 g2 = 1.3f; // Line 52
-  test__Apple apple = {0}; // Line 54
-  std__PlumPublic plum = {0}; // Line 56
+  __bool c = !true; // Line 44
+  __s32 d = 'a'; // Line 46
+  __s64 e = -1LL; // Line 47
+  __f32 f = foo; // Line 48
+  __s32 y = 1 + 2 / 3; // Line 50
+  __s32 z = 1 / 2 + 3; // Line 51
+  __f32 g = 1.0f; // Line 52
+  __f32 g2 = 1.3f; // Line 53
+  test__Apple apple = {0}; // Line 55
+  std__PlumPublic plum = {0}; // Line 57
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // var.can

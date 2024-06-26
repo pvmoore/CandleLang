@@ -7,12 +7,14 @@ import candle.all;
  *
  * eg.
  *    "string"
- *   r"raw string"
+ *   c"c string" 
+ *   r"raw c string"
  */
 final class String : Expr {
 public:
     string stringValue;
     bool isRaw;
+    bool isCharArray;
 
     override ENode enode() { return ENode.STRING; }
     override Type type() { return TYPE_UNKNOWN; }
@@ -22,15 +24,15 @@ public:
         return "\"%s\"".format(stringValue);
     }
     override void parse(Tokens t) {
-        this.isRaw = t.value()[0] == 'r';
-        const n = isRaw ? 2 : 1;
+        const ch = t.value()[0];
+        this.isRaw = ch == 'r';
+        this.isCharArray = ch == 'c';
+        const n = isRaw || isCharArray ? 2 : 1;
 
         // Gather all sequential strings into one
-        while(t.isKind(EToken.STRING)) {
-            if((t.value()[0] == 'r') != isRaw) {
-                break;
-            }
-            this.stringValue ~= t.value()[n..$-1]; t.next();
+        while(t.isKind(EToken.STRING) && t.value()[0] == ch) {
+            this.stringValue ~= t.value()[n..$-1]; 
+            t.next();
         }
     }
 private:

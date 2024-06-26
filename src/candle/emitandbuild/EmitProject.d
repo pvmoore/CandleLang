@@ -223,6 +223,7 @@ private:
             case PROJECT_ID: emit(n.as!ProjectId); break;
             case RETURN: emit(n.as!Return); break;
             case SCOPE: emit(n.as!Scope); break;
+            case STRING: emit(n.as!String); break;
             case STRUCT: break;
             case TYPE_REF: emit(n.as!TypeRef); break;
             case UNARY: emit(n.as!Unary); break;
@@ -402,6 +403,13 @@ private:
         pop();
         add("}\n");
     }
+    void emit(String n) {
+        if(n.isRaw || n.isCharArray) {
+            add("\"");
+            add(n.stringValue);
+            add("\"");
+        } else todo("implement emit String");
+    }
     void emit(Struct n) {
         if(!n.isPublic || isHeader()) {
             string name = getName(n);
@@ -454,6 +462,9 @@ private:
     void emit(Var n) {
         if(n.isGlobal()) {
             add("static ");
+        }
+        if(n.isConst) {
+            add("const ");
         }
 
         emit(n.type().as!Node);

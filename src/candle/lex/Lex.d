@@ -152,6 +152,10 @@ public:
                     if(ch=='r' && peek(1)=='"') {
                         addToken();
                         dquote();
+                    // c string?
+                    } else if(ch=='c' && peek(1)=='"') {
+                        addToken();
+                        dquote();
                     } else {
                         pos++;
                     }
@@ -236,8 +240,10 @@ private:
     void dquote() {
         // "string"
         // r"string"
+        // c"string"
         bool isRaw = peek(0) == 'r';
-        if(isRaw) {
+        bool isCStyle = peek(0) == 'c';
+        if(isRaw || isCStyle) {
             pos++;
             // todo - Handle raw. We don't want to escape anything for raw strings 
         }
@@ -259,7 +265,7 @@ private:
     EToken determineKind(string s) {
         if(s.length==0) return EToken.ID;
         if(s[0]=='\'') return EToken.CHAR;
-        if(s[0]=='"' || s.startsWith("r\"")) return EToken.STRING;
+        if(s[0]=='"' || s.startsWith("r\"") || s.startsWith("c\"")) return EToken.STRING;
         if(isDigit(s[0])) return EToken.NUMBER;
         if(s.length>1 && s[0]=='-' && isDigit(s[1])) return EToken.NUMBER;
         if(s.length>1 && s[0]=='.' && isDigit(s[1])) return EToken.NUMBER;

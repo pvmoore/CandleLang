@@ -11,6 +11,7 @@ final class Var : Stmt {
 public:
     string name;
     bool isPublic;
+    bool isConst;   // for extern c function parameters only 
 
     bool hasInitialiser() { return numChildren() > 1; }
     bool isParameter() { return parent.isA!Func; }
@@ -24,20 +25,26 @@ public:
     override string toString() {
         string n = name ? "%s".format(name) : "(unnamed)";
         string pub = isPublic ? ", pub" : "";
+        string con = isConst ? ", const" : "";
         string l = ", line %s".format(coord.line+1);
-        return "Var %s%s%s".format(n, pub, l);
+        return "Var %s%s%s%s".format(n, pub, con, l);
     }
 
     /** 
-     * VAR ::= [Id ':' ] Type
+     * VAR ::= [Id ':' ] [ 'const' ] Type
      */
     void parseParam(Tokens t) {
         logParse("parseParam(param) %s", t.debugValue());
 
         if(t.isKind(EToken.COLON, 1)) {
-            this.name = t.value(); t.next();
-
+            this.name = t.value(); 
+            t.next();
             t.skip(EToken.COLON);
+        }
+
+        if(t.isValue("const")) {
+            this.isConst = true;
+            t.next();
         }
    
         // Type

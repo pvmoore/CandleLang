@@ -29,6 +29,7 @@ func main(void->int) {
     func_();
     alias_();
     strings();
+    arrays();
 
     return 0;
 }
