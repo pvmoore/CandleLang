@@ -59,9 +59,8 @@ public:
                 } else {
                     log(ansiWrap("Failed ", Ansi.RED) ~ Ansi.RED_BOLD ~ "✘✘✘" ~ Ansi.RESET);
                 }
+                dumpStats();
             }    
-
-            dumpStats();
 
         }catch(AbortCompilation e) {
             return false;

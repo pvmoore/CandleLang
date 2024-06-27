@@ -2,10 +2,13 @@
 
 // stdio
 extern func putchar(int->int);
-extern func puts (const byte*->int);
+extern func puts(const byte*->int);
 
 pub func putChar(ch:int) {
     putchar(ch);
+}
+pub func putChars(ch:byte*) {
+    puts(ch);
 }
 
 pub struct PlumPublic {

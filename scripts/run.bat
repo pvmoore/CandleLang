@@ -35,15 +35,13 @@ IF %ERRORLEVEL% NEQ 0 (
   echo.
   echo Exit code was %ERRORLEVEL%
 )
+echo.
 goto END
 
 
 :FAIL
-echo.
-echo Compile or config error
 
 
 :END
 
-echo. 
 echo. 

@@ -220,6 +220,7 @@ static void literalstruct() {
 static void strings() {
   std__putChar('s'); // Line 4
   __s8* a = "one"; // Line 6
+  std__putChars(a); // Line 7
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // struct.can

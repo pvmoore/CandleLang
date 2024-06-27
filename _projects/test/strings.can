@@ -3,5 +3,6 @@
 func strings() {
     std.putChar('s');
 
-    a:byte* = c"one";
+    a:byte* = c"one"; 
+    std.putChars(a);
 }

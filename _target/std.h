@@ -13,5 +13,6 @@ typedef struct std__string {
 } std__string;
 
 void std__putChar(__s32 ch);
+void std__putChars(__s8* ch);
 
 #endif // std_H
