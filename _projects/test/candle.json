@@ -1,8 +1,9 @@
 {
     "dependencies": {
-        "std": "_projects/std",
-        "test2": "_projects/test2",
-        "vulkan": "_projects/vulkan"
+        "std": { "directory": "_projects/std" },
+        "test2": { "directory" : "_projects/test2" },
+        "vulkan": { "directory": "_projects/vulkan", "unqualified-access": true }
     },
-    "name": "test"
+    "name": "test",
+    "description": "Test project"
 }

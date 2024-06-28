@@ -23,7 +23,7 @@ public:
         loadProjectJson5();
         addUnits();
         candle.projects[name] = this;
-        //dumpProperties();
+        dumpProperties();
     }
 
     Unit[] getUnits() { return children.filter!(it=>it.isA!Unit).map!(it=>it.as!Unit).array(); }
@@ -47,7 +47,7 @@ public:
             project = *pptr;
         } else {
             // Create and load this Project
-            project = makeNode!Project(candle, *dptr);
+            project = makeNode!Project(candle, dptr.directory);
         }
         externalProjects[name] = project;
         return project;
@@ -94,14 +94,22 @@ public:
         return "Project '%s', '%s'".format(name, directory);
     }
 private:
-    Directory[string] dependencies;     // declared possible external Projects
+    struct Dependency {
+        Directory directory;
+        bool unqualified;
+    }
+    Dependency[string] dependencies;     // declared possible external Projects 
     Project[string] externalProjects;   // accessed external Projects
 
     /** 
      * {
      *   name: "test",
+     *   description: "test",
      *   dependencies: {
-     *     std: "_extern/std"
+     *     std: { 
+     *       directory: "_extern/std", 
+     *       unqualified-access: true 
+     *     }
      *   }
      * } 
      */
@@ -117,8 +125,9 @@ private:
         if(auto dependencies = root["dependencies"]) {
             foreach(k,v; dependencies.byKeyValue()) {
                 auto key = k.toLower();
-                auto value = v.toString();
-                this.dependencies[key] = Directory(value);
+                auto value = v["directory"].toString();
+                auto uq = v["unqualified-access"];
+                this.dependencies[key] = Dependency(Directory(value), uq && uq.as!J5Boolean);
             }
         }
 
