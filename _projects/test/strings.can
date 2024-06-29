@@ -1,8 +1,8 @@
 
 
 func strings() {
-    std.putChar('s');
+    stdio.putChar('s');
 
     a:byte* = c"one"; 
-    std.putChars(a);
+    stdio.putChars(a);
 }

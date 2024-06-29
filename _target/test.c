@@ -3,6 +3,8 @@
 // Dependency Project headers
 #include "std.h"
 
+#include "_stdio.h"
+
 // Project header
 #include "test.h"
 
@@ -218,9 +220,9 @@ static void literalstruct() {
 // strings.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static void strings() {
-  std__putChar('s'); // Line 4
+  stdio__putChar('s'); // Line 4
   __s8* a = "one"; // Line 6
-  std__putChars(a); // Line 7
+  stdio__putChars(a); // Line 7
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // struct.can
@@ -238,7 +240,7 @@ __s32 main() {
   __s32 a = 6; // Line 8
   __s32* b = null; // Line 9
   putchar('a'); // Line 12
-  std__putChar('b'); // Line 15
+  stdio__putChar('b'); // Line 15
   test__doSomething(null, null); // Line 17
   doSomethingElse(); // Line 18
   candle__assert(true, "test.can", 20); // Line 20

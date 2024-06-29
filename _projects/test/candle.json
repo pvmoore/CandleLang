@@ -1,6 +1,7 @@
 {
     "dependencies": {
         "std": { "directory": "_projects/std" },
+        "stdio": { "directory": "_projects/stdio" , "unqualified-access": true},
         "test2": { "directory" : "_projects/test2" },
         "vulkan": { "directory": "_projects/vulkan", "unqualified-access": true }
     },

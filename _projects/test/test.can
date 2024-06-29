@@ -12,7 +12,7 @@ func main(void->int) {
     putchar('a');
 
 
-    std.putChar('b');
+    stdio.putChar('b');
 
     doSomething(null, null);
     doSomethingElse();

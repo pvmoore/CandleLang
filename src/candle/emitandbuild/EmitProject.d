@@ -28,7 +28,7 @@ public:
         file.close();
 
         // Write the file now
-        string header = project.name ~ ".h";
+        string header = project.includeName;
         File hFile = File(Filepath(candle.targetDirectory, Filename(header)).value, "wb");
         hFile.write(headerBuf.toString());
         hFile.close();
@@ -79,8 +79,8 @@ private:
     }
 
     void emitHeader() {
-        buf.add("#ifndef %s_H\n", project.name);
-        buf.add("#define %s_H\n\n", project.name);
+        buf.add("#ifndef %s__H\n", project.name);
+        buf.add("#define %s__H\n\n", project.name);
         buf.add("#include \"candle__common.h\"\n\n");
 
         foreach(ch; project.children) {
@@ -112,7 +112,7 @@ private:
                 emit(f, true);
             }
         }
-        buf.add("\n#endif // %s_H\n", project.name);
+        buf.add("\n#endif // %s__H\n", project.name);
     }
     void emitBody() {
         writeStmt("// Project .. %s\n\n", project.name);
@@ -120,12 +120,12 @@ private:
         // Add includes for all dependent Projects
         writeStmt("// Dependency Project headers\n");
         foreach(p; project.getExternalProjects()) {
-            writeStmt("#include \"%s.h\"\n\n", p.name);
+            writeStmt("#include \"%s\"\n\n", p.includeName);
         }
 
         // Include our own public header
         writeStmt("// Project header\n");
-        writeStmt("#include \"%s.h\"\n\n", project.name);
+        writeStmt("#include \"%s\"\n\n", project.includeName);
 
         //writeStmt("static const char* candle_projectName;");// = \"%s\";", n.name);
 

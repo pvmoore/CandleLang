@@ -10,8 +10,9 @@ final class Project : Node {
 public:
     Candle candle;
     string name;
+    string includeName;         // usually name ~ ".h" but is configurable to avoid collisions
     Directory directory;
-    bool[string] scannedTypes; // true if isPublic
+    bool[string] scannedTypes;  // true if isPublic
     
     override ENode enode() { return ENode.PROJECT; }
     override Type type() { return TYPE_VOID; }
@@ -74,8 +75,9 @@ public:
         }
 
         log("Project{\n" ~
-            "  name ........ %s\n".format(name) ~
-            "  directory ... %s\n".format(directory) ~
+            "  name .......... %s\n".format(name) ~
+            "  include-name .. %s\n".format(includeName) ~
+            "  directory ..... %s\n".format(directory) ~
             "  dependencies:\n" ~
             inc ~
             "  units:\n" ~
@@ -108,6 +110,7 @@ private:
      *   dependencies: {
      *     std: { 
      *       directory: "_extern/std", 
+     *       include-name: "std.h",
      *       unqualified-access: true 
      *     }
      *   }
@@ -121,13 +124,16 @@ private:
         if(root.hasKey("name")) {
             this.name = root["name"].toString();
         }
+        this.includeName = root.hasKey("include-name") ? root["include-name"].toString() : name ~ ".h";
 
         if(auto dependencies = root["dependencies"]) {
             foreach(k,v; dependencies.byKeyValue()) {
                 auto key = k.toLower();
                 auto value = v["directory"].toString();
                 auto uq = v["unqualified-access"];
-                this.dependencies[key] = Dependency(Directory(value), uq && uq.as!J5Boolean);
+                this.dependencies[key] = Dependency(
+                    Directory(value),
+                    uq && uq.as!J5Boolean);
             }
         }
 
