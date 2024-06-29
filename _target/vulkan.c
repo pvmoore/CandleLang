@@ -1,18 +1,14 @@
-// Project .. stdio
+// Project .. vulkan
 
 // Dependency Project headers
+#include "std.h"
+
 // Project header
-#include "_stdio.h"
+#include "vulkan.h"
 
 
 // Private functions
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-// stdio.can
+// vulkan.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-void stdio__putChar(__s32 ch) {
-  putchar(ch); // Line 6
-}
-void stdio__putChars(__s8* ch) {
-  puts(ch); // Line 9
-}

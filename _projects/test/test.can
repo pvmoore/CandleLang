@@ -1,5 +1,4 @@
 
-extern func putchar(int->int); 
 
 
 wibble:int;

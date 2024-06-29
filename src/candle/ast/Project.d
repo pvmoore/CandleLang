@@ -35,30 +35,22 @@ public:
 
     Project[] getExternalProjects() { return externalProjects.values(); }
 
-    Project getDependency(string name) {
-        // Is it a Project we know about?
-        auto dptr = name in dependencies;
-        if(!dptr) {
-            throw new Exception("Project dependency not found '%s'".format(name));
+    Project[] getUnqualifiedExternalProjects() {
+        return getExternalProjects().filter!(it=>dependencies[it.name].unqualified).array;
+    }
+
+    Project getProject(string name) {
+        if(auto projPtr = name in externalProjects) {
+            return *projPtr;
         }
-        // Reuse Project if we already have it
-        Project project;
-        auto pptr = name in candle.projects;
-        if(pptr) {
-            project = *pptr;
-        } else {
-            // Create and load this Project
-            project = makeNode!Project(candle, dptr.directory);
-        }
-        externalProjects[name] = project;
-        return project;
+        throw new Exception("Project dependency not found '%s'".format(name));
     }
     bool isDeclaredType(string value) {
         return (value in scannedTypes) !is null;
     }
 
     bool isProjectName(string name) {
-        return (name in dependencies) !is null;
+        return (name in externalProjects) !is null;
     }
 
     void dumpProperties() {
@@ -97,6 +89,7 @@ public:
     }
 private:
     struct Dependency {
+        string name;
         Directory directory;
         bool unqualified;
     }
@@ -131,13 +124,29 @@ private:
                 auto key = k.toLower();
                 auto value = v["directory"].toString();
                 auto uq = v["unqualified-access"];
-                this.dependencies[key] = Dependency(
+                auto dep = Dependency(
+                    key, 
                     Directory(value),
                     uq && uq.as!J5Boolean);
+
+                this.dependencies[key] = dep;
+                loadDependencyProject(dep);    
             }
         }
 
         return true;
+    }
+    void loadDependencyProject(Dependency dep) {
+        // Reuse Project if we already have it
+        Project project;
+        auto pptr = dep.name in candle.projects;
+        if(pptr) {
+            project = *pptr;
+        } else {
+            // Create and load this Project
+            project = makeNode!Project(candle, dep.directory);
+        }
+        externalProjects[dep.name] = project;
     }
     string[] unitFilenames() {
         import std.file;

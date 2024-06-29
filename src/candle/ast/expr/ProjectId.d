@@ -19,7 +19,7 @@ public:
     }
     override void parse(Tokens t) {
         this.name = t.value(); t.next();
-        this.project = getProject().getDependency(name);
+        this.project = getProject().getProject(name);
     }
 private:
 }

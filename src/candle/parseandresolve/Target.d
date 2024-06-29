@@ -23,6 +23,7 @@ public:
     Node node() { return var ? var : func; }
     Type type() { return node.type(); }
     bool isPublic() { return var ? var.isPublic : func.isPublic; }
+    bool isExtern() { return func ? func.isExtern : false; }
     bool isMember() { return var && var.isMember(); }
     Project project() { return node().getProject(); }
 

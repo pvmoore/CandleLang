@@ -63,6 +63,7 @@ private:
         return n.target.isPublic() ? "%s__%s".format(n.target.project().name, n.name) : n.name;
     }
     string getName(Call n) {
+        if(n.target.isExtern()) return n.name; 
         return n.target.isPublic() ? "%s__%s".format(n.target.project().name, n.name) : n.name;
     }
     string getName(Struct n) {
@@ -75,6 +76,7 @@ private:
         return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
     }
     string getName(Func n) {
+        if(n.isExtern) return n.name;
         return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
     }
 

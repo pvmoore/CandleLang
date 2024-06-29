@@ -3,7 +3,11 @@
 // Dependency Project headers
 #include "std.h"
 
+#include "vulkan.h"
+
 #include "_stdio.h"
+
+#include "test2.h"
 
 // Project header
 #include "test.h"
@@ -54,7 +58,6 @@ static void is_();
 static void literalstruct();
 static void strings();
 static void struct_();
-__s32 putchar(__s32);
 __s32 main();
 static void doSomethingElse();
 static void variables();
@@ -234,42 +237,42 @@ static void struct_() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static __s32 wibble = 0; // Line 5
-static __f32 foo = 1.0f; // Line 66
+static __s32 wibble = 0; // Line 4
+static __f32 foo = 1.0f; // Line 65
 __s32 main() {
-  __s32 a = 6; // Line 8
-  __s32* b = null; // Line 9
-  putchar('a'); // Line 12
-  stdio__putChar('b'); // Line 15
-  test__doSomething(null, null); // Line 17
-  doSomethingElse(); // Line 18
-  candle__assert(true, "test.can", 20); // Line 20
-  variables(); // Line 22
-  binary(); // Line 23
-  as_(); // Line 24
-  is_(); // Line 25
-  id(); // Line 26
-  literalstruct(); // Line 27
-  struct_(); // Line 28
-  func_(); // Line 29
-  alias_(); // Line 30
-  strings(); // Line 31
-  arrays(); // Line 32
-  return 0; // Line 34
+  __s32 a = 6; // Line 7
+  __s32* b = null; // Line 8
+  putchar('a'); // Line 11
+  stdio__putChar('b'); // Line 14
+  test__doSomething(null, null); // Line 16
+  doSomethingElse(); // Line 17
+  candle__assert(true, "test.can", 19); // Line 19
+  variables(); // Line 21
+  binary(); // Line 22
+  as_(); // Line 23
+  is_(); // Line 24
+  id(); // Line 25
+  literalstruct(); // Line 26
+  struct_(); // Line 27
+  func_(); // Line 28
+  alias_(); // Line 29
+  strings(); // Line 30
+  arrays(); // Line 31
+  return 0; // Line 33
 }
 static void doSomethingElse() {
 }
 void test__doSomething(__s32* a, __f32** b) {
-  __bool c = !true; // Line 44
-  __s32 d = 'a'; // Line 46
-  __s64 e = -1LL; // Line 47
-  __f32 f = foo; // Line 48
-  __s32 y = 1 + 2 / 3; // Line 50
-  __s32 z = 1 / 2 + 3; // Line 51
-  __f32 g = 1.0f; // Line 52
-  __f32 g2 = 1.3f; // Line 53
-  test__Apple apple = {0}; // Line 55
-  std__PlumPublic plum = {0}; // Line 57
+  __bool c = !true; // Line 43
+  __s32 d = 'a'; // Line 45
+  __s64 e = -1LL; // Line 46
+  __f32 f = foo; // Line 47
+  __s32 y = 1 + 2 / 3; // Line 49
+  __s32 z = 1 / 2 + 3; // Line 50
+  __f32 g = 1.0f; // Line 51
+  __f32 g2 = 1.3f; // Line 52
+  test__Apple apple = {0}; // Line 54
+  std__PlumPublic plum = {0}; // Line 56
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // var.can

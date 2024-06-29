@@ -1,6 +1,6 @@
 
-extern func putchar(int->int);
-extern func puts(const byte*->int);
+pub extern func putchar(int->int);
+pub extern func puts(const byte*->int);
 
 pub func putChar(ch:int) {
     putchar(ch);

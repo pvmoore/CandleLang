@@ -34,8 +34,8 @@ Target findCallTarget(Call call) {
         matches ~= unit.getFuncs(call.name, Visibility.ALL);
     }
 
-    // Check external Projects
-    foreach(p; project.getExternalProjects()) {
+    // Check public members of external Projects where unqualified-access = true
+    foreach(p; project.getUnqualifiedExternalProjects()) {
         foreach(unit; p.getUnits()) {
             // We only want public Funcs here
             matches ~= unit.getFuncs(call.name, Visibility.PUBLIC);
@@ -113,7 +113,7 @@ void filterOverloadsByNumArgs(Call call, ref Func[] matches) {
     // We need the Call args to be resolved at this point
     // And the matches parameters also
 
-    throw new Exception("filterOverloadsByNumArgs: Handle overloads. Found %s".format(matches));
+    throw new Exception("filterOverloadsByNumArgs: Handle overloads. call unit = %s Found %s".format(call.getUnit(), matches));
 }
 
 /**
