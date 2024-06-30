@@ -86,7 +86,7 @@ Target findCallTarget(Call call, Node prev) {
             foreach(u; module_.getUnits()) {
 
                 Func[] funcs = u.getFuncs(call.name, Visibility.PUBLIC);
-                if(funcs.length == 1) return new Target(funcs[0]).setExternal();
+                if(funcs.length == 1) return new Target(funcs[0]).setInExternalModule();
                 if(funcs.length > 1) {
                     // We have more then one name match
                     throw new Exception("findCallTarget: Handle overloads. Found %s".format(funcs));

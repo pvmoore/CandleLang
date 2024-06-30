@@ -10,6 +10,7 @@ final class Struct : Stmt, Type {
 public:
     string name;
     bool isPublic;
+    bool isExtern;
     bool isPacked;
 
     Var getVar(string name, bool includePrivate) {
@@ -71,17 +72,19 @@ public:
         string sz = ", size %s".format(calculateSize());
         string al = ", align %s".format(calculateAlignment());
         string pk = isPacked ? ", packed" : "";
+        string e = isExtern ? ", extern" : "";
         string l = ", line %s".format(coord.line+1);
         string pub = isPublic ? ", pub" : "";
-        return "Struct %s%s%s%s%s%s".format(name, pub, pk, sz, al, l);
+        return "Struct %s%s%s%s%s%s%s".format(name, pub, pk, e, sz, al, l);
     }
     /**
-     *  STRUCT ::= ['pub'] 'struct' Id ( BODY | ';')
+     *  STRUCT ::= ['pub'] ['extern'] 'struct' Id ( BODY | ';')
      *  BODY   ::= '{' { Var } '}'
      */
     override void parse(Tokens t) {
         
         this.isPublic = t.getAndResetPubModifier();
+        this.isExtern = t.getAndResetExternModifier();
 
         t.skip("struct");
 

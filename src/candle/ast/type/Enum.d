@@ -10,6 +10,7 @@ final class Enum : Stmt, Type {
 public:
     string name;
     bool isPublic;
+    bool isExtern;
 
     override ENode enode() { return ENode.ENUM; }
     override EType etype() { return EType.ENUM; }
@@ -31,7 +32,11 @@ public:
     override string getASTSummary() {
         string l = ", line %s".format(coord.line+1);
         string pub = isPublic ? ", pub" : "";
-        return "Enum %s%s%s".format(name, pub, l);
+        string e = isExtern ? ", extern" : "";
+        return "Enum %s%s%s%s".format(name, pub, e, l);
+    }
+    override void parse(Tokens t) {
+        todo();
     }
 private:
 }

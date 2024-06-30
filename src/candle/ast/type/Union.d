@@ -11,6 +11,7 @@ final class Union : Stmt, Type {
 public:
     string name;
     bool isPublic;
+    bool isExtern;
 
     Var getVar(string name) {
         return children.filter!(it=>it.isA!Var)
@@ -48,6 +49,9 @@ public:
     }
     override string getASTSummary() {
         return "Union %s".format(name);
+    }
+    override void parse(Tokens t) {
+        todo();
     }
 private:
 }

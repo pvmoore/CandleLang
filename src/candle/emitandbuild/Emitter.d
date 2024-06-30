@@ -27,6 +27,8 @@ private:
 #ifndef CANDLE_COMMON_TYPEDEFS_H
 #define CANDLE_COMMON_TYPEDEFS_H
 
+#define _CRT_SECURE_NO_WARNINGS
+
 typedef unsigned char __bool;
 typedef unsigned char __u8;
 typedef signed char __s8;

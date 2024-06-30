@@ -66,8 +66,8 @@ Target findIdTarget(Id id) {
         }
     }
 
-    // Check external Modules
-    foreach(p; module_.getExternalModules()) {
+    // Check public members of external Modules where unqualified-access = true
+    foreach(p; module_.getUnqualifiedExternalModules()) {
         foreach(unit; p.getUnits()) {
             // We only want public Funcs here
             Func[] f = unit.getFuncs(id.name, Visibility.PUBLIC);
@@ -100,10 +100,10 @@ Target findIdTarget(Id id, Node prev) {
             foreach(u; module_.getUnits()) {
 
                 if(auto var = u.getVar(id.name, Visibility.PUBLIC)) { 
-                    return new Target(var).setExternal();
+                    return new Target(var).setInExternalModule();
                 }
                 Func[] funcs = u.getFuncs(id.name, Visibility.PUBLIC);
-                if(funcs.length == 1) return new Target(funcs[0]).setExternal();
+                if(funcs.length == 1) return new Target(funcs[0]).setInExternalModule();
                 if(funcs.length > 1) {
                     // We have more then one name match. This is ambiguous since we only have the name
                     throw new Exception("findIdTarget: Ambiguous function name match. Found %s".format(funcs));

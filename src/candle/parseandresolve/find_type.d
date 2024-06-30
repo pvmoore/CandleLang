@@ -6,6 +6,7 @@ import candle.all;
 Type findType(Module module_, string name) {
     logResolve("findType %s", name);
 
+    // Check current Module units
     foreach(unit; module_.getUnits()) {
         logResolve("  Checking unit %s", unit.name);
         if(Struct s = unit.getStruct(name, Visibility.ALL)) {
@@ -22,8 +23,8 @@ Type findType(Module module_, string name) {
         }
     }
 
-    foreach(p; module_.getExternalModules()) {
-        //logResolve("  Checking external module %s", p.name);
+    foreach(m; module_.getUnqualifiedExternalModules()) {
+        //logResolve("  Checking external module %s", m.name);
 
         // todo - the external Module may not yet be parsed
         //if(Type t = findType(p, name)) {
@@ -50,6 +51,11 @@ bool isType(Module module_, Tokens t) {
     if(isFunctionPtrNew(module_, t)) return true;
     if(isPrimitiveType(t)) return true;
     if(isUserType(module_, t)) return true;
+
+    // Is it a type in one of the unqualified external Modules?
+    foreach(m; module_.getUnqualifiedExternalModules()) {
+        if(isUserType(m, t)) return true;
+    }
 
     bool isModuleId = t.isKind(EToken.ID) && module_.isModuleName(t.value());
 

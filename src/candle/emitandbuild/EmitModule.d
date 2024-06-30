@@ -59,25 +59,36 @@ private:
         }
     }
 
-    string getName(Id n) {
-        return n.target.isPublic() ? "%s__%s".format(n.target.module_().name, n.name) : n.name;
+    string getName(Target t) {
+        bool prependModuleName = t.isFunc() || t.isPublic();
+
+        if(t.isExtern() || (t.isFunc() && t.func.isProgramEntry)) {
+            prependModuleName = false;
+        }
+
+        return prependModuleName ? "%s__%s".format(t.module_().name, t.name()) : t.name();
     }
-    string getName(Call n) {
-        if(n.target.isExtern()) return n.name; 
-        return n.target.isPublic() ? "%s__%s".format(n.target.module_().name, n.name) : n.name;
-    }
+    // string getName(Id n) {
+    //     return n.target.isPublic() ? "%s__%s".format(n.target.module_().name, n.name) : n.name;
+    // }
+    // string getName(Call n) {
+    //     if(n.target.isExtern()) return n.name; 
+    //     return n.target.isPublic() ? "%s__%s".format(n.target.module_().name, n.name) : n.name;
+    // }
     string getName(Struct n) {
-        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
+        if(n.isExtern) return n.name;
+        return "%s__%s".format(n.getModule().name, n.name);
     }
     string getName(Union n) {
-        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
+        if(n.isExtern) return n.name;
+        return "%s__%s".format(n.getModule().name, n.name);
     }
     string getName(Alias n) {
-        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
+        return "%s__%s".format(n.getModule().name, n.name);
     }
     string getName(Func n) {
-        if(n.isExtern) return n.name;
-        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
+        if(n.isExtern || n.isProgramEntry) return n.name;
+        return "%s__%s".format(n.getModule().name, n.name);
     }
 
     void emitHeader() {
@@ -273,7 +284,7 @@ private:
         }
     }
     void emit(Call n) {
-        string name = getName(n);
+        string name = getName(n.target);
         add(name);
         add("(");
         foreach(i, ch; n.children) {
@@ -339,7 +350,7 @@ private:
         }
     }
     void emit(Id n) {
-        add(getName(n));
+        add(getName(n.target));
     }
     void emit(LiteralStruct n) {
         add("{");
@@ -415,6 +426,12 @@ private:
     void emit(Struct n) {
         if(!n.isPublic || isHeader()) {
             string name = getName(n);
+
+            if(n.isExtern) {
+                writeStmt("struct %s;\n", name);
+                return;
+            }
+
             writeStmt("typedef struct %s {\n", name);
             push();
             foreach(v; n.getVars()) {

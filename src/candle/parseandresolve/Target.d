@@ -7,7 +7,7 @@ public:
     // The target (either Var or Func)
     Var var;
     Func func;
-    bool isExternal;
+    bool isInExternalModule;
 
     this(Var v) {
         this.var = v;
@@ -15,20 +15,23 @@ public:
     this(Func f) {
         this.func = f;
     }
-    auto setExternal() {
-        isExternal = true;
+    auto setInExternalModule() {
+        isInExternalModule = true;
         return this;
     }
 
     Node node() { return var ? var : func; }
     Type type() { return node.type(); }
+    string name() { return var ? var.name : func.name; }
+    bool isFunc() { return func !is null; }
+    bool isVar() { return var !is null; }
     bool isPublic() { return var ? var.isPublic : func.isPublic; }
     bool isExtern() { return func ? func.isExtern : false; }
     bool isMember() { return var && var.isMember(); }
     Module module_() { return node().getModule(); }
 
     override string toString() {
-        string e = isExternal ? "%s::".format(node().getModule().name) : "";
+        string e = isInExternalModule ? "%s::".format(node().getModule().name) : "";
         string m;
         if(isMember()) {
             if(Struct s = var.parent.as!Struct) {

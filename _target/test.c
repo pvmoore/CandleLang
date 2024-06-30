@@ -12,70 +12,70 @@
 // Module header
 #include "test.h"
 
-typedef __s32 AA;	// AA = __s32;
+typedef __s32 test__AA;	// AA = __s32;
 
-typedef AA BB;	// BB = AA;
+typedef test__AA test__BB;	// BB = test__AA;
 
-typedef __f32 DD;	// DD = __f32;
+typedef __f32 test__DD;	// DD = __f32;
 
-typedef DD CC;	// CC = DD;
+typedef test__DD test__CC;	// CC = test__DD;
 
-typedef DD** EE;	// EE = DD**;
+typedef test__DD** test__EE;	// EE = test__DD**;
 
-typedef struct TestStructLiterals {
+typedef struct test__TestStructLiterals {
   __s32 a;
   __f32 b;
-} TestStructLiterals;
+} test__TestStructLiterals;
 
-typedef struct Inner {
+typedef struct test__Inner {
   __s64 a;
   __s64 b;
-} Inner;
+} test__Inner;
 
-typedef struct Local {
+typedef struct test__Local {
   __s8 a;
   __f32 b;
-  Inner inner;
-} Local;
+  test__Inner inner;
+} test__Local;
 
-typedef struct Peach {
+typedef struct test__Peach {
   __s32 a;
-} Peach;
+} test__Peach;
 
-typedef struct MyStruct {
+typedef struct test__MyStruct {
   __s32 a;
-} MyStruct;
+} test__MyStruct;
 
 
 // Private functions
-static void alias_();
-static void arrays();
-static void as_();
-static void binary();
-static void func_();
-static void id();
-static void is_();
-static void literalstruct();
-static void strings();
-static void struct_();
+static void test__alias_();
+static void test__arrays();
+static void test__as_();
+static void test__binary();
+static void test__func_();
+static void test__id();
+static void test__is_();
+static void test__literalstruct();
+static void test__strings();
+static void test__struct_();
 __s32 main();
-static void doSomethingElse();
-static void variables();
+static void test__doSomethingElse();
+static void test__variables();
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // alias.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void alias_() {
+static void test__alias_() {
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // arrays.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void arrays() {
+static void test__arrays() {
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // as.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void as_() {
+static void test__as_() {
   __s32 a = 10; // Line 5
   __f32 b = 3.0f; // Line 6
   __s32 c = (__s32)10.3f; // Line 8
@@ -90,7 +90,7 @@ static void as_() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // binary.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void binary() {
+static void test__binary() {
   __s32 a = 10; // Line 3
   __s32 b = 20; // Line 4
   __s32 c = a + b; // Line 6
@@ -171,14 +171,14 @@ static void binary() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // func.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void func_() {
+static void test__func_() {
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // id.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void id() {
+static void test__id() {
   test__Apple apple = {0}; // Line 6
-  Peach peach = {0}; // Line 7
+  test__Peach peach = {0}; // Line 7
   std__string str = {0}; // Line 8
   __s32 appleA = apple.a; // Line 10
   __s32 peachA = peach.a; // Line 11
@@ -186,7 +186,7 @@ static void id() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // is.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void is_() {
+static void test__is_() {
   candle__assert(1 == 1, "is.can", 3); // Line 3
   candle__assert(true == true, "is.can", 4); // Line 4
   candle__assert(true, "is.can", 5); // Line 5
@@ -202,27 +202,27 @@ static void is_() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // literalstruct.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void literalstruct() {
-  TestStructLiterals tsl = {0}; // Line 8
+static void test__literalstruct() {
+  test__TestStructLiterals tsl = {0}; // Line 8
   candle__assert(tsl.a == 0, "literalstruct.can", 9); // Line 9
   candle__assert(tsl.b == 0.0f, "literalstruct.can", 10); // Line 10
-  TestStructLiterals tsl2 = {.a = 1}; // Line 12
+  test__TestStructLiterals tsl2 = {.a = 1}; // Line 12
   candle__assert(tsl2.a == 1, "literalstruct.can", 13); // Line 13
   candle__assert(tsl2.b == 0.0f, "literalstruct.can", 14); // Line 14
-  tsl = (TestStructLiterals){.a = 2, .b = 1.1f}; // Line 16
+  tsl = (test__TestStructLiterals){.a = 2, .b = 1.1f}; // Line 16
   candle__assert(tsl.a == 2, "literalstruct.can", 17); // Line 17
   candle__assert(tsl.b == 1.1f, "literalstruct.can", 18); // Line 18
-  tsl = (TestStructLiterals){.b = 1.2f}; // Line 20
+  tsl = (test__TestStructLiterals){.b = 1.2f}; // Line 20
   candle__assert(tsl.a == 0, "literalstruct.can", 21); // Line 21
   candle__assert(tsl.b == 1.2f, "literalstruct.can", 22); // Line 22
-  tsl = (TestStructLiterals){.b = 1.3f, .a = 9}; // Line 24
+  tsl = (test__TestStructLiterals){.b = 1.3f, .a = 9}; // Line 24
   candle__assert(tsl.a == 9, "literalstruct.can", 25); // Line 25
   candle__assert(tsl.b == 1.3f, "literalstruct.can", 26); // Line 26
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // strings.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void strings() {
+static void test__strings() {
   stdio__putChar('s'); // Line 4
   __s8* a = "one"; // Line 6
   stdio__putChars(a); // Line 7
@@ -230,54 +230,54 @@ static void strings() {
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // struct.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void struct_() {
-  Local local = {0}; // Line 6
-  Local local2 = {0}; // Line 7
+static void test__struct_() {
+  test__Local local = {0}; // Line 6
+  test__Local local2 = {0}; // Line 7
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static __s32 wibble = 0; // Line 4
-static __f32 foo = 1.0f; // Line 65
+static __f32 foo = 1.0f; // Line 68
 __s32 main() {
   __s32 a = 6; // Line 7
   __s32* b = null; // Line 8
   putchar('a'); // Line 11
-  stdio__putChar('b'); // Line 14
-  test__doSomething(null, null); // Line 16
-  doSomethingElse(); // Line 17
-  candle__assert(true, "test.can", 19); // Line 19
-  variables(); // Line 21
-  binary(); // Line 22
-  as_(); // Line 23
-  is_(); // Line 24
-  id(); // Line 25
-  literalstruct(); // Line 26
-  struct_(); // Line 27
-  func_(); // Line 28
-  alias_(); // Line 29
-  strings(); // Line 30
-  arrays(); // Line 31
-  return 0; // Line 33
+  stdio__putChar('b'); // Line 17
+  test__doSomething(null, null); // Line 19
+  test__doSomethingElse(); // Line 20
+  candle__assert(true, "test.can", 22); // Line 22
+  test__variables(); // Line 24
+  test__binary(); // Line 25
+  test__as_(); // Line 26
+  test__is_(); // Line 27
+  test__id(); // Line 28
+  test__literalstruct(); // Line 29
+  test__struct_(); // Line 30
+  test__func_(); // Line 31
+  test__alias_(); // Line 32
+  test__strings(); // Line 33
+  test__arrays(); // Line 34
+  return 0; // Line 36
 }
-static void doSomethingElse() {
+static void test__doSomethingElse() {
 }
 void test__doSomething(__s32* a, __f32** b) {
-  __bool c = !true; // Line 43
-  __s32 d = 'a'; // Line 45
-  __s64 e = -1LL; // Line 46
-  __f32 f = foo; // Line 47
-  __s32 y = 1 + 2 / 3; // Line 49
-  __s32 z = 1 / 2 + 3; // Line 50
-  __f32 g = 1.0f; // Line 51
-  __f32 g2 = 1.3f; // Line 52
-  test__Apple apple = {0}; // Line 54
-  std__PlumPublic plum = {0}; // Line 56
+  __bool c = !true; // Line 46
+  __s32 d = 'a'; // Line 48
+  __s64 e = -1LL; // Line 49
+  __f32 f = foo; // Line 50
+  __s32 y = 1 + 2 / 3; // Line 52
+  __s32 z = 1 / 2 + 3; // Line 53
+  __f32 g = 1.0f; // Line 54
+  __f32 g2 = 1.3f; // Line 55
+  test__Apple apple = {0}; // Line 57
+  std__PlumPublic plum = {0}; // Line 59
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // var.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
-static void variables() {
+static void test__variables() {
   __bool a1 = false; // Line 3
   candle__assert(!a1, "var.can", 3);
   __bool a2 = true; // Line 4
@@ -322,7 +322,7 @@ static void variables() {
   candle__assert(k1 == 0.0, "var.can", 33);
   __f64 k2 = 10.0; // Line 34
   candle__assert(k2 == 10.0, "var.can", 34);
-  MyStruct l = {0}; // Line 36
+  test__MyStruct l = {0}; // Line 36
   void (*fp)(__s32,__f32) = null; // Line 39
   void* (*fp2)(void) = null; // Line 40
 }

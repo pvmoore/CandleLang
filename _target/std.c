@@ -4,9 +4,9 @@
 // Module header
 #include "std.h"
 
-typedef struct PlumPrivate {
+typedef struct std__PlumPrivate {
   __s32 a;
-} PlumPrivate;
+} std__PlumPrivate;
 
 
 // Private functions

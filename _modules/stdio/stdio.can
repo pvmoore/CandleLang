@@ -8,3 +8,7 @@ pub func putChar(ch:int) {
 pub func putChars(ch:byte*) {
     puts(ch);
 }
+
+pub extern struct FILE;
+
+pub extern func fopen(filename:const byte*, mode:const byte* -> FILE*);
