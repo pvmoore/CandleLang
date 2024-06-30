@@ -11,11 +11,11 @@ public:
     static bool link(Candle candle) {
         StopWatch watch;
         watch.start();
-        string targetName   = candle.mainProject.name;
+        string targetName   = candle.mainModule.name;
         string subsystem    = candle.subsystem;
         auto buildDirectory = candle.targetDirectory.add(Directory("build"));
         string targetExe    = targetName ~ ".exe";
-        string[] objects    = candle.allProjects()
+        string[] objects    = candle.allModules()
                                   .map!(it=>it.name ~ ".obj")
                                   .map!(it=>it.replace('/', '\\'))
                                   .array;

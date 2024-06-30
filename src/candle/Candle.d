@@ -15,11 +15,11 @@ public:
     bool emitLineNumber;
 
     // Generated data
-    Project mainProject;
-    Project[string] projects;
+    Module mainModule;
+    Module[string] modules;
     bool astDumped;
     
-    Project[] allProjects() { return projects.values(); }
+    Module[] allModules() { return modules.values(); }
     bool hasErrors() { return errors.length > 0; }
     CandleError[] getErrors() { return errors; }
 
@@ -35,7 +35,7 @@ public:
             ensureDirectoryExists(targetDirectory.add(Directory("ast")));
         }
 
-        mainProject = makeNode!Project(this, mainDirectory);
+        mainModule = makeNode!Module(this, mainDirectory);
 
         try{
             if(!parseAndResolve()) {
@@ -44,16 +44,16 @@ public:
 
             writeAllUnitAsts(this);
 
-            checkAllProjects();
+            checkAllModules();
             if(hasErrors()) return false;
 
             // After this point we should not get any more CandleErrors
 
-            emitAllProjects();
+            emitAllModules();
 
-            writeAllProjectASTs(this);
+            writeAllModuleASTs(this);
 
-            if(buildAllProjects()) {
+            if(buildAllModules()) {
                 if(link()) {
                     log(ansiWrap("Success ", Ansi.GREEN) ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
                 } else {
@@ -98,16 +98,16 @@ private:
         int maxPasses = 3;
         for(int pass = 0; !resolved && !hasErrors() && pass < maxPasses; pass++) {
 
-            // Run a parse phase on all Projects
-            parseAllProjects(pass);
+            // Run a parse phase on all Modules
+            parseAllModules(pass);
 
-            // Run a resolve phase on all Projects
-            resolved = resolveAllProjects(pass);
+            // Run a resolve phase on all Modules
+            resolved = resolveAllModules(pass);
         }
         // Convert unresolved nodes to ResolutionErrors
         if(!resolved) {
             Node[] nodes;
-            foreach(p; allProjects()) {
+            foreach(p; allModules()) {
                 p.getUnresolved(nodes);
             }
             foreach(Node n; nodes) {
@@ -117,23 +117,23 @@ private:
         }
         return resolved;
     }
-    void parseAllProjects(int pass) {
-        Parser.parseAllProjects(this, pass);
+    void parseAllModules(int pass) {
+        Parser.parseAllModules(this, pass);
     }
-    bool resolveAllProjects(int pass) {
-        return Resolver.resolveAllProjects(this, pass);
+    bool resolveAllModules(int pass) {
+        return Resolver.resolveAllModules(this, pass);
     }
-    void checkAllProjects() {
-        Checker.checkAllProjects(this);
+    void checkAllModules() {
+        Checker.checkAllModules(this);
     }
-    void emitAllProjects() {
-        Emitter.emitAllProjects(this);
+    void emitAllModules() {
+        Emitter.emitAllModules(this);
     }
     /** 
-     * Build all Projects into one object file per project
+     * Build all Modules into one object file per module
      */
-    bool buildAllProjects() {
-        return Builder.buildAllProjects(this);
+    bool buildAllModules() {
+        return Builder.buildAllModules(this);
     }
     /** 
      * Link all object files together
@@ -144,8 +144,8 @@ private:
     void dumpStats() {
         //  🌩🌧🌤🌻🍒🌹🍓🍔✒✕✖✗✘✓✔🗹♏
         log("╔═════════════════════════════════════════════════════════════════════");
-        log("║ " ~ ansiWrap("Projects", Ansi.BLUE_BOLD));
-        foreach(p; allProjects()) {
+        log("║ " ~ ansiWrap("Modules", Ansi.BLUE_BOLD));
+        foreach(p; allModules()) {
             log("║ %s", p);
         }
         log("╟─────────────────────────────────────────────────────────────────────");

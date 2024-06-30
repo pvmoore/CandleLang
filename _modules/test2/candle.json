@@ -1,6 +1,6 @@
 {
     "dependencies": {
-        "std": { "directory": "_projects/std" }
+        "std": { "directory": "_modules/std" }
     },
     "name": "test2"
 }

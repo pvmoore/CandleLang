@@ -24,8 +24,8 @@ import candle.lex.Token;
 import candle.lex.Tokens;
 
 import candle.emitandbuild.Builder;
-import candle.emitandbuild.BuildProject;
-import candle.emitandbuild.EmitProject;
+import candle.emitandbuild.BuildModule;
+import candle.emitandbuild.EmitModule;
 import candle.emitandbuild.Emitter;
 
 import candle.parseandresolve.find_call_target;
@@ -63,10 +63,10 @@ import candle.ast.expr.Expr;
 import candle.ast.expr.Id;
 import candle.ast.expr.Is;
 import candle.ast.expr.LiteralStruct;
+import candle.ast.expr.ModuleId;
 import candle.ast.expr.Null;
 import candle.ast.expr.Number;
 import candle.ast.expr.Parens;
-import candle.ast.expr.ProjectId;
 import candle.ast.expr.Scope;
 import candle.ast.expr.String;
 import candle.ast.expr.Unary;

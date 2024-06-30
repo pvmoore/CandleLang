@@ -1,7 +1,7 @@
-// Project .. std
+// Module .. std
 
-// Dependency Project headers
-// Project header
+// Dependency Module headers
+// Module header
 #include "std.h"
 
 typedef struct PlumPrivate {

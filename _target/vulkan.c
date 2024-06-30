@@ -1,9 +1,9 @@
-// Project .. vulkan
+// Module .. vulkan
 
-// Dependency Project headers
+// Dependency Module headers
 #include "std.h"
 
-// Project header
+// Module header
 #include "vulkan.h"
 
 

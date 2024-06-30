@@ -12,7 +12,7 @@ public:
     final int numChildren() { return children.length.as!int; }
     final bool hasChildren() { return children.length > 0; }
     final bool isAttached() { 
-        if(enode()==ENode.PROJECT) return true;
+        if(enode()==ENode.MODULE) return true;
         if(!parent) return false;
         return parent.isAttached(); 
     }
@@ -106,14 +106,14 @@ public:
         assert(parent);
         return parent.getUnit();
     }
-    final Project getProject() {
-        if(this.isA!Project) return this.as!Project;
+    final Module getModule() {
+        if(this.isA!Module) return this.as!Module;
         assert(parent);
-        return parent.getProject();
+        return parent.getModule();
     }
     final Candle getCandle() {
-        if(auto p = this.as!Project) return p.candle;
-        if(auto u = this.as!Unit) return u.project.candle;
+        if(auto p = this.as!Module) return p.candle;
+        if(auto u = this.as!Unit) return u.module_.candle;
         assert(parent);
         return parent.getCandle();
     }
@@ -175,23 +175,23 @@ void recurse(Node n, void delegate(Node n) callback) {
     }
 }
 void writeAllUnitAsts(Candle candle) {
-    foreach(p; candle.allProjects()) {
+    foreach(p; candle.allModules()) {
         writeAllUnitAsts(candle, p);
     }
 }
-void writeAllUnitAsts(Candle candle, Project project) {
+void writeAllUnitAsts(Candle candle, Module module_) {
     if(candle.dumpAst) {
-        foreach(u; project.getUnits()) {
-            string name = "%s__%s.canast".format(project.name, u.name);
+        foreach(u; module_.getUnits()) {
+            string name = "%s__%s.canast".format(module_.name, u.name);
             Filepath path = Filepath(candle.targetDirectory.add(Directory("ast")), Filename(name));
 
             path.write(u.dumpToString());
         }
     }
 }
-void writeAllProjectASTs(Candle candle) {
+void writeAllModuleASTs(Candle candle) {
     if(candle.dumpAst) {
-        foreach(p; candle.allProjects()) {
+        foreach(p; candle.allModules()) {
             string name = "%s.canast".format(p.name);
             Filepath path = Filepath(candle.targetDirectory.add(Directory("ast")), Filename(name));
             

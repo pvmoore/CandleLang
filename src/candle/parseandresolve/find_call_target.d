@@ -28,14 +28,14 @@ Target findCallTarget(Call call) {
     //     matches ~= u.getFuncs(call.name);
     // }
 
-    // Check all Project functions
-    Project project = call.getProject();
-    foreach(unit; project.getUnits()) {
+    // Check all Module functions
+    Module module_ = call.getModule();
+    foreach(unit; module_.getUnits()) {
         matches ~= unit.getFuncs(call.name, Visibility.ALL);
     }
 
-    // Check public members of external Projects where unqualified-access = true
-    foreach(p; project.getUnqualifiedExternalProjects()) {
+    // Check public members of external Modules where unqualified-access = true
+    foreach(p; module_.getUnqualifiedExternalModules()) {
         foreach(unit; p.getUnits()) {
             // We only want public Funcs here
             matches ~= unit.getFuncs(call.name, Visibility.PUBLIC);
@@ -68,7 +68,7 @@ Target findCallTarget(Call call) {
 /**
  *  Find the callee Func which must be a member of prev.
  *  Assume: prev must be one of:
- *    - ProjectId
+ *    - ModuleId
  *    - Struct
  *    - Union
  *
@@ -80,10 +80,10 @@ Target findCallTarget(Call call, Node prev) {
 
     logResolve("findCallTarget %s (member)", call.name);
     switch(prev.enode()) with(ENode) {
-        case PROJECT_ID: {
-            ProjectId pid = prev.as!ProjectId;
-            Project project = pid.project;
-            foreach(u; project.getUnits()) {
+        case MODULE_ID: {
+            ModuleId pid = prev.as!ModuleId;
+            Module module_ = pid.module_;
+            foreach(u; module_.getUnits()) {
 
                 Func[] funcs = u.getFuncs(call.name, Visibility.PUBLIC);
                 if(funcs.length == 1) return new Target(funcs[0]).setExternal();

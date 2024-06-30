@@ -1,9 +1,9 @@
-// Project .. test2
+// Module .. test2
 
-// Dependency Project headers
+// Dependency Module headers
 #include "std.h"
 
-// Project header
+// Module header
 #include "test2.h"
 
 

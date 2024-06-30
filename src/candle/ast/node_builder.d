@@ -8,13 +8,13 @@ T makeNode(T : Node)(FileCoord coord) {
     node.coord = coord;
     return node;
 }
-T makeNode(T : Project)(Candle candle, Directory directory) {
-    T node = new Project(candle, directory);
+T makeNode(T : Module)(Candle candle, Directory directory) {
+    T node = new Module(candle, directory);
     node.id = IDS++;
     return node;
 }
-T makeNode(T : Unit)(Project project, string name) {
-    T node = new Unit(project, name);
+T makeNode(T : Unit)(Module module_, string name) {
+    T node = new Unit(module_, name);
     node.id = IDS++;
     return node;
 }
@@ -40,8 +40,8 @@ T makeNode(T : NodeRef)(Node n) {
     node.coord = n.coord;
     return node;
 }
-T makeNode(T : TypeRef)(FileCoord coord, string name, Type n, Project project) {
-    T node = new TypeRef(name, n, project);
+T makeNode(T : TypeRef)(FileCoord coord, string name, Type n, Module module_) {
+    T node = new TypeRef(name, n, module_);
     node.id = IDS++;
     node.coord = coord;
     return node;

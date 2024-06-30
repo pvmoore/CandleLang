@@ -4,7 +4,7 @@ import candle.all;
 
 void parseType(Node parent, Tokens t) {
     logParse("parseType %s", t.debugValue());
-    Project project = parent.getProject();
+    Module module_ = parent.getModule();
     string value = t.value();
 
     Node type;
@@ -39,20 +39,20 @@ void parseType(Node parent, Tokens t) {
 
     // User defined type?
     if(!type) {
-        Project typeProject = project;
+        Module typeModule = module_;
         bool isExternal = false;
 
-        bool isProjectId = t.isKind(EToken.ID) && project.isProjectName(value);
-        if(isProjectId) {
-            typeProject = project.getProject(value);
+        bool isModuleId = t.isKind(EToken.ID) && module_.isModuleName(value);
+        if(isModuleId) {
+            typeModule = module_.getModule(value);
             isExternal = true;
             t.next();
             t.skip(EToken.DOT);
             value = t.value();
         } 
 
-        Type ty = findType(typeProject, value);
-        TypeRef tr = makeNode!TypeRef(t.coord(), value, ty, typeProject);
+        Type ty = findType(typeModule, value);
+        TypeRef tr = makeNode!TypeRef(t.coord(), value, ty, typeModule);
         tr.isExternal = isExternal;
         type = tr;
 

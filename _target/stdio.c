@@ -1,7 +1,7 @@
-// Project .. stdio
+// Module .. stdio
 
-// Dependency Project headers
-// Project header
+// Dependency Module headers
+// Module header
 #include "_stdio.h"
 
 

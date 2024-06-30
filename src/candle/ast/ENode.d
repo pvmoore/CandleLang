@@ -3,11 +3,11 @@ module candle.ast.ENode;
 import candle.all;
 
 enum ENode {
-    PROJECT, UNIT, NODE_REF,
+    MODULE, UNIT, NODE_REF,
 
     AS, BINARY, BUILTIN_FUNC, CALL, CHAR, DOT, ID, IS,
     LITERAL_STRUCT, NULL, NUMBER,  
-    PARENS, PROJECT_ID, SCOPE, STRING, UNARY,
+    PARENS, MODULE_ID, SCOPE, STRING, UNARY,
 
     VAR, RETURN,
 

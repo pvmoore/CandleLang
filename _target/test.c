@@ -1,6 +1,6 @@
-// Project .. test
+// Module .. test
 
-// Dependency Project headers
+// Dependency Module headers
 #include "std.h"
 
 #include "vulkan.h"
@@ -9,7 +9,7 @@
 
 #include "test2.h"
 
-// Project header
+// Module header
 #include "test.h"
 
 typedef __s32 AA;	// AA = __s32;

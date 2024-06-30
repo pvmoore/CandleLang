@@ -9,7 +9,7 @@ import candle.all;
 final class Unit : Node {
 public:
     // Static data
-    Project project;
+    Module module_;
     string name;
     string filename;
     Token[] tokens;
@@ -18,8 +18,8 @@ public:
     // Dynamic data
     bool isParsed;
 
-    this(Project project, string filename) {
-        this.project = project;
+    this(Module module_, string filename) {
+        this.module_ = module_;
         this.filename = filename;
         this.name = Filename(filename).getBaseName();
 
@@ -86,7 +86,7 @@ public:
                        .array;
     }
     override string toString() {
-        return "Unit %s (Project %s)".format(name, getProject().name);
+        return "Unit %s (Module %s)".format(name, getModule().name);
     }
     override void parse(Tokens t) {
         int lastPos = t.pos;
@@ -103,7 +103,7 @@ public:
 private:
     void readSource() {
         import std.file : read;
-        this.src = cast(string)read(project.directory.value ~ filename);
+        this.src = cast(string)read(module_.directory.value ~ filename);
     }
     void lexSource() {
         this.tokens = Lexer.lex(src);
@@ -114,10 +114,10 @@ private:
             if(t.isValue("struct") || t.isValue("union")) {
                 bool isPublic = t.isValue("pub", -1);
                 string structName = t.value(1);
-                project.scannedTypes[structName] = isPublic;
+                module_.scannedTypes[structName] = isPublic;
             } else if(t.isValue("alias")) {
                 bool isPublic = t.isValue("pub", -1);
-                project.scannedTypes[t.value(1)] = isPublic;
+                module_.scannedTypes[t.value(1)] = isPublic;
             } else {
                 switch(t.kind()) with(EToken) {
                     case LBRACKET:

@@ -21,8 +21,8 @@ private:
 
 void parseExprLhs(Node parent, Tokens t) {
     logParse("lhs %s", t.debugValue());
-    Project project = t.unit.project;
-    if(isType(project, t)) {
+    Module module_ = t.unit.module_;
+    if(isType(module_, t)) {
         parseType(parent, t);
         return;
     }
@@ -232,8 +232,8 @@ void parseUnary(Node parent, Tokens t) {
 }
 void parseId(Node parent, Tokens t) {
     Node id;
-    if(parent.getProject().isProjectName(t.value())) {
-        id = makeNode!ProjectId(t.coord());
+    if(parent.getModule().isModuleName(t.value())) {
+        id = makeNode!ModuleId(t.coord());
     } else {
         id = makeNode!Id(t.coord());
     }

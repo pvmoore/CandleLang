@@ -6,9 +6,9 @@ final class Checker {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
-    static void checkAllProjects(Candle candle) {
+    static void checkAllModules(Candle candle) {
         logCheck("Check ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        foreach(p; candle.allProjects()) {
+        foreach(p; candle.allModules()) {
             check(p);
         }
     }
@@ -18,10 +18,10 @@ private:
     /** 
      * Check all Stmt Nodes from the bottom up
      */
-    static void check(Project project) {
+    static void check(Module module_) {
         StopWatch watch;
         watch.start();
-        foreach(u; project.getUnits()) {
+        foreach(u; module_.getUnits()) {
             recurseChildren(u);
         }
         watch.stop();

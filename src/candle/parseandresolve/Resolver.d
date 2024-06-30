@@ -6,16 +6,16 @@ final class Resolver {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
-    static bool resolveAllProjects(Candle candle, int pass) {
+    static bool resolveAllModules(Candle candle, int pass) {
         logResolve("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         bool allResolved = true;
-        foreach(p; candle.allProjects()) {
+        foreach(p; candle.allModules()) {
             allResolved &= Resolver.resolve(p);
         }
         logResolve("  All resolved = %s", allResolved);
 
         if(allResolved && candle.hasErrors()) {
-            afterAllResolved(candle.allProjects());
+            afterAllResolved(candle.allModules());
         }
 
         return allResolved;
@@ -70,20 +70,20 @@ public:
 private:
     shared static ulong totalNanos;
 
-    static bool resolve(Project project) {
+    static bool resolve(Module module_) {
         StopWatch watch;
         watch.start();
-        logResolve("  Resolving %s", project);
+        logResolve("  Resolving %s", module_);
         bool allResolved = true;
 
-        foreach(u; project.getUnits()) {
+        foreach(u; module_.getUnits()) {
             recurseChildren(u, allResolved);
         }
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
         return allResolved;
     }
-    static void afterAllResolved(Project[] allProjects) {
+    static void afterAllResolved(Module[] allProjects) {
         StopWatch watch;
         watch.start();
 

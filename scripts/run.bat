@@ -3,9 +3,9 @@ cls
 chcp 65001
 
 if "%1"=="" (
-    set PROJECT=_projects\test
+    set PROJECT=_modules\test
 ) else (
-    set PROJECT=_projects\%1
+    set PROJECT=_modules\%1
 ) 
 
 rem cd ..

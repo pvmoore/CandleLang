@@ -97,7 +97,7 @@ private:
     void resolveTypeOf() {
         if(checkNumArgs(1)) {
             if(!first().isResolved()) return;
-            TypeRef tr = makeNode!TypeRef(coord, null, first().type(), getProject());
+            TypeRef tr = makeNode!TypeRef(coord, null, first().type(), getModule());
             Rewriter.toType(this, tr);
         }       
     }

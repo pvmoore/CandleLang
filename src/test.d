@@ -10,7 +10,7 @@ void main(string[] args) {
     auto candle = new Candle();
     candle.isDebug = true;
     candle.subsystem = "console";
-    candle.mainDirectory = Directory("_projects/test/");
+    candle.mainDirectory = Directory("_modules/test/");
     candle.targetDirectory = Directory("_target/");
     candle.nullChecks = true;
 

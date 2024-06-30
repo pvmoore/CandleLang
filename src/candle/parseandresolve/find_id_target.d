@@ -9,7 +9,7 @@ import candle.all;
  * All enclosing Struct Vars and Funcs will be checked (if we are inside a Struct function)
  * All enclosing Union Vars and Funcs will be checked (if we are inside a Union function)
  * All Unit Vars and Funcs will be checked.
- * All public Funcs, Structs and Unions will be checked in surrounding Projects
+ * All public Funcs, Structs and Unions will be checked in surrounding Modules
  */
 Target findIdTarget(Id id) {
     logResolve("findIdTarget %s", id.name);
@@ -53,8 +53,8 @@ Target findIdTarget(Id id) {
     }+/
 
     // Check all Unit members
-    Project project = id.getProject();
-    foreach(unit; project.getUnits()) {
+    Module module_ = id.getModule();
+    foreach(unit; module_.getUnits()) {
         Var v = unit.getVar(id.name, Visibility.ALL);
         if(v) return new Target(v);
 
@@ -66,8 +66,8 @@ Target findIdTarget(Id id) {
         }
     }
 
-    // Check external Projects
-    foreach(p; project.getExternalProjects()) {
+    // Check external Modules
+    foreach(p; module_.getExternalModules()) {
         foreach(unit; p.getUnits()) {
             // We only want public Funcs here
             Func[] f = unit.getFuncs(id.name, Visibility.PUBLIC);
@@ -84,7 +84,7 @@ Target findIdTarget(Id id) {
 /**
  *  Find the callee Var or Func which must be a member of prev.
  *  Assume: prev must be one of:
- *    - ProjectId
+ *    - ModuleId
  *    - Id -> Struct
  *    - Id -> Union
  *
@@ -94,10 +94,10 @@ Target findIdTarget(Id id) {
 Target findIdTarget(Id id, Node prev) {
     logResolve("findIdTarget %s (member)", id.name);
     switch(prev.enode()) with(ENode) {
-        case PROJECT_ID: {
-            ProjectId pid = prev.as!ProjectId;
-            Project project = pid.project;
-            foreach(u; project.getUnits()) {
+        case MODULE_ID: {
+            ModuleId pid = prev.as!ModuleId;
+            Module module_ = pid.module_;
+            foreach(u; module_.getUnits()) {
 
                 if(auto var = u.getVar(id.name, Visibility.PUBLIC)) { 
                     return new Target(var).setExternal();
@@ -114,7 +114,7 @@ Target findIdTarget(Id id, Node prev) {
         case ID: {
             Struct struct_ = prev.type().getStruct();
             if(struct_) {
-                bool isExternal = struct_.getProject().id != id.getProject().id;
+                bool isExternal = struct_.getModule().id != id.getModule().id;
                 if(auto var = struct_.getVar(id.name, !isExternal)) {
                     return new Target(var);
                 } 

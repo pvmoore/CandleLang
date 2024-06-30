@@ -3,10 +3,10 @@ module candle.parseandresolve.find_type;
 import candle.all;
 
 
-Type findType(Project project, string name) {
+Type findType(Module module_, string name) {
     logResolve("findType %s", name);
 
-    foreach(unit; project.getUnits()) {
+    foreach(unit; module_.getUnits()) {
         logResolve("  Checking unit %s", unit.name);
         if(Struct s = unit.getStruct(name, Visibility.ALL)) {
             logResolve("    found %s", s);
@@ -22,16 +22,16 @@ Type findType(Project project, string name) {
         }
     }
 
-    foreach(p; project.getExternalProjects()) {
-        //logResolve("  Checking external project %s", p.name);
+    foreach(p; module_.getExternalModules()) {
+        //logResolve("  Checking external module %s", p.name);
 
-        // todo - the external Project may not yet be parsed
+        // todo - the external Module may not yet be parsed
         //if(Type t = findType(p, name)) {
         //    return t;
         //}
         // If we get here then either:
-        // - The external Project is not ready or
-        // - The type does not exist in the external Project or
+        // - The external Module is not ready or
+        // - The type does not exist in the external Module or
         // -
     }
 
@@ -40,20 +40,20 @@ Type findType(Project project, string name) {
     return null;
 }
 
-bool isType(Project project, Tokens t) {
+bool isType(Module module_, Tokens t) {
     // if(t.kind() == EToken.LBRACKET) {
-    //     bool ifp = isFunctionPtr(project, t);
+    //     bool ifp = isFunctionPtr(module_, t);
     //     if(ifp) syntaxError(t, "fp syntax");
     //     return ifp;
     // }
     if(t.kind() != EToken.ID) return false;
-    if(isFunctionPtrNew(project, t)) return true;
+    if(isFunctionPtrNew(module_, t)) return true;
     if(isPrimitiveType(t)) return true;
-    if(isUserType(project, t)) return true;
+    if(isUserType(module_, t)) return true;
 
-    bool isProjectId = t.isKind(EToken.ID) && project.isProjectName(t.value());
+    bool isModuleId = t.isKind(EToken.ID) && module_.isModuleName(t.value());
 
-    if(isProjectId) {
+    if(isModuleId) {
         // std.foo(
         with(EToken) if(t.matches(ID, DOT, ID, LBRACKET)) return false;
 
@@ -138,7 +138,7 @@ private:
  * eg. func(void->void) 
  *     func(int a, int b -> int)
  */
-bool isFunctionPtrNew(Project project, Tokens t) {
+bool isFunctionPtrNew(Module module_, Tokens t) {
     return t.isValue("func") && t.isKind(EToken.LBRACKET, 1);
 }
 
@@ -146,7 +146,7 @@ bool isFunctionPtrNew(Project project, Tokens t) {
  * eg. (void->void) 
  *     (int a, int b -> int)
  */
-// bool isFunctionPtr(Project project, Tokens t) {
+// bool isFunctionPtr(Module module_, Tokens t) {
 //     if(t.kind() != EToken.LBRACKET) return false;
 //     t.pushState();
 
@@ -157,7 +157,7 @@ bool isFunctionPtrNew(Project project, Tokens t) {
 //     bool happy = !t.isKind(EToken.RBRACKET);
 
 //     while(happy && !t.isKind(EToken.RBRACKET)) {
-//         if(isType(project, t)) {
+//         if(isType(module_, t)) {
 //             int len = typeLength(t);
 //             t.next(len);
 //         } else {
@@ -187,7 +187,7 @@ bool isPrimitiveType(Tokens t) {
             return false;
     }
 }
-bool isUserType(Project project, Tokens t) {
-    return project.isDeclaredType(t.value());
-    //return findType(project, t.value()) !is null;
+bool isUserType(Module module_, Tokens t) {
+    return module_.isDeclaredType(t.value());
+    //return findType(module_, t.value()) !is null;
 }

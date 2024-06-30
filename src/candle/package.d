@@ -7,5 +7,5 @@ import candle.Version;
 
 import candle.errors.CandleError;
 
-import candle.ast.Project;
+import candle.ast.Module;
 

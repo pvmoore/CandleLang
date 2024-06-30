@@ -17,7 +17,7 @@ interface CandleError {
 
 string formatBrief(Unit unit, FileCoord coord, string msg) {
     string location = " %s%s.can %s:%s : ".format(
-        unit.getProject().directory, 
+        unit.getModule().directory, 
         unit.name, coord.line+1, coord.column+1);
     return ansiWrap("ERROR:", Ansi.RED_BOLD) ~
         ansiWrap(location, Ansi.BOLD) ~ 

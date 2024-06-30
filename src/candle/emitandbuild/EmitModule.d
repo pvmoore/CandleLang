@@ -1,41 +1,41 @@
-module candle.emitandbuild.EmitProject;
+module candle.emitandbuild.EmitModule;
 
 import candle.all;
 
-final class EmitProject {
+final class EmitModule {
 public:
-    this(Project project) {
-        this.candle = project.candle;
-        this.project = project;
+    this(Module module_) {
+        this.candle = module_.candle;
+        this.module_ = module_;
         this.sourceBuf = new StringBuffer();
         this.headerBuf = new StringBuffer();
     }
     void emit() {
-        logEmit("🕯 Emit %s", project.name);
+        logEmit("🕯 Emit %s", module_.name);
 
-        // Emit header '<project_name>.h'
+        // Emit header '<module_name>.h'
         buf = headerBuf;
         emitHeader();
 
-        // Emit body '<project_name>.c'
+        // Emit body '<module_name>.c'
         buf = sourceBuf;
         emitBody();
 
         // Write the file now
-        string filename = project.name ~ ".c";
+        string filename = module_.name ~ ".c";
         File file = File(Filepath(candle.targetDirectory, Filename(filename)).value, "wb");
         file.write(sourceBuf.toString());
         file.close();
 
         // Write the file now
-        string header = project.includeName;
+        string header = module_.headerName;
         File hFile = File(Filepath(candle.targetDirectory, Filename(header)).value, "wb");
         hFile.write(headerBuf.toString());
         hFile.close();
     }
 private:
     Candle candle;
-    Project project;
+    Module module_;
     StringBuffer buf, sourceBuf, headerBuf;
     string indent;
     uint line;
@@ -60,32 +60,32 @@ private:
     }
 
     string getName(Id n) {
-        return n.target.isPublic() ? "%s__%s".format(n.target.project().name, n.name) : n.name;
+        return n.target.isPublic() ? "%s__%s".format(n.target.module_().name, n.name) : n.name;
     }
     string getName(Call n) {
         if(n.target.isExtern()) return n.name; 
-        return n.target.isPublic() ? "%s__%s".format(n.target.project().name, n.name) : n.name;
+        return n.target.isPublic() ? "%s__%s".format(n.target.module_().name, n.name) : n.name;
     }
     string getName(Struct n) {
-        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
+        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
     }
     string getName(Union n) {
-        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
+        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
     }
     string getName(Alias n) {
-        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
+        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
     }
     string getName(Func n) {
         if(n.isExtern) return n.name;
-        return n.isPublic ? "%s__%s".format(n.getProject().name, n.name) : n.name;
+        return n.isPublic ? "%s__%s".format(n.getModule().name, n.name) : n.name;
     }
 
     void emitHeader() {
-        buf.add("#ifndef %s__H\n", project.name);
-        buf.add("#define %s__H\n\n", project.name);
+        buf.add("#ifndef %s__H\n", module_.name);
+        buf.add("#define %s__H\n\n", module_.name);
         buf.add("#include \"candle__common.h\"\n\n");
 
-        foreach(ch; project.children) {
+        foreach(ch; module_.children) {
             if(Struct s = ch.as!Struct) {
                 if(s.isPublic) {
                     emit(s);
@@ -109,29 +109,29 @@ private:
             }
         }
 
-        foreach(u; project.getUnits()) {
+        foreach(u; module_.getUnits()) {
             foreach(f; u.getFuncs(Visibility.PUBLIC)) {
                 emit(f, true);
             }
         }
-        buf.add("\n#endif // %s__H\n", project.name);
+        buf.add("\n#endif // %s__H\n", module_.name);
     }
     void emitBody() {
-        writeStmt("// Project .. %s\n\n", project.name);
+        writeStmt("// Module .. %s\n\n", module_.name);
 
-        // Add includes for all dependent Projects
-        writeStmt("// Dependency Project headers\n");
-        foreach(p; project.getExternalProjects()) {
-            writeStmt("#include \"%s\"\n\n", p.includeName);
+        // Add includes for all dependent Modules
+        writeStmt("// Dependency Module headers\n");
+        foreach(p; module_.getExternalModules()) {
+            writeStmt("#include \"%s\"\n\n", p.headerName);
         }
 
         // Include our own public header
-        writeStmt("// Project header\n");
-        writeStmt("#include \"%s\"\n\n", project.includeName);
+        writeStmt("// Module header\n");
+        writeStmt("#include \"%s\"\n\n", module_.headerName);
 
-        //writeStmt("static const char* candle_projectName;");// = \"%s\";", n.name);
+        //writeStmt("static const char* candle_moduleName;");// = \"%s\";", n.name);
 
-        foreach(ch; project.children) {
+        foreach(ch; module_.children) {
             if(Struct s = ch.as!Struct) {
                 if(!s.isPublic) {
                     emit(s);
@@ -160,7 +160,7 @@ private:
         }
 
         writeStmt("\n// Private functions\n");
-        foreach(unit; project.getUnits()) {
+        foreach(unit; module_.getUnits()) {
             unit.getFuncs(Visibility.PRIVATE)
                 .each!((it) {
                     emit(it, true);
@@ -170,7 +170,7 @@ private:
 
         emitLineNumbers = true;
 
-        foreach(u; project.getUnits()) {
+        foreach(u; module_.getUnits()) {
             emit(u);
         }
     }
@@ -222,7 +222,7 @@ private:
             case PARENS: emit(n.as!Parens); break;
             case POINTER: emit(n.as!Pointer); break;
             case PRIMITIVE: emit(n.as!Primitive); break;
-            case PROJECT_ID: emit(n.as!ProjectId); break;
+            case MODULE_ID: emit(n.as!ModuleId); break;
             case RETURN: emit(n.as!Return); break;
             case SCOPE: emit(n.as!Scope); break;
             case STRING: emit(n.as!String); break;
@@ -231,7 +231,7 @@ private:
             case UNARY: emit(n.as!Unary); break;
             case UNIT: emit(n.as!Unit); break;
             case VAR: emit(n.as!Var); break;
-            default: throw new Exception("EmitProject: Handle node %s".format(n.enode()));
+            default: throw new Exception("EmitModule: Handle node %s".format(n.enode()));
         }
         afterNode(n);
     }
@@ -287,7 +287,7 @@ private:
     }
     void emit(Dot n) {
         emit(n.left());
-        if(!n.left.isA!ProjectId) {
+        if(!n.left.isA!ModuleId) {
             if(n.left().type().isPtr()) {
                 add("->");
             } else {
@@ -387,7 +387,7 @@ private:
             default: throw new Exception("EmitUnit: Handle Primitive %s".format(n.etype()));
         }
     }
-    void emit(ProjectId n) {
+    void emit(ModuleId n) {
         // Do we need to do anything here?
     }
     void emit(Return n) {
@@ -436,7 +436,7 @@ private:
                 add(getName(n.decorated.as!Alias));
                 break;
             default:
-                throwIf(true, "EmitProject.emit(TypeRef): Handle %s", n.decorated.etype());
+                throwIf(true, "EmitModule.emit(TypeRef): Handle %s", n.decorated.etype());
                 break;
         }
     }

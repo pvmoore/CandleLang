@@ -6,14 +6,14 @@ final class Emitter {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
-    static void emitAllProjects(Candle candle) {
+    static void emitAllModules(Candle candle) {
         StopWatch watch;
         watch.start();
         logEmit("Emit ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
 
         emitCommonHeader(candle); 
 
-        foreach(p; candle.allProjects()) {
+        foreach(p; candle.allModules()) {
             emit(p);
         }
 
@@ -64,27 +64,27 @@ static void candle__assert(__s32 value, const char* unitName, __u32 line) {
         file.write(HEADER_CONTENT);
         file.close();
     }
-    static void emit(Project project) {
+    static void emit(Module module_) {
         
-        moveTopLevelTypesToProjectRoot(project);
-        reorderTopLevelTypes(project);
+        moveTopLevelTypesToModuleRoot(module_);
+        reorderTopLevelTypes(module_);
 
-        new EmitProject(project).emit();
+        new EmitModule(module_).emit();
     }
     /**
-     * Move all struct, union, enum and alias nodes to the Project node so that we can order them properly.
+     * Move all struct, union, enum and alias nodes to the Module node so that we can order them properly.
      */
-    static void moveTopLevelTypesToProjectRoot(Project project) {
-        foreach(unit; project.getUnits()) {
+    static void moveTopLevelTypesToModuleRoot(Module module_) {
+        foreach(unit; module_.getUnits()) {
             foreach(ch; unit.children.dup) {
                 if(Struct s = ch.as!Struct) {
-                    project.add(s);
+                    module_.add(s);
                 } else if(Union u = ch.as!Union) {
-                    project.add(u);
+                    module_.add(u);
                 } else if(Enum e = ch.as!Enum) {
-                    project.add(e);
+                    module_.add(e);
                 } else if(Alias a = ch.as!Alias) {
-                    project.add(a);
+                    module_.add(a);
                 }
             }
         }
@@ -95,11 +95,11 @@ static void candle__assert(__s32 value, const char* unitName, __u32 line) {
      *
      * If there is a circular dependency then throw a SemanticError
      */
-    static void reorderTopLevelTypes(Project project) {
-        logResolve("Reordering top level structs, unions, enums and aliases %s", project.name);
+    static void reorderTopLevelTypes(Module module_) {
+        logResolve("Reordering top level structs, unions, enums and aliases %s", module_.name);
         bool[ulong] mustComeBefore;
         bool updated = true;
-        Candle candle = project.candle;
+        Candle candle = module_.candle;
 
         ulong makeKey(uint a, uint b) { return (a.as!ulong << 32) | b.as!ulong; }
 
@@ -110,7 +110,7 @@ static void candle__assert(__s32 value, const char* unitName, __u32 line) {
                 return false;
             }
             mustComeBefore[key] = true;
-            project.moveToIndex(s.index(), v);
+            module_.moveToIndex(s.index(), v);
             logResolve("Moving %s above %s", v, s);
             return true;
         }
@@ -131,7 +131,7 @@ static void candle__assert(__s32 value, const char* unitName, __u32 line) {
         while(updated) {
             updated = false;
 
-            foreach(ch; project.children) {
+            foreach(ch; module_.children) {
                 if(Struct s = ch.as!Struct) {
                     bool pubFlag = s.isPublic;
 

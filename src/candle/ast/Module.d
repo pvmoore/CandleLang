@@ -1,29 +1,29 @@
-module candle.ast.Project;
+module candle.ast.Module;
 
 import candle.all;
 
 /**
- *  Project
+ *  Module
  *      { Unit }
  */
-final class Project : Node {
+final class Module : Node {
 public:
     Candle candle;
     string name;
-    string includeName;         // usually name ~ ".h" but is configurable to avoid collisions
+    string headerName;         // usually name ~ ".h" but is configurable to avoid collisions
     Directory directory;
     bool[string] scannedTypes;  // true if isPublic
     
-    override ENode enode() { return ENode.PROJECT; }
+    override ENode enode() { return ENode.MODULE; }
     override Type type() { return TYPE_VOID; }
     override bool isResolved() { return true; }
 
     this(Candle candle, Directory directory) {
         this.candle = candle;
         this.directory = directory;
-        loadProjectJson5();
+        loadModuleJson5();
         addUnits();
-        candle.projects[name] = this;
+        candle.modules[name] = this;
         dumpProperties();
     }
 
@@ -33,24 +33,24 @@ public:
     Union[] getUnions(Visibility v) { return getUnits().map!(it=>it.getUnions(v)).join; }
     Enum[] getEnums(Visibility v) { return getUnits().map!(it=>it.getEnums(v)).join; }
 
-    Project[] getExternalProjects() { return externalProjects.values(); }
+    Module[] getExternalModules() { return externalModules.values(); }
 
-    Project[] getUnqualifiedExternalProjects() {
-        return getExternalProjects().filter!(it=>dependencies[it.name].unqualified).array;
+    Module[] getUnqualifiedExternalModules() {
+        return getExternalModules().filter!(it=>dependencies[it.name].unqualified).array;
     }
 
-    Project getProject(string name) {
-        if(auto projPtr = name in externalProjects) {
+    Module getModule(string name) {
+        if(auto projPtr = name in externalModules) {
             return *projPtr;
         }
-        throw new Exception("Project dependency not found '%s'".format(name));
+        throw new Exception("Module dependency not found '%s'".format(name));
     }
     bool isDeclaredType(string value) {
         return (value in scannedTypes) !is null;
     }
 
-    bool isProjectName(string name) {
-        return (name in externalProjects) !is null;
+    bool isModuleName(string name) {
+        return (name in externalModules) !is null;
     }
 
     void dumpProperties() {
@@ -66,9 +66,9 @@ public:
             }
         }
 
-        log("Project{\n" ~
+        log("Module{\n" ~
             "  name .......... %s\n".format(name) ~
-            "  include-name .. %s\n".format(includeName) ~
+            "  header-name .. %s\n".format(headerName) ~
             "  directory ..... %s\n".format(directory) ~
             "  dependencies:\n" ~
             inc ~
@@ -85,7 +85,7 @@ public:
     }
 
     override string toString() {
-        return "Project '%s', '%s'".format(name, directory);
+        return "Module '%s', '%s'".format(name, directory);
     }
 private:
     struct Dependency {
@@ -93,8 +93,8 @@ private:
         Directory directory;
         bool unqualified;
     }
-    Dependency[string] dependencies;     // declared possible external Projects 
-    Project[string] externalProjects;   // accessed external Projects
+    Dependency[string] dependencies;    // declared possible external Modules 
+    Module[string] externalModules;     // accessed external Modules
 
     /** 
      * {
@@ -109,15 +109,15 @@ private:
      *   }
      * } 
      */
-    bool loadProjectJson5() {
-        auto projectFile = Filepath(directory, Filename("candle.json"));
-        if(!projectFile.exists()) return false;
+    bool loadModuleJson5() {
+        auto moduleFile = Filepath(directory, Filename("candle.json"));
+        if(!moduleFile.exists()) return false;
 
-        auto root = JSON5.fromFile(projectFile.value);
+        auto root = JSON5.fromFile(moduleFile.value);
         if(root.hasKey("name")) {
             this.name = root["name"].toString();
         }
-        this.includeName = root.hasKey("include-name") ? root["include-name"].toString() : name ~ ".h";
+        this.headerName = root.hasKey("header-name") ? root["header-name"].toString() : name ~ ".h";
 
         if(auto dependencies = root["dependencies"]) {
             foreach(k,v; dependencies.byKeyValue()) {
@@ -130,23 +130,23 @@ private:
                     uq && uq.as!J5Boolean);
 
                 this.dependencies[key] = dep;
-                loadDependencyProject(dep);    
+                loadDependencyModule(dep);    
             }
         }
 
         return true;
     }
-    void loadDependencyProject(Dependency dep) {
-        // Reuse Project if we already have it
-        Project project;
-        auto pptr = dep.name in candle.projects;
+    void loadDependencyModule(Dependency dep) {
+        // Reuse Module if we already have it
+        Module module_;
+        auto pptr = dep.name in candle.modules;
         if(pptr) {
-            project = *pptr;
+            module_ = *pptr;
         } else {
-            // Create and load this Project
-            project = makeNode!Project(candle, dep.directory);
+            // Create and load this Module
+            module_ = makeNode!Module(candle, dep.directory);
         }
-        externalProjects[dep.name] = project;
+        externalModules[dep.name] = module_;
     }
     string[] unitFilenames() {
         import std.file;
@@ -157,9 +157,9 @@ private:
             .array();
     }
     void addUnits() {
-        // Collect all the Units and add to the Project
+        // Collect all the Units and add to the Module
         string[] filenames = unitFilenames();
-        //log("Project files = %s", filenames);
+        //log("Module files = %s", filenames);
 
         foreach(filename; filenames) {
             Unit unit = makeNode!Unit(this, filename);

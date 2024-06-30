@@ -6,9 +6,9 @@ final class Builder {
 public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
-    static bool buildAllProjects(Candle candle) {
+    static bool buildAllModules(Candle candle) {
         logBuild("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        foreach(p; candle.allProjects()) {
+        foreach(p; candle.allModules()) {
             if(!build(p)) return false;
         }
         return true;
@@ -16,11 +16,11 @@ public:
 private:
     shared static ulong totalNanos;
 
-    static bool build(Project project) {
+    static bool build(Module module_) {
         StopWatch watch;
         watch.start();
 
-        auto builder = new BuildProject(project);
+        auto builder = new BuildModule(module_);
         bool result = builder.build();
 
         watch.stop();

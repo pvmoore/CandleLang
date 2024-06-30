@@ -9,13 +9,13 @@ final class TypeRef : Node, Type {
 public:
     string name;        // this is set if the type name is known
     Type decorated;     // this can be null until the Type has been resolved
-    Project project;    // the Project of the decorated Type (if isExternal == true)
+    Module module_;     // the Project of the decorated Type (if isExternal == true)
     bool isExternal;    // true if decorated Type is not in the current Project
 
-    this(string name, Type decorated, Project project) {
+    this(string name, Type decorated, Module module_) {
         this.name = name;
         this.decorated = decorated;
-        this.project = project;
+        this.module_ = module_;
     }
 
     override ENode enode() { return ENode.TYPE_REF; }
@@ -35,7 +35,7 @@ public:
         return "TypeRef %s".format(name);
     }
     override string getASTSummary() {
-        string p = isExternal ? ", Project %s".format(project.name) : "";
+        string p = isExternal ? ", Module %s".format(module_.name) : "";
         string s = decorated ? "%s".format(decorated)
                              : "'%s'".format(name);
         string unresolved = isResolved() ? "" : ", unresolved";
@@ -43,7 +43,7 @@ public:
     }
     override void resolve() {
         if(!decorated) {
-            decorated = findType(project, name);
+            decorated = findType(module_, name);
         }
     }
 private:

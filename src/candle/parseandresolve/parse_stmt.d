@@ -5,16 +5,16 @@ import candle.all;
 void parseStmt(Node parent, Tokens t) {
     logParse("parse stmt %s", t.debugValue());
 
-    Project project = parent.getProject();
-    bool isProjectScope = parent.isA!Unit;
+    Module module_ = parent.getModule();
+    bool isModuleScope = parent.isA!Unit;
 
-    // Some Stmts can only appear at Project scope:
+    // Some Stmts can only appear at Module scope:
     // - Alias
     // - Enum
     // - Func
     // - Struct
     // - Union
-    if(isProjectScope) {
+    if(isModuleScope) {
 
         // pub extern
         t.consumeModifiers();
@@ -53,7 +53,7 @@ void parseStmt(Node parent, Tokens t) {
                 return;
             }
 
-            // if(isType(project, t)) {
+            // if(isType(module_, t)) {
             //     logParse("  isType %s", t.debugValue());
             //     int afterType = typeLength(t);
             //     logParse("afterType = %s .. %s", afterType, t.debugValue(afterType));
@@ -74,7 +74,7 @@ void parseStmt(Node parent, Tokens t) {
             break;
         // case LBRACKET:
         //     // function ptr
-        //     if(isType(project, t)) {
+        //     if(isType(module_, t)) {
         //         parseVar(parent, t);
         //         return;
         //     }

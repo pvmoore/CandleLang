@@ -1,4 +1,4 @@
-module candle.emitandbuild.BuildProject;
+module candle.emitandbuild.BuildModule;
 
 import candle.all;
 import std.process : Config, execute, spawnProcess, wait;
@@ -9,11 +9,11 @@ import std.string : strip;
  *
  *  https://learn.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=msvc-170
  */
-final class BuildProject {
+final class BuildModule {
 public:
-    this(Project project) {
-        this.candle = project.candle;
-        this.project = project;
+    this(Module module_) {
+        this.candle = module_.candle;
+        this.module_ = module_;
     }
     bool build() {
         auto args = [
@@ -21,8 +21,8 @@ public:
             "/nologo",
             "/std:c17",
 
-            "/Fabuild\\%s".format(project.name),    // create asm file
-            "/Fobuild\\%s".format(project.name),    // create obj file
+            "/Fabuild\\%s".format(module_.name),    // create asm file
+            "/Fobuild\\%s".format(module_.name),    // create obj file
             "/TC",                                  // all source files are C
             "/utf-8",
 
@@ -35,7 +35,7 @@ public:
             "/c",           // compile only
         ];
 
-        // Add dependency project directories
+        // Add dependency module directories
         //args ~= "/I<includedir>";
 
         if(candle.isDebug) {
@@ -43,7 +43,7 @@ public:
             args ~= [
                 "/Od",                                  // disables optimization
                 "/Zi",                                  // produces a PDB file that contains all the symbolic debugging 
-                "/Fdbuild\\%s".format(project.name),    // pdb file location
+                "/Fdbuild\\%s".format(module_.name),    // pdb file location
                 "/Zc:inline-",                          // don't remove unreferenced functions
                 "/GS",                                  // check buffer security
                 "/sdl",                                 // enables a superset of the baseline security checks
@@ -64,7 +64,7 @@ public:
         //args ~= "/fp:fast",     // fast floating point
         //args ~= "/fp:precise",  // precise floating point
 
-        args ~= "%s.c".format(project.name);
+        args ~= "%s.c".format(module_.name);
 
         //log("Build command: %s", args);
 
@@ -78,15 +78,15 @@ public:
 
         if(result.status!=0) {
             log("🕯 Build %s" ~ Ansi.RED_BOLD ~ "✘" ~ Ansi.RESET ~ "\n\n%s", 
-                project.name, result.output.strip);
+                module_.name, result.output.strip);
             return false;
         } else {
-            logBuild("🕯 Build %s (%s)".format(project.name, candle.isDebug ? "DEBUG" : "RELEASE") ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
+            logBuild("🕯 Build %s (%s)".format(module_.name, candle.isDebug ? "DEBUG" : "RELEASE") ~ Ansi.GREEN_BOLD ~ "✔" ~ Ansi.RESET);
         }
 
         return true;
     }
 private:
     Candle candle;
-    Project project;
+    Module module_;
 }

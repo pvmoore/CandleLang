@@ -25,10 +25,10 @@ public:
     bool isPublic() { return var ? var.isPublic : func.isPublic; }
     bool isExtern() { return func ? func.isExtern : false; }
     bool isMember() { return var && var.isMember(); }
-    Project project() { return node().getProject(); }
+    Module module_() { return node().getModule(); }
 
     override string toString() {
-        string e = isExternal ? "%s::".format(node().getProject().name) : "";
+        string e = isExternal ? "%s::".format(node().getModule().name) : "";
         string m;
         if(isMember()) {
             if(Struct s = var.parent.as!Struct) {

@@ -31,7 +31,7 @@
 					"name": "storage.type.canast"
 				},
 				{
-					"match": "\\b(Alias|As|Binary|BuiltinFunc|Break|Call|Case|Continue|Dot|Enum|Func|Id|Import|NodeRef|LiteralStruct|Null|Number|Project|ProjectId|Return|Scope|Struct|TypeRef|Unary|Union|Unit|UnresolvedType|Var)(\\*+|\\b)",
+					"match": "\\b(Alias|As|Binary|BuiltinFunc|Break|Call|Case|Continue|Dot|Enum|Func|Id|Import|NodeRef|LiteralStruct|Null|Number|Module|ModuleId|Return|Scope|Struct|TypeRef|Unary|Union|Unit|UnresolvedType|Var)(\\*+|\\b)",
 					"name": "keyword.control.canast"
 				},
 				{

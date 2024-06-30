@@ -13,5 +13,5 @@ void syntaxError(Tokens t, string expected) {
 }
 
 void warn(Node n, string msg) {
-    log("WARN: [%s '%s.can' line %s] %s", n.getProject().name, n.getUnit().name, n.coord.line+1, msg);
+    log("WARN: [%s '%s.can' line %s] %s", n.getModule().name, n.getUnit().name, n.coord.line+1, msg);
 }
