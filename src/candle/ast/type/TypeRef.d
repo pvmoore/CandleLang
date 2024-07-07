@@ -42,6 +42,13 @@ public:
         return "TypeRef -> %s%s%s".format(s, p, unresolved);
     }
     override void resolve() {
+        //if(isResolved()) return;
+
+        if(name=="FILE" && !decorated) {
+            log("resolve FILE ... ");
+        }
+
+        logResolve("Resolve %s decorated = %s %s", name, decorated, decorated ? decorated.isResolved() : false);
         if(!decorated) {
             decorated = findType(module_, name);
         }

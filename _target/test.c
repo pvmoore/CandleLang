@@ -238,41 +238,41 @@ static void test__struct_() {
 // test.can
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 static __s32 wibble = 0; // Line 4
-static __f32 foo = 1.0f; // Line 68
+static __f32 foo = 1.0f; // Line 67
 __s32 main() {
   __s32 a = 6; // Line 7
   __s32* b = null; // Line 8
   putchar('a'); // Line 11
-  stdio__putChar('b'); // Line 17
-  test__doSomething(null, null); // Line 19
-  test__doSomethingElse(); // Line 20
-  candle__assert(true, "test.can", 22); // Line 22
-  test__variables(); // Line 24
-  test__binary(); // Line 25
-  test__as_(); // Line 26
-  test__is_(); // Line 27
-  test__id(); // Line 28
-  test__literalstruct(); // Line 29
-  test__struct_(); // Line 30
-  test__func_(); // Line 31
-  test__alias_(); // Line 32
-  test__strings(); // Line 33
-  test__arrays(); // Line 34
-  return 0; // Line 36
+  stdio__putChar('b'); // Line 16
+  test__doSomething(null, null); // Line 18
+  test__doSomethingElse(); // Line 19
+  candle__assert(true, "test.can", 21); // Line 21
+  test__variables(); // Line 23
+  test__binary(); // Line 24
+  test__as_(); // Line 25
+  test__is_(); // Line 26
+  test__id(); // Line 27
+  test__literalstruct(); // Line 28
+  test__struct_(); // Line 29
+  test__func_(); // Line 30
+  test__alias_(); // Line 31
+  test__strings(); // Line 32
+  test__arrays(); // Line 33
+  return 0; // Line 35
 }
 static void test__doSomethingElse() {
 }
 void test__doSomething(__s32* a, __f32** b) {
-  __bool c = !true; // Line 46
-  __s32 d = 'a'; // Line 48
-  __s64 e = -1LL; // Line 49
-  __f32 f = foo; // Line 50
-  __s32 y = 1 + 2 / 3; // Line 52
-  __s32 z = 1 / 2 + 3; // Line 53
-  __f32 g = 1.0f; // Line 54
-  __f32 g2 = 1.3f; // Line 55
-  test__Apple apple = {0}; // Line 57
-  std__PlumPublic plum = {0}; // Line 59
+  __bool c = !true; // Line 45
+  __s32 d = 'a'; // Line 47
+  __s64 e = -1LL; // Line 48
+  __f32 f = foo; // Line 49
+  __s32 y = 1 + 2 / 3; // Line 51
+  __s32 z = 1 / 2 + 3; // Line 52
+  __f32 g = 1.0f; // Line 53
+  __f32 g2 = 1.3f; // Line 54
+  test__Apple apple = {0}; // Line 56
+  std__PlumPublic plum = {0}; // Line 58
 }
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 // var.can

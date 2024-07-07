@@ -9,8 +9,8 @@ public:
     static bool resolveAllModules(Candle candle, int pass) {
         logResolve("Resolve (pass %s) ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈", pass+1);
         bool allResolved = true;
-        foreach(p; candle.allModules()) {
-            allResolved &= Resolver.resolve(p);
+        foreach(m; candle.allModules()) {
+            allResolved &= Resolver.resolve(m);
         }
         logResolve("  All resolved = %s", allResolved);
 
@@ -73,12 +73,13 @@ private:
     static bool resolve(Module module_) {
         StopWatch watch;
         watch.start();
-        logResolve("  Resolving %s", module_);
+        logResolve("Resolving %s", module_);
         bool allResolved = true;
 
         foreach(u; module_.getUnits()) {
             recurseChildren(u, allResolved);
         }
+        logResolve("%s Resolved = %s", module_, allResolved);
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
         return allResolved;
@@ -97,7 +98,7 @@ private:
             recurseChildren(ch, allResolved);
         }
         if(n.isAttached()) {
-            logResolve("Resolving %s", n.enode());
+            logResolve("  Resolving %s", n.enode());
             n.resolve();
             if(n.isAttached()) {
                 allResolved &= n.isResolved();

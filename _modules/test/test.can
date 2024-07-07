@@ -10,8 +10,7 @@ func main(void->int) {
 
     putchar('a');
 
-    // fixme
-    //f:FILE* = fopen(c"name", c"b");
+    //ff:FILE* = fopen(c"name", c"b");
 
 
     stdio.putChar('b');

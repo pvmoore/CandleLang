@@ -2,38 +2,46 @@ module candle.parseandresolve.find_type;
 
 import candle.all;
 
+/**
+ * Attempt to find a Type with the specified 'name'. If 'inExternalModule' is true then we are looking in a
+ * different module to the requesting node meaning we should only check public Types.
+ */
+Type findType(Module module_, string name, bool inExternalModule = false) {
+    logResolve("findType %s%s", name, inExternalModule ? " (external)" : "");
 
-Type findType(Module module_, string name) {
-    logResolve("findType %s", name);
+    auto visibility = Visibility.ALL;
+
+    if(inExternalModule) {
+        visibility = Visibility.PUBLIC;
+    }
 
     // Check current Module units
     foreach(unit; module_.getUnits()) {
         logResolve("  Checking unit %s", unit.name);
-        if(Struct s = unit.getStruct(name, Visibility.ALL)) {
+        if(Struct s = unit.getStruct(name, visibility)) {
             logResolve("    found %s", s);
             return s;
         }
-        if(Union u = unit.getUnion(name, Visibility.ALL)) {
+        if(Union u = unit.getUnion(name, visibility)) {
             logResolve("    found %s", u);
             return u;
         }
-        if(Alias a = unit.getAlias(name, Visibility.ALL)) {
+        if(Alias a = unit.getAlias(name, visibility)) {
             logResolve("    found %s", a);
             return a;
         }
     }
 
-    foreach(m; module_.getUnqualifiedExternalModules()) {
-        //logResolve("  Checking external module %s", m.name);
+    if(!inExternalModule) {
+        // Check unqualified external modules for public Types
+        foreach(m; module_.getUnqualifiedExternalModules()) {
+            logResolve("  Checking unqualified external module '%s'", m.name);
 
-        // todo - the external Module may not yet be parsed
-        //if(Type t = findType(p, name)) {
-        //    return t;
-        //}
-        // If we get here then either:
-        // - The external Module is not ready or
-        // - The type does not exist in the external Module or
-        // -
+            if(Type t = findType(m, name, true)) {
+                logResolve("    found externally %s", t);
+                return t;
+            }
+        }
     }
 
     logResolve("  not found %s", name);
@@ -152,7 +160,7 @@ bool isFunctionPtrNew(Module module_, Tokens t) {
  * eg. (void->void) 
  *     (int a, int b -> int)
  */
-// bool isFunctionPtr(Module module_, Tokens t) {
+// bool isFunctionPtrOld(Module module_, Tokens t) {
 //     if(t.kind() != EToken.LBRACKET) return false;
 //     t.pushState();
 
@@ -195,5 +203,4 @@ bool isPrimitiveType(Tokens t) {
 }
 bool isUserType(Module module_, Tokens t) {
     return module_.isDeclaredType(t.value());
-    //return findType(module_, t.value()) !is null;
 }
