@@ -1,0 +1,6 @@
+{
+    dependencies: {
+        std: { directory: "_modules/std" }
+    },
+    name: "test2"
+}

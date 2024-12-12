@@ -68,11 +68,11 @@ public:
 
         log("Module{\n" ~
             "  name .......... %s\n".format(name) ~
-            "  header-name .. %s\n".format(headerName) ~
+            "  header-name ... %s\n".format(headerName) ~
             "  directory ..... %s\n".format(directory) ~
             "  dependencies:\n" ~
             inc ~
-            "  units:\n" ~
+            "  units (%s):\n".format(numChildren) ~
             units ~
             "}");
     }
@@ -110,7 +110,7 @@ private:
      * } 
      */
     bool loadModuleJson5() {
-        auto moduleFile = Filepath(directory, Filename("candle.json"));
+        auto moduleFile = Filepath(directory, Filename("candle.json5"));
         if(!moduleFile.exists()) return false;
 
         auto root = JSON5.fromFile(moduleFile.value);
