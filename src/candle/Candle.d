@@ -158,6 +158,16 @@ private:
         log("║ Emitting .... %.2f ms", Emitter.getElapsedNanos()/ONE_MILLION);
         log("║ Building .... %.2f ms", Builder.getElapsedNanos()/ONE_MILLION);
         log("║ Linking ..... %.2f ms", Linker.getElapsedNanos()/ONE_MILLION);
+        log("╟─────────────────────────────────────────────────────────────────────");
+
+        auto stats = GC.stats();
+        auto profileStats = GC.profileStats();
+        log("║ " ~ ansiWrap("GC Statistics", Ansi.BLUE_BOLD));
+        log("║ Used .............. %s MB (%000,s bytes)", stats.usedSize/(1024*1024), stats.usedSize);
+        log("║ Free .............. %s MB (%000,s bytes)", stats.freeSize/(1024*1024), stats.freeSize);
+        log("║ Collections ....... %s", profileStats.numCollections);
+        log("║ Collection time ... %.2f ms", profileStats.totalCollectionTime.total!"nsecs"/1000000.0);
+        log("║ Pause time ........ %.2f ms", profileStats.totalPauseTime.total!"nsecs"/1000000.0);
         log("╚═════════════════════════════════════════════════════════════════════");
     }
 }

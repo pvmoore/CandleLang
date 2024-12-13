@@ -6,6 +6,7 @@ import common;
 import resources.json5;
 
 import core.atomic              : atomicLoad, atomicOp;
+import core.memory              : GC;
 
 import std.format               : format;
 import std.algorithm            : all, map, filter, each, maxElement;
@@ -92,11 +93,3 @@ import candle.errors.ResolutionError;
 import candle.errors.SemanticError;
 import candle.errors.SyntaxError;
 
-version(GC_STATS) {
-    ///
-    /// Show GC stats after program exits
-    ///
-    extern(C) __gshared string[] rt_options = [
-        "gcopt=profile:1"
-    ];
-}
