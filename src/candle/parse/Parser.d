@@ -1,4 +1,4 @@
-module candle.parseandresolve.Parser;
+module candle.parse.Parser;
 
 import candle.all;
 

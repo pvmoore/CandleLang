@@ -1,4 +1,4 @@
-module candle.parseandresolve.Rewriter;
+module candle.resolve.Rewriter;
 
 import candle.all;
 

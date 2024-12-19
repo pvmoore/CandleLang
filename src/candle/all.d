@@ -29,18 +29,19 @@ import candle.emitandbuild.BuildModule;
 import candle.emitandbuild.EmitModule;
 import candle.emitandbuild.Emitter;
 
-import candle.parseandresolve.find_call_target;
-import candle.parseandresolve.find_id_target;
-import candle.parseandresolve.find_type;
-import candle.parseandresolve.Operator;
-import candle.parseandresolve.parse_expr;
-import candle.parseandresolve.parse_type;
-import candle.parseandresolve.parse_stmt;
-import candle.parseandresolve.Parser;
-import candle.parseandresolve.Resolver;
-import candle.parseandresolve.Rewriter;
-import candle.parseandresolve.Target;
-import candle.parseandresolve.Value;
+import candle.parse.parse_expr;
+import candle.parse.parse_type;
+import candle.parse.parse_stmt;
+import candle.parse.Parser;
+
+import candle.resolve.find_call_target;
+import candle.resolve.find_id_target;
+import candle.resolve.find_type;
+import candle.resolve.Operator;
+import candle.resolve.Resolver;
+import candle.resolve.Rewriter;
+import candle.resolve.Target;
+import candle.resolve.Value;
 
 import candle.Checker;
 import candle.Lexer;
