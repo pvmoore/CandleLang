@@ -9,7 +9,8 @@ public:
     string subsystem;
     Directory mainDirectory;
     Directory targetDirectory;
-    bool nullChecks = true;
+    bool rtChecksNullRef = true;
+    bool rtChecksOob = true;
 
     bool dumpAst;
     bool emitLineNumber;
@@ -38,7 +39,7 @@ public:
         mainModule = makeNode!Module(this, mainDirectory);
 
         try{
-            if(!parseAndResolve()) {
+            if(!resolve()) {
                 return false;
             }
 
@@ -93,16 +94,12 @@ private:
             // Clean it?
         }
     }
-    bool parseAndResolve() {
+    bool resolve() {
         bool resolved = false;
         int maxPasses = 3;
         for(int pass = 0; !resolved && !hasErrors() && pass < maxPasses; pass++) {
-
-            // Run a parse phase on all Modules
-            parseAllModules(pass);
-
             // Run a resolve phase on all Modules
-            resolved = resolveAllModules(pass);
+            resolved = Resolver.resolveAllModules(this, pass);
         }
         // Convert unresolved nodes to ResolutionErrors
         if(!resolved) {
@@ -116,12 +113,6 @@ private:
             assert(errors, "Where are the resolution errors?");
         }
         return resolved;
-    }
-    void parseAllModules(int pass) {
-        Parser.parseAllModules(this, pass);
-    }
-    bool resolveAllModules(int pass) {
-        return Resolver.resolveAllModules(this, pass);
     }
     void checkAllModules() {
         Checker.checkAllModules(this);
@@ -162,7 +153,7 @@ private:
 
         auto stats = GC.stats();
         auto profileStats = GC.profileStats();
-        log("║ " ~ ansiWrap("GC Statistics", Ansi.BLUE_BOLD));
+        log("║ " ~ ansiWrap("GC Stats", Ansi.BLUE_BOLD));
         log("║ Used .............. %s MB (%000,s bytes)", stats.usedSize/(1024*1024), stats.usedSize);
         log("║ Free .............. %s MB (%000,s bytes)", stats.freeSize/(1024*1024), stats.freeSize);
         log("║ Collections ....... %s", profileStats.numCollections);

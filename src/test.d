@@ -12,7 +12,9 @@ void main(string[] args) {
     candle.subsystem = "console";
     candle.mainDirectory = Directory("_modules/test/");
     candle.targetDirectory = Directory("_target/");
-    candle.nullChecks = true;
+    candle.rtChecksNullRef = true;
+    candle.rtChecksOob = true;
+
 
     candle.dumpAst = true;
     candle.emitLineNumber = true;

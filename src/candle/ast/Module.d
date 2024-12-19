@@ -163,7 +163,8 @@ private:
 
         foreach(filename; filenames) {
             Unit unit = makeNode!Unit(this, filename);
-            this.add(unit);
+            add(unit);
+            unit.process();
         }
         //log("[%s] Declared types: %s", name, scannedTypes);
     }

@@ -14,7 +14,7 @@ import std.range                : array;
 import std.array                : replace, join;
 import std.stdio                : File, writefln;
 import std.string               : toLower;
-import std.datetime.stopwatch   : StopWatch;
+import std.datetime.stopwatch   : StopWatch, AutoStart;
 
 import candle;
 

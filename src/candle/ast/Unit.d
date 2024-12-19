@@ -16,15 +16,16 @@ public:
     string src;
 
     // Dynamic data
-    bool isParsed;
 
     this(Module module_, string filename) {
         this.module_ = module_;
         this.filename = filename;
         this.name = Filename(filename).getBaseName();
-
+    }
+    void process() {
         readSource();
         lexSource();
+        parseTokens();
         scanTypes();
     }
     override ENode enode() { return ENode.UNIT; }
@@ -98,7 +99,6 @@ public:
             if(t.pos == lastPos) throw new Exception("No progress made");
             lastPos = t.pos;
         }
-        isParsed = true;
     }
 private:
     void readSource() {
@@ -107,6 +107,9 @@ private:
     }
     void lexSource() {
         this.tokens = Lexer.lex(src);
+    }
+    void parseTokens() {
+        Parser.parseUnit(this);
     }
     void scanTypes() {
         Tokens t = new Tokens(this);
