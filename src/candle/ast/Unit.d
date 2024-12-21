@@ -26,7 +26,6 @@ public:
         readSource();
         lexSource();
         parseTokens();
-        scanTypes();
     }
     override ENode enode() { return ENode.UNIT; }
     override bool isResolved() { return true; }
@@ -110,29 +109,5 @@ private:
     }
     void parseTokens() {
         Parser.parseUnit(this);
-    }
-    void scanTypes() {
-        Tokens t = new Tokens(this);
-        while(!t.eof()) {
-            if(t.isValue("struct") || t.isValue("union")) {
-                bool isPublic = t.isValue("pub", -1);
-                string structName = t.value(1);
-                module_.scannedTypes[structName] = isPublic;
-            } else if(t.isValue("alias")) {
-                bool isPublic = t.isValue("pub", -1);
-                module_.scannedTypes[t.value(1)] = isPublic;
-            } else {
-                switch(t.kind()) with(EToken) {
-                    case LBRACKET:
-                    case LCURLY:
-                    case LSQUARE:
-                        t.findEndOfScope();
-                        break;
-                    default: break;
-                }
-            }
-            t.next();
-        }
-        //log("[%s] Scanned types: %s", name, scannedTypes);
     }
 }

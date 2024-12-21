@@ -113,6 +113,8 @@ public:
         } else {
             t.skip(EToken.SEMICOLON);
         }
+
+        getModule().scannedTypes[name] = isPublic;
     }
 private:
     uint _size;

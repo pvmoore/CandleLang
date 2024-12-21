@@ -52,6 +52,8 @@ public:
     }
     override void parse(Tokens t) {
         todo();
+
+        //getModule().scannedTypes[name] = isPublic;
     }
 private:
 }

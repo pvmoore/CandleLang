@@ -22,10 +22,16 @@ private:
 void parseExprLhs(Node parent, Tokens t) {
     logParse("lhs %s", t.debugValue());
     Module module_ = t.unit.module_;
+
+    // Is it a built-in type?
     if(isType(module_, t)) {
         parseType(parent, t);
         return;
     }
+
+    // If we get here then it could still be a user defined type. 
+    // We will mark it as an Id node and resolve it later
+
     switch(t.kind()) with(EToken) {
         case NUMBER: parseNumber(parent, t); return;
         case CHAR: parseChar(parent, t); return;
@@ -51,11 +57,13 @@ void parseExprLhs(Node parent, Tokens t) {
                 default: break;
             }
 
+            // id(
             if(t.kind(1) == EToken.LBRACKET) {
                 parseCall(parent, t);
                 return;
             }
 
+            // id
             parseId(parent, t);
             break;
         default:

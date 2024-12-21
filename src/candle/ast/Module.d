@@ -12,7 +12,7 @@ public:
     string name;
     string headerName;         // usually name ~ ".h" but is configurable to avoid collisions
     Directory directory;
-    bool[string] scannedTypes;  // true if isPublic
+    bool[string] scannedTypes;  // Map of struct|union|enum and alias nodes in this Module. value is true if isPublic
     
     override ENode enode() { return ENode.MODULE; }
     override Type type() { return TYPE_VOID; }
@@ -48,34 +48,21 @@ public:
     bool isDeclaredType(string value) {
         return (value in scannedTypes) !is null;
     }
+    /** Return true if 'id' is a user defined struct/union/enum or alias */
+    bool isUserDefinedType(string id) { 
+        if(this.isDeclaredType(id)) return true;
+
+        // Is it a type in one of the unqualified external Modules?
+        foreach(m; this.getUnqualifiedExternalModules()) {
+            if(m.isDeclaredType(id)) return true;
+        }
+        return false;
+    }
 
     bool isModuleName(string name) {
         return (name in externalModules) !is null;
     }
 
-    void dumpProperties() {
-        string inc;
-        foreach(e; dependencies.byKeyValue()) {
-            inc ~= "    %s -> %s\n".format(e.key, e.value);
-        }
-
-        string units;
-        foreach(ch; children) {
-            if(auto u = ch.as!Unit) {
-                units ~= "    %s\n".format(u.filename);
-            }
-        }
-
-        log("Module{\n" ~
-            "  name .......... %s\n".format(name) ~
-            "  header-name ... %s\n".format(headerName) ~
-            "  directory ..... %s\n".format(directory) ~
-            "  dependencies:\n" ~
-            inc ~
-            "  units (%s):\n".format(numChildren) ~
-            units ~
-            "}");
-    }
     void getUnresolved(ref Node[] nodes) {
         this.recurse((n) {
             if(!n.isResolved()) {
@@ -167,5 +154,28 @@ private:
             unit.process();
         }
         //log("[%s] Declared types: %s", name, scannedTypes);
+    }
+    void dumpProperties() {
+        string inc;
+        foreach(e; dependencies.byKeyValue()) {
+            inc ~= "    %s -> %s\n".format(e.key, e.value);
+        }
+
+        string units;
+        foreach(ch; children) {
+            if(auto u = ch.as!Unit) {
+                units ~= "    %s\n".format(u.filename);
+            }
+        }
+
+        log("Module{\n" ~
+            "  name .......... %s\n".format(name) ~
+            "  header-name ... %s\n".format(headerName) ~
+            "  directory ..... %s\n".format(directory) ~
+            "  dependencies:\n" ~
+            inc ~
+            "  units (%s):\n".format(numChildren) ~
+            units ~
+            "}");
     }
 }

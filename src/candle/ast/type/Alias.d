@@ -45,6 +45,8 @@ public:
         t.skip(EToken.EQ);
         parseType(this, t);
         t.skip(EToken.SEMICOLON);
+
+        getModule().scannedTypes[name] = isPublic;
     }
     override void resolve() {
         

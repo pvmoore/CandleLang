@@ -39,7 +39,7 @@ public:
         mainModule = makeNode!Module(this, mainDirectory);
 
         try{
-            if(!resolve()) {
+            if(!resolveAllModules()) {
                 return false;
             }
 
@@ -94,7 +94,7 @@ private:
             // Clean it?
         }
     }
-    bool resolve() {
+    bool resolveAllModules() {
         bool resolved = false;
         int maxPasses = 3;
         for(int pass = 0; !resolved && !hasErrors() && pass < maxPasses; pass++) {
