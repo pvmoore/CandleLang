@@ -99,6 +99,10 @@ Target findIdTarget(Id id, Node prev) {
             Module module_ = pid.module_;
             foreach(u; module_.getUnits()) {
 
+                if(module_.isUserDefinedType(id.name, false)) {
+                    todo("this is a user defined type");
+                }
+
                 if(auto var = u.getVar(id.name, Visibility.PUBLIC)) { 
                     return new Target(var).setInExternalModule();
                 }

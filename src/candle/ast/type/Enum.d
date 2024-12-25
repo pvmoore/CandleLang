@@ -37,6 +37,8 @@ public:
     }
     override void parse(Tokens t) {
         todo();
+
+        //getModule().localTypes[name] = isPublic;
     }
 private:
 }

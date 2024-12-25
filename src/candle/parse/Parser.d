@@ -11,7 +11,9 @@ public:
         auto watch = StopWatch(AutoStart.yes);
         Tokens tokens = new Tokens(unit);
         //log("%s", tokens.toString());
+        
         unit.parse(tokens);
+
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
     }

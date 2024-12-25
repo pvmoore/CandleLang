@@ -8,11 +8,14 @@ import candle.all;
  */
 final class Module : Node {
 public:
+    // Static data
     Candle candle;
     string name;
-    string headerName;         // usually name ~ ".h" but is configurable to avoid collisions
+    string headerName;          // usually name ~ ".h" but is configurable to avoid collisions
     Directory directory;
-    bool[string] scannedTypes;  // Map of struct|union|enum and alias nodes in this Module. value is true if isPublic
+
+    // Dynamic data
+    bool[string] localTypes;    // Map of struct|union|enum|alias nodes in this Module. value is true if isPublic
     
     override ENode enode() { return ENode.MODULE; }
     override Type type() { return TYPE_VOID; }
@@ -45,30 +48,28 @@ public:
         }
         throw new Exception("Module dependency not found '%s'".format(name));
     }
-    bool isDeclaredType(string value) {
-        return (value in scannedTypes) !is null;
-    }
-    /** Return true if 'id' is a user defined struct/union/enum or alias */
-    bool isUserDefinedType(string id) { 
-        if(this.isDeclaredType(id)) return true;
+    /** Return true if 'id' is a visible user defined struct/union/enum or alias */
+    bool isUserDefinedType(string id, bool sameModule) { 
+        // Check for types defined in this Module
+        if(bool* p = id in localTypes) {
+            // We found it locally. Check the visibility
+            return sameModule || *p;
+        }
 
-        // Is it a type in one of the unqualified external Modules?
+        // Don't include transitive dependencies
+        if(!sameModule) return false;
+
+        // Is it a public type in one of the unqualified external Modules?
         foreach(m; this.getUnqualifiedExternalModules()) {
-            if(m.isDeclaredType(id)) return true;
+            if(m.isUserDefinedType(id, false)) {
+                return true;
+            }
         }
         return false;
     }
 
     bool isModuleName(string name) {
         return (name in externalModules) !is null;
-    }
-
-    void getUnresolved(ref Node[] nodes) {
-        this.recurse((n) {
-            if(!n.isResolved()) {
-                nodes ~= n;
-            }
-        });
     }
 
     override string toString() {

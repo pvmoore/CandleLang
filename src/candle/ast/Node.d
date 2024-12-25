@@ -117,6 +117,9 @@ public:
         assert(parent);
         return parent.getCandle();
     }
+    final NodeRange range() {
+        return NodeRange(this);
+    }
     final string dumpToString(string indent = "") {
         string s = "%s%s\n".format(indent, this.isA!Type ? this.as!Type.getASTSummary() : this.toString());
         foreach(ch; children) {
@@ -146,6 +149,7 @@ private:
 }
 
 //──────────────────────────────────────────────────────────────────────────────────────────────────
+
 bool areResolved(T)(T[] nodes) if(is(T:Node) || is(T:Type)) {
     foreach(n; nodes) if(!n.isResolved()) return false;
     return true;
@@ -167,12 +171,6 @@ bool hasVisibility(T)(T n, Visibility v) if(is(T:Node) || is(T:Type)) {
     bool isPub = isPublic(n);
     bool visPub = v == Visibility.PUBLIC; 
     return isPub == visPub;
-}
-void recurse(Node n, void delegate(Node n) callback) {
-    callback(n);
-    foreach(ch; n.children) {
-        recurse(ch, callback);
-    }
 }
 void writeAllUnitAsts(Candle candle) {
     foreach(p; candle.allModules()) {
@@ -206,3 +204,47 @@ void writeAllModuleASTs(Candle candle) {
     }
 }
 
+//──────────────────────────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Usage:
+ *   node.range().filter!(it=>...).map!(it=>...).array;
+ */
+struct NodeRange {
+    this(Node n) {
+        stack.reserve(16);
+        stack ~= NI(n, -1);
+        fetchNext();
+    }
+    Node front() { return _front; }
+    bool empty() { return _front is null; }
+    void popFront() { fetchNext(); }
+private:
+    void fetchNext() {
+        while(stack.length > 0) {
+
+            NI* s = &stack[$-1];
+            Node n = s.node;
+            int i = s.i++;
+
+            if(i == -1) {
+                _front = n;
+                return;
+
+            } else if(i < n.numChildren()) {
+                stack ~= NI(n.children[i], -1);
+            } else {
+                stack.length--;
+            }
+        }
+        _front = null;
+    }
+
+    struct NI {
+        Node node;
+        int i;
+    }
+    NI[] stack;
+    Node _front;
+}
+//──────────────────────────────────────────────────────────────────────────────────────────────────

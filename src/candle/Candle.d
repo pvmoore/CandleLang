@@ -104,8 +104,8 @@ private:
         // Convert unresolved nodes to ResolutionErrors
         if(!resolved) {
             Node[] nodes;
-            foreach(p; allModules()) {
-                p.getUnresolved(nodes);
+            foreach(m; allModules()) {
+                nodes ~= m.range().filter!(it=>!it.isResolved()).array;
             }
             foreach(Node n; nodes) {
                 addError(new ResolutionError(n));

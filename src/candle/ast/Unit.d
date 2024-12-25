@@ -49,6 +49,16 @@ public:
                        .filter!(it=>it.hasVisibility(v))
                        .array;
     }
+    /** Returns Struct, Union, Alias or Enum with the given name and visibility */
+    Node getUDT(string name, Visibility v) {
+        return children.filter!(it=>it.isA!Enum)
+                       .filter!(it=>it.hasVisibility(v))
+                       .filter!(it=>(it.isA!Enum && it.as!Enum.name == name) || 
+                                    (it.isA!Struct && it.as!Struct.name == name) || 
+                                    (it.isA!Union && it.as!Union.name == name) || 
+                                    (it.isA!Alias && it.as!Alias.name == name))
+                       .frontOrElse!Node(null);
+    }
     Enum getEnum(string name, Visibility v) {
         return getEnums(v).filter!(it=>it.name == name).frontOrElse!Enum(null);
     }

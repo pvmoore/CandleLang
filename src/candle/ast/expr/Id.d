@@ -33,8 +33,9 @@ public:
 
         if(isStartOfChain()) {
 
-            // todo - Check whether this is a user defined type
-            //        If so then rewrite
+            if(getModule().isUserDefinedType(name, true)) {
+                todo("rewrite this to a Type");
+            }
 
             this.target = findIdTarget(this);
             if(target) {
@@ -45,7 +46,7 @@ public:
             if(!prev.isResolved()) return;
 
             if(ModuleId mid = prev.as!ModuleId) {
-                // todo - Check whether this identifier is a user type
+                todo("Check whether this identifier is a user type");
             }
 
             this.target = findIdTarget(this, prev);

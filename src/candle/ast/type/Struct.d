@@ -114,7 +114,7 @@ public:
             t.skip(EToken.SEMICOLON);
         }
 
-        getModule().scannedTypes[name] = isPublic;
+        getModule().localTypes[name] = isPublic;
     }
 private:
     uint _size;
