@@ -85,27 +85,39 @@ Target findIdTarget(Id id) {
  *  Find the callee Var or Func which must be a member of prev.
  *  Assume: prev must be one of:
  *    - ModuleId
- *    - Id -> Struct
- *    - Id -> Union
+ *    - Id of Struct
+ *    - Id of Union
+ *    - Enum
+ *    - LiteralStruct
+ *    - Call
  *
  *  Assume:
  *    - prev is resolved
  */
 Target findIdTarget(Id id, Node prev) {
-    logResolve("findIdTarget %s (member)", id.name);
+    logResolve("findIdTarget %s.%s", prev.enode(), id.name);
+    assert(prev.isResolved());
+
+    Candle candle = id.getCandle();
+
     switch(prev.enode()) with(ENode) {
         case MODULE_ID: {
             ModuleId pid = prev.as!ModuleId;
             Module module_ = pid.module_;
             foreach(u; module_.getUnits()) {
 
+                // Is it a UDT?
                 if(module_.isUserDefinedType(id.name, false)) {
                     todo("this is a user defined type");
                 }
 
+                // Is it a Var? 
                 if(auto var = u.getVar(id.name, Visibility.PUBLIC)) { 
-                    return new Target(var).setInExternalModule();
+                    candle.addError(new SemanticError(id, "External module variables are not accesible"));
+                    return null;
                 }
+
+                // Is it a Func?
                 Func[] funcs = u.getFuncs(id.name, Visibility.PUBLIC);
                 if(funcs.length == 1) return new Target(funcs[0]).setInExternalModule();
                 if(funcs.length > 1) {
@@ -127,8 +139,11 @@ Target findIdTarget(Id id, Node prev) {
             }
             break;
         }
-        case UNION:
-        default: throw new Exception("findIdTarget: Handle node %s".format(prev.enode()));
+        case LITERAL_STRUCT:
+        case CALL:
+            // todo
+        default: 
+            throw new Exception("findIdTarget: Handle prev node %s".format(prev.enode()));
     }
     return null;
 }

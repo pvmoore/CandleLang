@@ -11,7 +11,7 @@ import candle.all;
  *
  * TODO:
  *   @sizeOf @offsetOf @alignOf 
- *   @isPointer @isInteger @isValue 
+ *   @isPointer @isInteger @isValue @isStruct @isEnum @isUnion
  */
 final class BuiltinFunc : Expr {
 public:
@@ -41,10 +41,13 @@ public:
      * ARGS         ::= '(' [ Expr { ','  Expr} ] ')'
      */
     override void parse(Tokens t) {
+        // @
         t.skip(EToken.AT);
 
+        // name
         this.name = t.value(); t.next();
 
+        // (
         if(t.isKind(EToken.LBRACKET)) {
             t.skip(EToken.LBRACKET);
 
@@ -63,6 +66,8 @@ public:
                 }
             }
             t.skip(EToken.RBRACKET);
+        } else {
+            todo("assume a single Expr?");
         }
     }
     override void resolve() {

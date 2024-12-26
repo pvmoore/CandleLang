@@ -9,6 +9,9 @@ import candle.all;
  *    "string"
  *   c"c string" 
  *   r"raw c string"
+ *
+ * TODO: 1) Assume "string" is just c"string". Ensure we add /0 to the end when we emit the string constant
+ *       2) Handle raw strings in the lexer. By the time we get here the escapes have all been applied 
  */
 final class String : Expr {
 public:
@@ -21,7 +24,7 @@ public:
     override int precedence() { return 0; }
     override bool isResolved() { return true; }
     override string toString() {
-        return "\"%s\"".format(stringValue);
+        return "\"%s\"%s".format(stringValue, isRaw ? " (raw)" : "");
     }
     override void parse(Tokens t) {
         const ch = t.value()[0];
