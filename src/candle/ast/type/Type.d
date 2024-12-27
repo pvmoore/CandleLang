@@ -60,14 +60,23 @@ bool isFunc(Type t) {
 }
 Struct getStruct(Type t) {
     if(Struct s = t.as!Struct) return s;
+    if(Alias a = t.as!Alias) return a.toType().getStruct();
     if(TypeRef tr = t.as!TypeRef) return tr.decorated.getStruct();
     if(Pointer p = t.as!Pointer) return p.valueType().getStruct();
     return null;
 }
 Union getUnion(Type t) {
     if(Union u = t.as!Union) return u;
+    if(Alias a = t.as!Alias) return a.toType().getUnion();
     if(TypeRef tr = t.as!TypeRef) return tr.decorated.getUnion();
     if(Pointer p = t.as!Pointer) return p.valueType().getUnion();
+    return null;
+}
+Primitive getPrimitive(Type t) {
+    if(Primitive p = t.as!Primitive) return p;
+    if(Alias a = t.as!Alias) return a.toType().getPrimitive();
+    if(TypeRef tr = t.as!TypeRef) return tr.decorated.getPrimitive();
+    if(Pointer p = t.as!Pointer) return p.valueType().getPrimitive();
     return null;
 }
 int size(Type t) {

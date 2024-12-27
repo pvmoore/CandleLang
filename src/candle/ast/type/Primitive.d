@@ -19,19 +19,11 @@ public:
     override bool exactlyMatches(Type otherType) {
         assert(isResolved() && otherType.isResolved());
 
-        while(otherType.isA!Alias) {
-            otherType = otherType.as!Alias.toType();
-        }
-
-        Primitive other = otherType.as!Primitive;
+        Primitive other = otherType.getPrimitive();
         return other && _kind == other._kind;
     }
     override bool canImplicitlyConvertTo(Type otherType) {
-        while(otherType.isA!Alias) {
-            otherType = otherType.as!Alias.toType();
-        }
-        
-        Primitive other = otherType.as!Primitive;
+        Primitive other = otherType.getPrimitive();
         if(!other) return false;
 
         if(this.isVoid() || otherType.isVoid()) return false;
