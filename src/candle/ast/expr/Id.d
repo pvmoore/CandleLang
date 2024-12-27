@@ -34,7 +34,10 @@ public:
         if(isStartOfChain()) {
 
             if(getModule().isUserDefinedType(name, true)) {
-                todo("rewrite this to a Type");
+                Type t = getModule().getUDT(name, this);
+                assert(t);
+                Rewriter.toType(this, makeNode!TypeRef(coord, null, t, getModule()));
+                return;
             }
 
             this.target = findIdTarget(this);

@@ -7,7 +7,7 @@ public:
     static ulong getElapsedNanos() { return atomicLoad(totalNanos); }
 
     static void rewrite(Node replace, Node withThis) {
-        
+        todo();
     }
     static void toBool(Node n, bool value) {
         auto b = makeNode!Number(n.coord, value);

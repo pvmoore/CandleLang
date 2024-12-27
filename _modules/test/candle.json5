@@ -3,6 +3,7 @@
         std: { directory: "_modules/std" },
         stdio: { directory: "_modules/stdio" , unqualified-access: true},
         test2: { directory : "_modules/test2" },
+        test3: { directory : "_modules/test3" },
         vulkan: { directory: "_modules/vulkan", unqualified-access: true }
     },
     name: "test",

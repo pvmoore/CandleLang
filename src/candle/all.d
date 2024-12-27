@@ -9,7 +9,7 @@ import core.atomic              : atomicLoad, atomicOp;
 import core.memory              : GC;
 
 import std.format               : format;
-import std.algorithm            : all, map, filter, each, maxElement;
+import std.algorithm            : all, filter, find, each, map, maxElement;
 import std.range                : array;
 import std.array                : replace, join;
 import std.stdio                : File, writefln;

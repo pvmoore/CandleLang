@@ -12,6 +12,8 @@ import candle.all;
  * TODO:
  *   @sizeOf @offsetOf @alignOf 
  *   @isPointer @isInteger @isValue @isStruct @isEnum @isUnion
+ *
+ *   @assertError(SNF,SNV) { }
  */
 final class BuiltinFunc : Expr {
 public:

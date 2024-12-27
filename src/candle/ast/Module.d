@@ -67,6 +67,25 @@ public:
         }
         return false;
     }
+    Type getUDT(string name, Node askingNode) {
+        //writefln("looking for %s in Module %s", name, this.name);
+        bool sameModule = askingNode.getModule() is this;
+        Visibility vis = sameModule ? Visibility.ALL : Visibility.PUBLIC;
+
+        bool typeIsInThisModule = (name in localTypes) !is null;
+
+        if(typeIsInThisModule) {
+            foreach(u; getUnits()) {
+                if(Type type = u.getUDT(name, vis)) return type;
+            }
+        } 
+        if(sameModule) {
+            foreach(m; externalModules.values()) {
+                if(Type t = m.getUDT(name, askingNode)) return t;
+            }
+        }
+        return null;
+    }
 
     bool isModuleName(string name) {
         return (name in externalModules) !is null;

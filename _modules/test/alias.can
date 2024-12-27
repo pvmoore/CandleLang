@@ -10,5 +10,11 @@ pub alias PA2 = int*;
 
 
 func alias_() {
-
+    @assert(AA is int);
+    @assert(BB is int);
+    @assert(CC is float);
+    @assert(DD is float);
+    @assert(EE is float**);
+    @assert(PA1 is int*);
+    @assert(PA2 is int*);
 }
