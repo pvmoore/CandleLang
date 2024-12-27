@@ -8,7 +8,6 @@ alias EE = DD**;
 pub alias PA1 = PA2;
 pub alias PA2 = int*;
 
-
 func alias_() {
     @assert(AA is int);
     @assert(BB is int);
@@ -17,4 +16,6 @@ func alias_() {
     @assert(EE is float**);
     @assert(PA1 is int*);
     @assert(PA2 is int*);
+
+    @assert(CC is DD);
 }

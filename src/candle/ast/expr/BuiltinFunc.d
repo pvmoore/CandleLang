@@ -10,8 +10,8 @@ import candle.all;
  * @typeOf(Expr)
  *
  * TODO:
- *   @sizeOf @offsetOf @alignOf 
- *   @isPointer @isInteger @isValue @isStruct @isEnum @isUnion
+ *   @sizeOf @offsetOf @alignOf -> uint
+ *   @isPointer @isInteger @isValue @isStruct @isEnum @isUnion -> bool
  *
  *   @assertError(SNF,SNV) { }
  */

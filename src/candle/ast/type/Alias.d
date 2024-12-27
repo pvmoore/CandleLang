@@ -19,7 +19,7 @@ public:
 
     override bool exactlyMatches(Type otherType) {
         assert(isResolved() && otherType.isResolved());
-        return toType.exactlyMatches(otherType);
+        return toType().exactlyMatches(otherType);
     }
     override bool canImplicitlyConvertTo(Type otherType) {
         assert(isResolved() && otherType.isResolved());
