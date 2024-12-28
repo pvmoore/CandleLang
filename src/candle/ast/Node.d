@@ -161,6 +161,9 @@ bool isPublic(T)(T n) if(is(T:Node) || is(T:Type)) {
     if(Alias a = n.as!Alias) return a.isPublic;
     if(Func f = n.as!Func) return f.isPublic;
     if(Var v = n.as!Var) return v.isPublic;
+    if(TypeRef tr = n.as!TypeRef) return tr.type().isPublic;
+    if(Pointer p = n.as!Pointer) return false;
+    if(Primitive p = n.as!Primitive) return false;
     assert(false, "isPublic %s".format(n));
 }
 bool isPrivate(T)(T n) if(is(T:Node) || is(T:Type)) {

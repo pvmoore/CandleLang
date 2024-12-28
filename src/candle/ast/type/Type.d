@@ -55,6 +55,12 @@ bool isStruct(Type t) {
 bool isArray(Type t) {
     return t.etype() == EType.ARRAY;
 }
+bool isUnion(Type t) {
+    return t.etype() == EType.UNION;
+}
+bool isEnum(Type t) {
+    return t.etype() == EType.ENUM;
+}
 bool isFunc(Type t) {
     return t.etype() == EType.FUNC;
 }
@@ -72,13 +78,13 @@ Union getUnion(Type t) {
     if(Pointer p = t.as!Pointer) return p.valueType().getUnion();
     return null;
 }
-Primitive getPrimitive(Type t) {
-    if(Primitive p = t.as!Primitive) return p;
-    if(Alias a = t.as!Alias) return a.toType().getPrimitive();
-    if(TypeRef tr = t.as!TypeRef) return tr.decorated.getPrimitive();
-    if(Pointer p = t.as!Pointer) return p.valueType().getPrimitive();
-    return null;
+Type getBaseValueType(Type t) {
+    if(Alias a = t.as!Alias) return a.toType().getBaseValueType();
+    if(TypeRef tr = t.as!TypeRef) return tr.decorated.getBaseValueType();
+    if(Pointer p = t.as!Pointer) return p.valueType().getBaseValueType();
+    return t;
 }
+
 int size(Type t) {
     if(TypeRef tr = t.as!TypeRef) return size(tr.decorated);
     if(t.isA!Pointer) return 8;

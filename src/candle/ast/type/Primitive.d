@@ -19,11 +19,11 @@ public:
     override bool exactlyMatches(Type otherType) {
         assert(isResolved() && otherType.isResolved());
 
-        Primitive other = otherType.getPrimitive();
+        Primitive other = getPrimitive(otherType);
         return other && _kind == other._kind;
     }
     override bool canImplicitlyConvertTo(Type otherType) {
-        Primitive other = otherType.getPrimitive();
+        Primitive other = getPrimitive(otherType);
         if(!other) return false;
 
         if(this.isVoid() || otherType.isVoid()) return false;
@@ -31,7 +31,8 @@ public:
         
         // Allow all implicit convert to bool
         if(otherType.isBool()) return true;
-        // Let's allow bool -> any for now and see how it goes
+
+        // Allow bool -> any for now and see how it goes
         if(this.isBool()) return true;
 
         if(isInteger(this)) {
@@ -60,4 +61,11 @@ public:
     }
 private:
     EType _kind;
+
+    Primitive getPrimitive(Type t) {
+        if(Primitive p = t.as!Primitive) return p;
+        if(Alias a = t.as!Alias) return getPrimitive(a.toType());
+        if(TypeRef tr = t.as!TypeRef) return getPrimitive(tr.decorated);
+        return null;
+    }
 }

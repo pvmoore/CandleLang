@@ -8,6 +8,9 @@ alias EE = DD**;
 pub alias PA1 = PA2;
 pub alias PA2 = int*;
 
+// EE is not public
+//pub alias PA3 = EE;
+
 func alias_() {
     @assert(AA is int);
     @assert(BB is int);
