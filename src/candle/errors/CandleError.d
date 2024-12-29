@@ -3,6 +3,7 @@ module candle.errors.CandleError;
 import candle.all;
 
 interface CandleError {
+    FileCoord coord();
     string brief();
     string verbose();
     bool isDuplicateOf(CandleError);

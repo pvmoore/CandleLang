@@ -53,7 +53,7 @@ public:
     override void parse(Tokens t) {
         todo();
 
-        //getModule().localTypes[name] = isPublic;
+        //getModule().localUDTNames[name] = isPublic;
     }
 private:
 }

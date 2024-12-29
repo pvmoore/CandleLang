@@ -79,6 +79,19 @@ public:
         }
         errors ~= error;
     }
+    /** Remove a CandleError. This is likely only useful for @assertError */
+    void removeError(uint errorId, uint line) {
+        long pos = -1;
+        foreach(i, e; errors) {
+            todo("add errorIds");
+            // if(error.isDuplicateOf(e)) {
+            //     pos = i;
+            //     break;
+            // }
+        }
+        assert(pos != -1);
+        errors.removeAt(pos);
+    }
 private:
     CandleError[] errors;
 

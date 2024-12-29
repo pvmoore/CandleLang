@@ -8,6 +8,9 @@ public:
         this.node = node;
         this.message = message;
     }
+    override FileCoord coord() {
+        return node.coord;
+    }
     override string brief() {
         return formatBrief(node.getUnit(), node.coord, message);
     }

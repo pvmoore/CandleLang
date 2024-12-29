@@ -7,6 +7,9 @@ public:
     this(Node node) {
         this.node = node;
     }    
+    override FileCoord coord() {
+        return node.coord;
+    }
     override string brief() {
         string msg = "Unresolved %s".format(node.enode);
         if(auto call = node.as!Call) {

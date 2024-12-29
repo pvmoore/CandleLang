@@ -46,7 +46,7 @@ public:
         parseType(this, t);
         t.skip(EToken.SEMICOLON);
 
-        getModule().localTypes[name] = isPublic;
+        getModule().localUDTNames[name] = isPublic;
     }
     override void resolve() {
         

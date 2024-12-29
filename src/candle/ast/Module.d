@@ -15,7 +15,7 @@ public:
     Directory directory;
 
     // Dynamic data
-    bool[string] localTypes;    // Map of struct|union|enum|alias nodes in this Module. value is true if isPublic
+    bool[string] localUDTNames;    // Map of UDT (struct|union|enum|alias) names in this Module. value is true if isPublic
     
     override ENode enode() { return ENode.MODULE; }
     override Type type() { return TYPE_VOID; }
@@ -26,32 +26,35 @@ public:
         this.directory = directory;
         loadModuleJson5();
         addUnits();
-        candle.modules[name] = this;
         dumpProperties();
+        candle.modules[name] = this;
     }
 
-    Unit[] getUnits() { return children.filter!(it=>it.isA!Unit).map!(it=>it.as!Unit).array(); }
-    Alias[] getAliases(Visibility v) { return getUnits().map!(it=>it.getAliases(v)).join; }
-    Struct[] getStructs(Visibility v) { return getUnits().map!(it=>it.getStructs(v)).join; }
-    Union[] getUnions(Visibility v) { return getUnits().map!(it=>it.getUnions(v)).join; }
-    Enum[] getEnums(Visibility v) { return getUnits().map!(it=>it.getEnums(v)).join; }
+    Unit[] getUnits() { return unitsRange().array(); }
+    Alias[] getAliases(Visibility v) { return unitsRange().map!(it=>it.getAliases(v)).join; }
+    Struct[] getStructs(Visibility v) { return unitsRange().map!(it=>it.getStructs(v)).join; }
+    Union[] getUnions(Visibility v) { return unitsRange().map!(it=>it.getUnions(v)).join; }
+    Enum[] getEnums(Visibility v) { return unitsRange().map!(it=>it.getEnums(v)).join; }
 
     Module[] getExternalModules() { return externalModules.values(); }
 
     Module[] getUnqualifiedExternalModules() {
         return getExternalModules().filter!(it=>dependencies[it.name].unqualified).array;
     }
-
     Module getModule(string name) {
         if(auto projPtr = name in externalModules) {
             return *projPtr;
         }
         throw new Exception("Module dependency not found '%s'".format(name));
     }
+    bool isModuleName(string name) {
+        return (name in externalModules) !is null;
+    }
+
     /** Return true if 'id' is a visible user defined struct/union/enum or alias */
     bool isUserDefinedType(string id, bool sameModule) { 
         // Check for types defined in this Module
-        if(bool* p = id in localTypes) {
+        if(bool* p = id in localUDTNames) {
             // We found it locally. Check the visibility
             return sameModule || *p;
         }
@@ -72,7 +75,7 @@ public:
         bool sameModule = askingNode.getModule() is this;
         Visibility vis = sameModule ? Visibility.ALL : Visibility.PUBLIC;
 
-        bool typeIsInThisModule = (name in localTypes) !is null;
+        bool typeIsInThisModule = (name in localUDTNames) !is null;
 
         if(typeIsInThisModule) {
             foreach(u; getUnits()) {
@@ -87,10 +90,6 @@ public:
         return null;
     }
 
-    bool isModuleName(string name) {
-        return (name in externalModules) !is null;
-    }
-
     override string toString() {
         return "Module '%s', '%s'".format(name, directory);
     }
@@ -99,10 +98,15 @@ private:
         string name;
         Directory directory;
         bool unqualified;
+
+        string toString() { return "Dependency('%s', %s%s)".format(name, directory, unqualified ? ", unqualified-access":""); }
     }
     Dependency[string] dependencies;    // declared possible external Modules 
     Module[string] externalModules;     // accessed external Modules
 
+    auto unitsRange() {
+        return children.filter!(it=>it.isA!Unit).map!(it=>it.as!Unit);
+    }
     /** 
      * {
      *   name: "test",
