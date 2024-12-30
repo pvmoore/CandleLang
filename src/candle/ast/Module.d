@@ -90,6 +90,10 @@ public:
         return null;
     }
 
+    override int opCmp(Object other) {
+        import std.algorithm.comparison : cmp;
+        return cmp(name, other.as!Module.name);
+    }
     override string toString() {
         return "Module '%s', '%s'".format(name, directory);
     }

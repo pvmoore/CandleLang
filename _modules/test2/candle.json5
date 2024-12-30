@@ -1,6 +1,12 @@
 {
+    /*
+    test2 ===> test3
+          ---> test4
+    */
     dependencies: {
-        std: { directory: "_modules/std" }
+        std: { directory: "_modules/std" },
+        test3: { directory : "_modules/test3", unqualified-access: true },
+        test4: { directory : "_modules/test4" },
     },
     name: "test2"
 }
