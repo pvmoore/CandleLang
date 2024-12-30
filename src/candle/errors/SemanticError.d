@@ -4,12 +4,12 @@ import candle.all;
 
 final class SemanticError : CandleError {
 public:
-    this(Node node, string message) {
+    this(EError e, Node node, string message) {
         this.node = node;
         this.message = message;
-    }
-    override FileCoord coord() {
-        return node.coord;
+
+        this._eerror = e;
+        this._coord = node.coord;
     }
     override string brief() {
         return formatBrief(node.getUnit(), node.coord, message);

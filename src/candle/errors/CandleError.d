@@ -2,12 +2,20 @@ module candle.errors.CandleError;
 
 import candle.all;
 
-interface CandleError {
-    FileCoord coord();
+abstract class CandleError {
+public:
+    final EError eerror() { return _eerror; }
+    final FileCoord coord() { return _coord; }
+
     string brief();
     string verbose();
     bool isDuplicateOf(CandleError);
+protected:
+    EError _eerror;
+    FileCoord _coord;
 }
+
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 
 // string formattedError(Unit unit, FileCoord coord, string msg) {
 //     string brief = formatBrief(unit, coord, msg);

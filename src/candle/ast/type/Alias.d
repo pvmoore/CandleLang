@@ -57,7 +57,7 @@ public:
         bool isUDT = t.isA!Alias || t.isA!TypeRef || t.as!Struct || t.isA!Union || t.isA!Enum;
 
         if(isPublic && isUDT && !t.isPublic) {
-            getCandle().addError(new SemanticError(this, "Public alias to non-public user defined type %s".format(t)));
+            getCandle().addError(new SemanticError(EError.PANPUDT, this, "Public alias to non-public user defined type %s".format(t)));
         }
     }
 private:

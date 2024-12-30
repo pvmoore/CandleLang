@@ -79,18 +79,17 @@ public:
         }
         errors ~= error;
     }
-    /** Remove a CandleError. This is likely only useful for @assertError */
-    void removeError(uint errorId, uint line) {
-        long pos = -1;
+    CandleError[] findErrors(EError err) {
+        return errors.filter!(it=>it.eerror() == err).array;
+    }
+    bool removeError(CandleError err) { 
         foreach(i, e; errors) {
-            todo("add errorIds");
-            // if(error.isDuplicateOf(e)) {
-            //     pos = i;
-            //     break;
-            // }
+            if(e.eerror() == err.eerror() && e.coord() == err.coord()) {
+                errors.removeAt(i);
+                return true;
+            }
         }
-        assert(pos != -1);
-        errors.removeAt(pos);
+        return false;
     }
 private:
     CandleError[] errors;
@@ -121,7 +120,7 @@ private:
                 nodes ~= m.range().filter!(it=>!it.isResolved()).array;
             }
             foreach(Node n; nodes) {
-                addError(new ResolutionError(n));
+                addError(new ResolutionError(EError.SNF, n));
             }
             assert(errors, "Where are the resolution errors?");
         }

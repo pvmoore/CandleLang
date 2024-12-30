@@ -39,7 +39,7 @@ public:
         // Type is value
         // value is Type
         if(left().isA!Type || right().isA!Type) {
-            getCandle().addError(new SemanticError(this, "Comparing Type to non Type is not allowed"));
+            getCandle().addError(new SemanticError(EError.CTNT, this, "Comparing Type to non Type is not allowed"));
             return;
         }
         // value is value

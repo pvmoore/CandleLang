@@ -4,12 +4,11 @@ import candle.all;
 
 final class ResolutionError : CandleError {
 public:
-    this(Node node) {
+    this(EError e, Node node) {
         this.node = node;
+        this._eerror = e; 
+        this._coord = node.coord;
     }    
-    override FileCoord coord() {
-        return node.coord;
-    }
     override string brief() {
         string msg = "Unresolved %s".format(node.enode);
         if(auto call = node.as!Call) {

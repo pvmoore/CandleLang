@@ -89,6 +89,7 @@ import candle.ast.type.Type;
 import candle.ast.type.TypeRef;
 import candle.ast.type.Union;
 
+import candle.errors.EError;
 import candle.errors.errors;
 import candle.errors.ResolutionError;
 import candle.errors.SemanticError;

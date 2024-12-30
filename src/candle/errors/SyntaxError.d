@@ -5,17 +5,15 @@ import candle.all;
 final class SyntaxError : CandleError {
 public:
     this(Tokens t, string expected) {
-        this.unit = t.unit;
+        this._eerror = EError.SNF; // fixme
         this._coord = t.coord();
+        this.unit = t.unit;
         this.message = "Expected " ~ expected;
     }
     this(Unit unit, FileCoord coord, string message) {
         this.unit = unit;
         this._coord = coord;
         this.message = message;
-    }
-    override FileCoord coord() {
-        return _coord;
     }
     override string brief() {
         string msg = "Syntax error. %s".format(message);
@@ -34,6 +32,5 @@ public:
     }
 private:
     Unit unit;
-    FileCoord _coord;
     string message;
 }

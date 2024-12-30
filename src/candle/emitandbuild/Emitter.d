@@ -108,7 +108,7 @@ static void candle__assert(__s32 value, const char* unitName, __u32 line) {
         bool moveNode(Node v, Node s) {
             ulong key = makeKey(v.id, s.id);
             if(key in mustComeBefore) {
-                candle.addError(new SemanticError(s, "Circular dependency between %s and %s".format(s, v)));
+                candle.addError(new SemanticError(EError.CIRCDEP, s, "Circular dependency between %s and %s".format(s, v)));
                 return false;
             }
             mustComeBefore[key] = true;

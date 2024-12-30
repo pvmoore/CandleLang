@@ -113,7 +113,7 @@ Target findIdTarget(Id id, Node prev) {
 
                 // Is it a Var? 
                 if(auto var = u.getVar(id.name, Visibility.PUBLIC)) { 
-                    candle.addError(new SemanticError(id, "External module variables are not accesible"));
+                    candle.addError(new SemanticError(EError.SNV, id, "External module variables are not accesible"));
                     return null;
                 }
 
