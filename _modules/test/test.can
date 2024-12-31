@@ -4,6 +4,9 @@
 wibble:int;
 
 func main(void->int) {
+    
+    testVisibility();
+
     a:int  = 6;
     b:int* = null;
 
@@ -32,7 +35,40 @@ func main(void->int) {
     strings();
     arrays();
 
+
     return 0;
+}
+
+func testVisibility() {
+    // test ===> test2 ===> test3
+    //                 ---> test4
+    // 
+    //      ---> test5 ===> test6
+    //                 ---> test7
+    
+    // test2 public struct (unqualified access)
+    aaa2 : AAA2;
+    // test2 private struct 
+    //zzz2:ZZZ2;
+
+    // test5 public struct (qualified access)
+    //aaa5:AAA5;
+    aaa5 : test5.AAA5;
+
+    // test 5 private struct
+    //zzz5 : ZZZ5;
+    //zzz5 : test5.ZZZ5;  // <-- fixme - this should fail before the c compile phase
+
+
+    // test3 - nothing should be visible
+    //aaa3: AAA3;
+    //zzz3: ZZZ3;
+    //aaa3: test3.AAA3; // <---- fixme
+    //zzz3: test3.ZZZ3; // <---- fixme
+
+    // test4 - nothing should be visible
+    // test6 - nothing should be visible
+    // test7 - nothing should be visible
 }
 
 // private local function

@@ -1,0 +1,8 @@
+
+pub struct AAA6 {
+    a:int;
+}
+
+struct ZZZ6 {
+    a:int;
+}

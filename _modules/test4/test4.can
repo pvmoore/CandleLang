@@ -1,0 +1,8 @@
+
+pub struct AAA4 {
+    a:int;
+}
+
+struct ZZZ4 {
+    a:int;
+}
