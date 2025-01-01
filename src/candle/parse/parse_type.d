@@ -45,6 +45,9 @@ void parseType(Node parent, Tokens t) {
         // mod.type
         bool isModuleId = t.isKind(EToken.ID) && module_.isModuleName(value);
         if(isModuleId) {
+
+            // todo - this can be handled more elegantly by parsing it into a ModuleId.Id and then resolving it later into a type
+
             typeModule = module_.getModule(value);
             isExternal = true;
             t.next();

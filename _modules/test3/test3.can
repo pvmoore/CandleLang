@@ -6,3 +6,11 @@ pub struct AAA3 {
 struct ZZZ3 {
     a:int;
 }
+
+pub func foo_aaa3() {
+
+}
+
+func foo_zzz3() {
+    
+}

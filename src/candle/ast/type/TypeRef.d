@@ -44,13 +44,15 @@ public:
     override void resolve() {
         //if(isResolved()) return;
 
-        if(name=="FILE" && !decorated) {
-            log("resolve FILE ... ");
-        }
-
         logResolve("Resolve %s decorated = %s %s", name, decorated, decorated ? decorated.isResolved() : false);
         if(!decorated) {
             decorated = findType(module_, name);
+        }
+
+        if(isResolved()) {
+            if(isExternal && decorated.isPrivate) {
+                getCandle().addError(new SemanticError(EError.SNV, this, "Type '%s' is not public in external module %s".format(name, module_.name)));
+            }
         }
     }
 private:

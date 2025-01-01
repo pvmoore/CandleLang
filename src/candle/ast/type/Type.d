@@ -84,6 +84,20 @@ Type getBaseValueType(Type t) {
     if(Pointer p = t.as!Pointer) return p.valueType().getBaseValueType();
     return t;
 }
+string getName(Type t) {
+    if(Alias a = t.as!Alias) return a.name;
+    if(Struct s = t.as!Struct) return s.name ? s.name : "anonymous struct";
+    if(Union u = t.as!Union) return u.name ? u.name : "anonymous union";
+    if(Enum e = t.as!Enum) return e.name;
+    if(Func f = t.as!Func) return f.name;
+    if(Primitive p = t.as!Primitive) return p.toString();
+    if(TypeRef tr = t.as!TypeRef) {
+        if(tr.decorated) return getName(tr.decorated);
+        return tr.name;
+    }
+    if(Pointer p = t.as!Pointer) return getName(p.valueType());
+    return "%s".format(t.etype());
+}
 
 int size(Type t) {
     if(TypeRef tr = t.as!TypeRef) return size(tr.decorated);

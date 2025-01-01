@@ -10,8 +10,10 @@ public:
         this._coord = node.coord;
     }    
     override string brief() {
-        string msg = "Unresolved %s".format(node.enode);
-        if(auto call = node.as!Call) {
+        string msg = "Undefined %s".format(node.enode());
+        if(Type t = node.as!Type) {
+            msg = "Type '%s' not found".format(getName(t));
+        } else if(auto call = node.as!Call) {
             msg = "Function '%s' not found".format(call.name);
         } else if(auto id = node.as!Id) {
             msg = "Undefined symbol '%s'".format(id.name);
@@ -19,8 +21,10 @@ public:
         return formatBrief(node.getUnit(), node.coord, msg);
     }
     override string verbose() {
-        string msg = "Unresolved %s".format(node.enode);
-        if(auto call = node.as!Call) {
+        string msg = "Undefined %s".format(node.enode());
+        if(Type t = node.as!Type) {
+            msg = "Type '%s' not found".format(getName(t));
+        } else if(auto call = node.as!Call) {
             msg = "Function '%s' not found".format(call.name);
         } else if(auto id = node.as!Id) {
             msg = "Undefined symbol '%s'".format(id.name);

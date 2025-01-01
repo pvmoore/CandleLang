@@ -7,3 +7,12 @@ pub struct AAA2 {
 struct ZZZ2 {
     a:int;
 }
+
+pub func foo_aaa2() {
+
+}
+
+func foo_zzz2() {
+    
+}
+

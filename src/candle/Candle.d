@@ -109,8 +109,8 @@ private:
     bool resolveAllModules() {
         bool resolved = false;
         int maxPasses = 3;
-        for(int pass = 0; !resolved && !hasErrors() && pass < maxPasses; pass++) {
-            // Run a resolve phase on all Modules
+        for(int pass = 0; !resolved && pass < maxPasses; pass++) {
+            // Run a resolve phase on all Modules (even if there are errors)
             resolved = Resolver.resolveAllModules(this, pass);
         }
         // Convert unresolved nodes to ResolutionErrors

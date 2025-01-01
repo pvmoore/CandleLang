@@ -49,7 +49,11 @@ func testVisibility() {
     // test2 public struct (unqualified access)
     aaa2 : AAA2;
     // test2 private struct 
-    //zzz2:ZZZ2;
+    
+    // todo
+    //@assertError(SNF) {
+    //  zzz2:ZZZ2;
+    //}
 
     // test5 public struct (qualified access)
     //aaa5:AAA5;
@@ -57,14 +61,14 @@ func testVisibility() {
 
     // test 5 private struct
     //zzz5 : ZZZ5;
-    //zzz5 : test5.ZZZ5;  // <-- fixme - this should fail before the c compile phase
+    //zzz5 : test5.ZZZ5;  
 
 
     // test3 - nothing should be visible
     //aaa3: AAA3;
     //zzz3: ZZZ3;
-    //aaa3: test3.AAA3; // <---- fixme
-    //zzz3: test3.ZZZ3; // <---- fixme
+    //aaa3: test3.AAA3; // <---- fixme !!!!!!
+    //zzz3: test3.ZZZ3; // <---- fixme !!!!!!
 
     // test4 - nothing should be visible
     // test6 - nothing should be visible
