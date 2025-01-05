@@ -135,12 +135,18 @@ public:
                         addToken(EToken.DOT);
                     }
                     break;
+                case ':': 
+                    if(peek(1) == ':') {
+                        addToken(EToken.COLON_COLON);
+                    } else {
+                        addToken(EToken.COLON);
+                    } 
+                    break;
                 case '@': addToken(EToken.AT); break;
                 case '~': addToken(EToken.TILDE); break;
                 case '?': addToken(EToken.QMARK); break;
                 case ',': addToken(EToken.COMMA); break;
                 case ';': addToken(EToken.SEMICOLON); break;
-                case ':': addToken(EToken.COLON); break;
                 case '(': addToken(EToken.LBRACKET); break;
                 case ')': addToken(EToken.RBRACKET); break;
                 case '{': addToken(EToken.LCURLY); break;

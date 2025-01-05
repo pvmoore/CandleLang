@@ -16,7 +16,7 @@ func main(void->int) {
     //ff:FILE* = fopen(c"name", c"b");
 
 
-    stdio.putChar('b');
+    stdio::putChar('b');
 
     doSomething(null, null);
     doSomethingElse();
@@ -57,7 +57,7 @@ func testVisibility() {
 
     // test5 public struct (qualified access)
     //aaa5:AAA5;
-    aaa5 : test5.AAA5;
+    aaa5 : test5::AAA5;
 
     // test 5 private struct
     //zzz5 : ZZZ5;
@@ -95,7 +95,7 @@ pub func doSomething(a:int*, b:float**) {
 
     apple:Apple;
 
-    plum:std.PlumPublic;
+    plum:std::PlumPublic;
     //PlumPublic plum;
     //PlumPrivate plum2;
     //std.PlumPrivate plum2;

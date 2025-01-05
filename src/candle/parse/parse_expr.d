@@ -65,16 +65,18 @@ void parseExprLhs(Node parent, Tokens t) {
 
             // id
             parseId(parent, t);
-            break;
+            return;
         default:
-            syntaxError(t, "expression lhs");
+            writefln(parent.dumpToString());
+            //throw new Exception("bad expr");
+            syntaxError(t, "expression lhs. token = %s, parent = %s".format(t.kind(), parent));
             break;
     }
 }
 void parseExprRhs(Node parent, Tokens t) {
     logParse("rhs %s", t.debugValue());
     while(!t.eof()) {
-        //logParse("t = %s", t.debugValue());
+        logParse("t = %s", t.debugValue());
         sw:switch(t.kind()) with(EToken) {
             case ID:  
                 switch(t.value()) {
@@ -135,7 +137,9 @@ void parseExprRhs(Node parent, Tokens t) {
                 parent = attachAndRead(parent, b, t, true);
                 break;
             }
-            case DOT: {
+            // Both of these produce a Dot
+            case COLON_COLON: {
+            case DOT: 
                 Dot dot = parseAndReturnDot(t);
                 parent = attachAndRead(parent, dot, t, true);
                 break;
@@ -178,8 +182,6 @@ Expr attachAndRead(Node parent, Expr newExpr, Tokens t, bool andRead) {
 
     return newExpr;
 }
-//──────────────────────────────────────────────────────────────────────────────────────────────────
-private:
 
 Binary parseAndReturnBinary(Tokens t) {
     auto b = makeNode!Binary(t.coord());
@@ -194,8 +196,14 @@ Binary parseAndReturnBinary(Tokens t) {
     return b;
 }
 Dot parseAndReturnDot(Tokens t) {
+    //logParse("parseAndReturnDot %s", t.debugValue());
     Dot dot = makeNode!Dot(t.coord());
-    t.skip(EToken.DOT);
+    if(t.isKind(EToken.DOT)) {
+        t.skip(EToken.DOT);
+    } else {
+        t.skip(EToken.COLON_COLON);
+        dot.dblColon = true;
+    }
     return dot;
 }
 As parseAndReturnAs(Tokens t) {
@@ -247,6 +255,8 @@ void parseId(Node parent, Tokens t) {
     }
     parent.add(id);
     id.parse(t);
+
+    
 }
 void parseCall(Node parent, Tokens t) {
     Call call = makeNode!Call(t.coord());

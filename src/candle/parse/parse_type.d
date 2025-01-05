@@ -42,21 +42,27 @@ void parseType(Node parent, Tokens t) {
         Module typeModule = module_;
         bool isExternal = false;
 
-        // mod.type
-        bool isModuleId = t.isKind(EToken.ID) && module_.isModuleName(value);
-        if(isModuleId) {
+        // moduleId::type
+        bool isModuleName = module_.isModuleName(value);
+        bool isModuleNameColonColon = t.isKind(EToken.ID) && t.isKind(EToken.COLON_COLON, 1);
 
-            // todo - this can be handled more elegantly by parsing it into a ModuleId.Id and then resolving it later into a type
+        if(isModuleName && !isModuleNameColonColon) {
+            syntaxError(t, "'::' after module reference");
+        }
+
+        if(isModuleNameColonColon) {
 
             typeModule = module_.getModule(value);
             isExternal = true;
             t.next();
-            t.skip(EToken.DOT);
+
+            t.skip(EToken.COLON_COLON);
+
             value = t.value();
         } 
 
-        Type ty = findType(typeModule, value);
-        TypeRef tr = makeNode!TypeRef(t.coord(), value, ty, typeModule);
+        // Create a TypeRef and resolve it later
+        TypeRef tr = makeNode!TypeRef(t.coord(), value, null, typeModule);
         tr.isExternal = isExternal;
         type = tr;
 
@@ -67,6 +73,9 @@ void parseType(Node parent, Tokens t) {
     if(!type) {
         syntaxError(t, "a Type");
     }
+
+    assert(type);
+    // At this point 'type' cannot be null
 
     // Pointer
     if(t.isKind(EToken.STAR)) {

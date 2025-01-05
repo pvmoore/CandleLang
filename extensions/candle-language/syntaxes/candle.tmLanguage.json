@@ -34,6 +34,9 @@
 		},
 		{
 			"include": "#pipes"
+		},
+		{
+			"include": "#module-reference"
 		}
 	],
 	"repository": {
@@ -168,6 +171,18 @@
 				{
 					"match": "\\|",
 					"name": "punctuation.pipe"
+				}
+			]
+		},
+		"module-reference": {
+			"patterns": [
+				{
+					"captures": {
+						"1": {
+							"name": "storage.type.module_reference.candle"
+						}
+					},
+					"match": "\\b([_a-zA-Z][_a-zA-Z0-9]+)::"
 				}
 			]
 		},

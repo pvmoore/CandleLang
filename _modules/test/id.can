@@ -5,7 +5,7 @@ func id() {
 
     apple:Apple;    // public in test Project
     peach:Peach;    // private in test Project
-    str:std.string; // public in std Project
+    str:std::string; // public in std Project
 
     appleA:int = apple.a;
     peachA:int = peach.a;

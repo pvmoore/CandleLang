@@ -46,7 +46,7 @@ public:
 
         logResolve("Resolve %s decorated = %s %s", name, decorated, decorated ? decorated.isResolved() : false);
         if(!decorated) {
-            decorated = findType(module_, name);
+            decorated = findType(module_, name, isExternal);
         }
 
         if(isResolved()) {

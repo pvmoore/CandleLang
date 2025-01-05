@@ -36,9 +36,9 @@ public:
             ensureDirectoryExists(targetDirectory.add(Directory("ast")));
         }
 
-        mainModule = makeNode!Module(this, mainDirectory);
-
         try{
+            mainModule = makeNode!Module(this, mainDirectory);
+
             if(!resolveAllModules()) {
                 return false;
             }

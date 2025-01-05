@@ -9,6 +9,7 @@ import candle.all;
  */
 final class Dot : Expr {
 public:
+    bool dblColon;  // true if this is a '::' otherwise it is '.'
 
     Expr left() { return first().as!Expr; }
     Expr right() { return last().as!Expr; }
@@ -18,7 +19,7 @@ public:
     override int precedence() { return 200; }
     override bool isResolved() { return right().isResolved(); }
     override string toString() {
-        return "Dot";
+        return "Dot %s".format(dblColon ? "::" : ".");
     }
 private:
 }

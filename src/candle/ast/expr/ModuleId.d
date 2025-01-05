@@ -20,6 +20,10 @@ public:
     override void parse(Tokens t) {
         this.name = t.value(); t.next();
         this.module_ = getModule().getModule(name);
+
+        if(t.kind() != EToken.COLON_COLON) {
+            syntaxError(t, "'::' after module reference");
+        }
     }
 private:
 }

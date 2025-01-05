@@ -26,7 +26,7 @@ public:
         this.directory = directory;
         loadModuleJson5();
         addUnits();
-        dumpProperties();
+        //dumpProperties();
         candle.modules[name] = this;
     }
 
@@ -45,7 +45,8 @@ public:
         if(auto projPtr = name in externalModules) {
             return *projPtr;
         }
-        throw new Exception("Module dependency not found '%s'".format(name));
+        throwIf(true, "Module dependency not found '%s'".format(name));
+        return null;
     }
     bool isModuleName(string name) {
         return (name in externalModules) !is null;

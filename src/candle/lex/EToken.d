@@ -58,6 +58,7 @@ enum EToken {
     COMMA,      // ,
     SEMICOLON,  // ;
     COLON,      // :
+    COLON_COLON,// ::
     LBRACKET,   // (
     RBRACKET,   // )
     LCURLY,     // {
@@ -112,6 +113,7 @@ string stringOf(EToken t) {
         case COMMA: return ",";
         case SEMICOLON: return ";";
         case COLON: return ":";
+        case COLON_COLON: return "::";
         case LBRACKET: return "(";
         case RBRACKET: return ")";
         case LCURLY: return "{";
@@ -173,6 +175,7 @@ int lengthOf(EToken t) {
         case PIPE_EQ:
         case HAT_EQ:
         case RT_ARROW:
+        case COLON_COLON:
             return 2;
         case LT_LT_EQ:
         case GT_GT_EQ:

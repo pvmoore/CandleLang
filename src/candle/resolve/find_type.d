@@ -58,12 +58,13 @@ bool isType(Module module_, Tokens t) {
 
     bool isModuleId = t.isKind(EToken.ID) && module_.isModuleName(t.value());
 
-    if(isModuleId) {
-        // std.foo(
-        with(EToken) if(t.matches(ID, DOT, ID, LBRACKET)) return false;
+    if(isModuleId) with(EToken) {
 
-        // std.struct
-        with(EToken) if(t.matches(ID, DOT, ID)) return true;
+        // std::foo(
+        if(t.matches(ID, COLON_COLON, ID, LBRACKET)) return false;
+
+        // std::struct
+        if(t.matches(ID, COLON_COLON, ID)) return true;
     }
     return false;
 }
@@ -93,30 +94,34 @@ int typeLength(Tokens t) {
         log("function ptr length = %s to %s (%s)", pos, end, end-pos);
         offset = end - pos;
 
-    } else if(t.isKind(EToken.LBRACKET)) {
-        // function ptr old
+    // } else if(t.isKind(EToken.LBRACKET)) {
+    //     // function ptr old
 
-        t.pushState();
-        t.next();
-        while(!t.isKind(EToken.RBRACKET)) {
-            int len = typeLength(t);
-            assert(len != 0);
-            t.next(len);
-            t.skipOptional(EToken.ID);
-            t.skipOptional(EToken.COMMA);
-            t.skipOptional(EToken.RT_ARROW);
-        }
-        t.skip(EToken.RBRACKET);
-        int end = t.pos;
-        t.popState();
-        log("function ptr length = %s to %s (%s)", pos, end, end-pos);
-        offset = end - pos;
+    //     t.pushState();
+    //     t.next();
+    //     while(!t.isKind(EToken.RBRACKET)) {
+    //         int len = typeLength(t);
+    //         assert(len != 0);
+    //         t.next(len);
+    //         t.skipOptional(EToken.ID);
+    //         t.skipOptional(EToken.COMMA);
+    //         t.skipOptional(EToken.RT_ARROW);
+    //     }
+    //     t.skip(EToken.RBRACKET);
+    //     int end = t.pos;
+    //     t.popState();
+    //     log("function ptr length = %s to %s (%s)", pos, end, end-pos);
+    //     offset = end - pos;
     } else {
         assert(t.isKind(EToken.ID));
         offset = 1;
 
-        // std.struct
+        // std.struct (deprecated)
         with(EToken) if(t.matches(ID, DOT, ID)) {
+            offset += 2;
+        }
+        // std::struct
+        with(EToken) if(t.matches(ID, COLON_COLON, ID)) {
             offset += 2;
         }
 
