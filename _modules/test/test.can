@@ -46,29 +46,35 @@ func testVisibility() {
     //      ---> test5 ===> test6
     //                 ---> test7
     
-    // test2 public struct (unqualified access)
+    // ################################################# test2 (unqualified access)
+    // public 
+    // struct 
     aaa2 : AAA2;
-    // test2 private struct 
+    aaa2b: test2::AAA2;
+
+    // private 
+    // struct 
+    //zzz2: ZZZ2;                // Type 'ZZZ2' not found
+    //zzz2b: test2::ZZZ2;        // Type 'ZZZ2' not found
+
+
+    // ################################################# test5 (qualified access)
+    // public 
+    // struct 
+    //aaa5: AAA5;               // Type 'AAA5' not found
+    aaa5b: test5::AAA5;
     
-    // todo
-    //@assertError(SNF) {
-    //  zzz2:ZZZ2;
-    //}
-
-    // test5 public struct (qualified access)
-    //aaa5:AAA5;
-    aaa5 : test5::AAA5;
-
-    // test 5 private struct
-    //zzz5 : ZZZ5;
-    //zzz5 : test5.ZZZ5;  
+    // private 
+    // struct
+    // zzz5 : ZZZ5;
+    // zzz5b : test5::ZZZ5;  
 
 
-    // test3 - nothing should be visible
+    // ################################################# test5 - nothing should be visible
     //aaa3: AAA3;
     //zzz3: ZZZ3;
-    //aaa3: test3.AAA3; // <---- fixme !!!!!!
-    //zzz3: test3.ZZZ3; // <---- fixme !!!!!!
+    //aaa3: test3::AAA3; // <---- fixme !!!!!!
+    //zzz3: test3::ZZZ3; // <---- fixme !!!!!!
 
     // test4 - nothing should be visible
     // test6 - nothing should be visible

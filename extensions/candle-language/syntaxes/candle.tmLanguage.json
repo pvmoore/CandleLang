@@ -36,6 +36,9 @@
 			"include": "#pipes"
 		},
 		{
+			"include": "#double-colon"
+		},
+		{
 			"include": "#module-reference"
 		}
 	],
@@ -170,7 +173,15 @@
 			"patterns": [
 				{
 					"match": "\\|",
-					"name": "punctuation.pipe"
+					"name": "punctuation.pipe.candle"
+				}
+			]
+		},
+		"double-colon": {
+			"patterns": [
+				{
+					"match": "::",
+					"name": "punctuation.double-colon.candle"
 				}
 			]
 		},

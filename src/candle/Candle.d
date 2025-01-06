@@ -74,6 +74,7 @@ public:
         return true;
     }
     void addError(CandleError error) {
+        writefln("ADDING %s", error);
         foreach(e; errors) {
             if(error.isDuplicateOf(e)) return;
         }
@@ -108,7 +109,7 @@ private:
     }
     bool resolveAllModules() {
         bool resolved = false;
-        int maxPasses = 3;
+        int maxPasses = 4;
         for(int pass = 0; !resolved && pass < maxPasses; pass++) {
             // Run a resolve phase on all Modules (even if there are errors)
             resolved = Resolver.resolveAllModules(this, pass);

@@ -9,6 +9,9 @@ public:
     static void rewrite(Node replace, Node withThis) {
         todo();
     }
+    static void remove(Node n) {
+        n.detach();
+    }
     static void toBool(Node n, bool value) {
         auto b = makeNode!Number(n.coord, value);
         n.replaceWith(b);

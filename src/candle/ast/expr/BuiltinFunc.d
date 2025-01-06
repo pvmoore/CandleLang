@@ -5,6 +5,7 @@ import candle.all;
 /**
  *  BuiltinFunc
  *      { Expr|Type }    arguments
+ *      [ Scope ]
  *
  * @assert(Expr)
  * @typeOf(Expr)
@@ -12,8 +13,6 @@ import candle.all;
  * TODO:
  *   @sizeOf @offsetOf @alignOf -> uint
  *   @isPointer @isInteger @isValue @isStruct @isEnum @isUnion -> bool
- *
- *   @assertError(SNF,SNV) { }
  */
 final class BuiltinFunc : Expr {
 public:
@@ -39,8 +38,9 @@ public:
         return "BuiltinFunc %s%s".format(name, l);
     }
     /** 
-     * BUILTIN_FUNC ::= '@' name [ ARGS ]
+     * BUILTIN_FUNC ::= '@' name [ ARGS ] [ STMTS ]
      * ARGS         ::= '(' [ Expr { ','  Expr} ] ')'
+     * STMTS        ::= '{' { Stmt } '}'
      */
     override void parse(Tokens t) {
         // @
@@ -67,9 +67,26 @@ public:
                     this.add(p.first());
                 }
             }
+            // )
             t.skip(EToken.RBRACKET);
         } else {
             todo("assume a single Expr?");
+        }
+
+        // {
+        if(t.isKind(EToken.LCURLY)) {
+            Scope scope_ = makeNode!Scope(t.coord());
+            this.add(scope_);
+
+            t.skip(EToken.LCURLY);
+
+            while(!t.isKind(EToken.RCURLY)) {
+                if(t.eof()) syntaxError(t, "}");
+
+                parseStmt(scope_, t);
+            }
+            // }
+            t.skip(EToken.RCURLY);
         }
     }
     override void resolve() {
@@ -97,22 +114,25 @@ private:
     bool _isResolved;
 
     void resolveAssert() {
-        if(checkNumArgs(1)) {
+        if(checkNumArgs(1, false)) {
             _isResolved = true;
         }
     }
     void resolveTypeOf() {
-        if(checkNumArgs(1)) {
+        if(checkNumArgs(1, false)) {
             if(!first().isResolved()) return;
             TypeRef tr = makeNode!TypeRef(coord, null, first().type(), getModule());
             Rewriter.toType(this, tr);
         }       
     }
 
-    bool checkNumArgs(int requiredNum) {
-        if(numChildren()!=requiredNum) {
+    bool checkNumArgs(int requiredNum, bool hasScope) {
+
+        int expectedNumArgs = hasScope ? requiredNum + 1 : requiredNum;
+
+        if(numChildren() != expectedNumArgs) {
             getCandle().addError(new SyntaxError(getUnit(), coord, 
-                "Expected %s argument(s) but found %s".format(requiredNum, numChildren())));
+                "Expecting %s argument(s) but found %s".format(requiredNum, numChildren())));
             return false;
         }
         return true;

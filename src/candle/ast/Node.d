@@ -154,6 +154,10 @@ bool areResolved(T)(T[] nodes) if(is(T:Node) || is(T:Type)) {
     foreach(n; nodes) if(!n.isResolved()) return false;
     return true;
 }
+/** Return true if all Scope Nodes are resolved including all children recursively */
+bool isScopeResolved(Scope s) {
+    return s.range().all!(it=>it.isResolved());
+}
 bool isPublic(T)(T n) if(is(T:Node) || is(T:Type)) {
     if(Struct s = n.as!Struct) return s.isPublic;
     if(Union u = n.as!Union) return u.isPublic;
