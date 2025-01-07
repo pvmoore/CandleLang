@@ -13,7 +13,7 @@ func main(void->int) {
 
     putchar('a');
 
-    //ff:FILE* = fopen(c"name", c"b");
+    //FILE* ff = fopen(c"name", c"b");
 
 
     stdio::putChar('b');
@@ -110,7 +110,7 @@ pub func doSomething(int* a, float** b) {
     std::PlumPublic plum;
     //PlumPublic plum;
     //PlumPrivate plum2;
-    //std.PlumPrivate plum2;
+    //std::PlumPrivate plum2;
 
 
 }
@@ -129,53 +129,20 @@ struct Peach {
 }
 
 
-//
-////////////////////////////////////////
-// Different syntax idea
-////////////////////////////////////////
-//
-
-/*
-Apple struct = {
-    a int
-}
-Apple struct(int) = {
-    a int
-}
-
-Pear struct(int)
-
-foo (a int -> void) = {
-
-}
-
-bar = (a int -> int) { return 1 }
-
-Blah int
-
-a bool = true
-*/
-
-//
-////////////////////////////////////////
-//
-
-
-
 /*
 void foo() {
 
     int value = 4;
     int* ptr;
 
-    int(int) bar = (a) {
+    func(int->int) bar = (a) {
         ptr += 1;
         return a + value;
     };
 }
 
 // generates
-int lambda_1(ubyte* closure, int a) {
+func lambda_1(ubyte* closure, int a -> int) {
     int value = @valueOf((int*)closure);
     int** ptr = (int**)(closure+8);
 
