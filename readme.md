@@ -39,46 +39,30 @@ struct slice<T> {
     ulong length;
 }
 
-slice<int> slice = staticArray[0..3];
-
-or
-
 slice<int> slice = staticArray.slice(0,3);
 ```
 
 ### Function Literals
 ```rust
-(type,type->type) {}
-
-
-(type,type->type) foo = (a,b) { return 0; }
+func (type,type->type) foo = (a,b) { return 0; }
 ```
 
 ### Tuples
 
 ```rust
 struct(int,float,double) tuple;
-```
 
-Option A:
-Using tuples:
-```rust
-func foo(void->int, float) { 
-    return struct(1, 3.4f); 
+func foo(void -> struct(int, float)) { 
+    return {1, 3.4}; 
 }
 ```
-Option B:
-```rust
-func foo(void->int, float) { 
-    return {1, 3.4f}; 
-}
-```
-
 
 ### Struct Literals
 
 ```rust
-MyStruct s   = MyStruct{ a: 10, b: 20}
+MyStruct s   = MyStruct{ a: 10, b: 20 }
+MyStruct s   = { a: 10, b: 20 };
+auto s       = { a:10, b: 20 } as MyStruct;
 MyStruct* s2 = @alloc(g_arena) MyStruct{ a: 2 } 
 ```
 
