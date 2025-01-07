@@ -3,6 +3,7 @@
 func strings() {
     stdio::putChar('s');
 
-    a:byte* = c"one"; 
-    stdio::putChars(a);
+    // todo - a:byte* = "one".ptr
+    //a:byte* = "one"; 
+    //stdio::putChars(a);
 }

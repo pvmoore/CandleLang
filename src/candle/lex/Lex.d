@@ -248,8 +248,7 @@ private:
         // r"string"
         // c"string"
         bool isRaw = peek(0) == 'r';
-        bool isCStyle = peek(0) == 'c';
-        if(isRaw || isCStyle) {
+        if(isRaw) {
             pos++;
             // todo - Handle raw. We don't want to escape anything for raw strings 
         }

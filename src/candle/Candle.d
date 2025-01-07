@@ -18,7 +18,6 @@ public:
     // Generated data
     Module mainModule;
     Module[string] modules;
-    bool astDumped;
     
     Module[] allModules() { return modules.values(); }
     bool hasErrors() { return errors.length > 0; }

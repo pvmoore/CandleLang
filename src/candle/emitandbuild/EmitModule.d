@@ -417,7 +417,7 @@ private:
         add("}\n");
     }
     void emit(String n) {
-        if(n.isRaw || n.isCharArray) {
+        if(n.isRaw) {
             add("\"");
             add(n.stringValue);
             add("\"");
