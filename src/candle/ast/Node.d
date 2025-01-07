@@ -179,6 +179,7 @@ bool hasVisibility(T)(T n, Visibility v) if(is(T:Node) || is(T:Type)) {
     bool visPub = v == Visibility.PUBLIC; 
     return isPub == visPub;
 }
+//──────────────────────────────────────────────────────────────────────────────────────────────────
 void writeAllUnitAsts(Candle candle) {
     foreach(p; candle.allModules()) {
         writeAllUnitAsts(candle, p);
@@ -210,7 +211,6 @@ void writeAllModuleASTs(Candle candle) {
         }
     }
 }
-
 //──────────────────────────────────────────────────────────────────────────────────────────────────
 
 /**

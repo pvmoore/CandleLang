@@ -1,14 +1,14 @@
 
 
 
-wibble:int;
+int wibble;
 
 func main(void->int) {
     
     testVisibility();
 
-    a:int  = 6;
-    b:int* = null;
+    int a  = 6;
+    int* b = null;
 
 
     putchar('a');
@@ -49,39 +49,39 @@ func testVisibility() {
     // ################################################# test2 (unqualified access)
     // public 
     // struct 
-    aaa2 : AAA2;
-    aaa2b: test2::AAA2;
+    AAA2 aaa2;
+    test2::AAA2 aaa2b;
 
     // func
 
     // private 
     // struct 
-    //zzz2: ZZZ2;                // Type 'ZZZ2' not found
-    //zzz2b: test2::ZZZ2;        // Type 'ZZZ2' not found
+    //ZZZ2 zzz2;                // Type 'ZZZ2' not found
+    //test2::ZZZ2 zzz2b;        // Type 'ZZZ2' not found
 
     // func
 
     // ################################################# test5 (qualified access)
     // public 
     // struct 
-    //aaa5: AAA5;               // Type 'AAA5' not found
-    aaa5b: test5::AAA5;
+    //AAA5 aaa5;               // Type 'AAA5' not found
+    test5::AAA5 aaa5b;
     
     // func
 
     // private 
     // struct
-    // zzz5 : ZZZ5;
-    // zzz5b : test5::ZZZ5;  
+    // ZZZ5 zzz5;
+    // test5::ZZZ5 zzz5b;  
 
     // func
 
     // ################################################# test3 - nothing should be visible
     // struct
-    //aaa3: AAA3;         // Type 'AAA3' not found
-    //zzz3: ZZZ3;         // Type 'ZZZ3' not found
-    //aaa3: test3::AAA3; // Syntax error. Expected module reference. Module 'test3' not found
-    //zzz3: test3::ZZZ3; // Syntax error. Expected module reference. Module 'test3' not found
+    //AAA3 aaa3;         // Type 'AAA3' not found
+    //ZZZ3 zzz3;         // Type 'ZZZ3' not found
+    //test3::AAA3 aaa3; // Syntax error. Expected module reference. Module 'test3' not found
+    //test3::ZZZ3 zzz3; // Syntax error. Expected module reference. Module 'test3' not found
 
     // func
 
@@ -93,21 +93,21 @@ func doSomethingElse() {
 }
 
 // public local function
-pub func doSomething(a:int*, b:float**) {
-    c:bool = not true;
+pub func doSomething(int* a, float** b) {
+    bool c = not true;
 
-    d:int = 'a';
-    e:long = 0xff;
-    f:float = foo;
+    int d = 'a';
+    long e = 0xff;
+    float f = foo;
 
-    y:int = 1 + 2 / 3;
-    z:int = 1 / 2 + 3;
-    g:float = 1.0;
-    g2:float = 1.3f;
+    int y = 1 + 2 / 3;
+    int z = 1 / 2 + 3;
+    float g = 1.0;
+    float g2 = 1.3f;
 
-    apple:Apple;
+    Apple apple;
 
-    plum:std::PlumPublic;
+    std::PlumPublic plum;
     //PlumPublic plum;
     //PlumPrivate plum2;
     //std.PlumPrivate plum2;
@@ -116,16 +116,16 @@ pub func doSomething(a:int*, b:float**) {
 }
 
 // all variables are private
-foo:float = 1;
+float foo = 1;
 
 // public local struct
 pub struct Apple {
-    a:int;
+    int a;
 }
 
 // private local struct
 struct Peach {
-    a:int;
+    int a;
 }
 
 

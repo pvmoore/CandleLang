@@ -3,10 +3,10 @@ func id() {
 
     // Apple apple = {};
 
-    apple:Apple;    // public in test Project
-    peach:Peach;    // private in test Project
-    str:std::string; // public in std Project
+    Apple apple;        // public in test Project
+    Peach peach;        // private in test Project
+    std::string str;    // public in std Project
 
-    appleA:int = apple.a;
-    peachA:int = peach.a;
+    int appleA = apple.a;
+    int peachA = peach.a;
 }

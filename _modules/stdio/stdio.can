@@ -2,14 +2,14 @@
 pub extern func putchar(int->int);
 pub extern func puts(const byte*->int);
 
-pub func putChar(ch:int) {
+pub func putChar(int ch) {
     putchar(ch);
 }
-pub func putChars(ch:byte*) {
+pub func putChars(byte* ch) {
     puts(ch);
 }
 
 pub extern struct FILE;
 
-pub extern func fclose(stream:FILE*->int);
-pub extern func fopen(filename:const byte*, mode:const byte* -> FILE*);
+pub extern func fclose(FILE* stream -> int);
+pub extern func fopen(const byte* filename, const byte* mode -> FILE*);

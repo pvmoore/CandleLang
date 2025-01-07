@@ -1,15 +1,15 @@
 
 struct TestStructLiterals {
-    a:int;
-    b:float;
+    int a;
+    float b;
 }
 
 func literalstruct() {
-    tsl:TestStructLiterals = {};
+    TestStructLiterals tsl = {};
     @assert(tsl.a == 0);
     @assert(tsl.b == 0);
 
-    tsl2:TestStructLiterals = { a = 1 };
+    TestStructLiterals tsl2 = { a = 1 };
     @assert(tsl2.a == 1);
     @assert(tsl2.b == 0);
 

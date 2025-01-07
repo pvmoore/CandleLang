@@ -1,10 +1,10 @@
 
 pub struct AAA3 {
-    a:int;
+    int a;
 }
 
 struct ZZZ3 {
-    a:int;
+    int a;
 }
 
 pub func foo_aaa3() {

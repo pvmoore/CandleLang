@@ -22,9 +22,11 @@ void parseStmt(Node parent, Tokens t) {
         switch(t.kind()) with(EToken) {
             case ID:
                 switch(t.value()) {
-                    case "struct": parseStruct(parent, t); return;
                     case "alias": parseAlias(parent, t); return;
+                    case "enum": parseEnum(parent, t); return;
                     case "func": parseFunc(parent, t); return;
+                    case "struct": parseStruct(parent, t); return;
+                    case "union": parseUnion(parent, t); return;
                     default: break;
                 }
                 break;
@@ -34,11 +36,14 @@ void parseStmt(Node parent, Tokens t) {
 
     } else {
         // These can only occur at Func scope:
-        // - Expr
         // - Return
+        // - Expr
 
 
     }
+
+    // These can appear at Module or Func scope:
+    // - Var
 
     switch(t.kind()) with(EToken) {
         case ID:
@@ -47,8 +52,15 @@ void parseStmt(Node parent, Tokens t) {
                 default: break;
             }
 
-            // name : Type
-            if(t.isKind(EToken.COLON, 1)) {
+            // Type name [ = Expr ]
+            if(isType(module_, t)) {
+                parseVar(parent, t);
+                return;
+            }
+
+            // It might still be a UDT
+            if(t.matches(EToken.ID, EToken.ID)) {
+                // Assume this is a var
                 parseVar(parent, t);
                 return;
             }
@@ -86,6 +98,8 @@ void parseStmt(Node parent, Tokens t) {
             break;
     }
 
+    // Everything else must be an Expr
+
     parseExpr(parent, t);
 }
 void parseVar(Node parent, Tokens t) {
@@ -115,6 +129,12 @@ void parseStruct(Node parent, Tokens t) {
     Struct s = makeNode!Struct(t.coord());
     parent.add(s);
     s.parse(t);
+}
+void parseUnion(Node parent, Tokens t) {
+    todo("unions");
+}
+void parseEnum(Node parent, Tokens t) {
+    todo("enums");
 }
 void parseAlias(Node parent, Tokens t) {
     Alias a = makeNode!Alias(t.coord());

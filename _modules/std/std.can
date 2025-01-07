@@ -1,8 +1,8 @@
 
 
 pub struct PlumPublic {
-    a:int;
+    int a;
 }
 struct PlumPrivate {
-    a:int;
+    int a;
 }

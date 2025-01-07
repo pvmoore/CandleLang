@@ -31,17 +31,12 @@ public:
     }
 
     /** 
-     * VAR ::= [Id ':' ] [ 'const' ] Type
+     * VAR ::= [ 'const' ] Type Id  
      */
     void parseParam(Tokens t) {
         logParse("parseParam(param) %s", t.debugValue());
 
-        if(t.isKind(EToken.COLON, 1)) {
-            this.name = t.value(); 
-            t.next();
-            t.skip(EToken.COLON);
-        }
-
+        // const (extern c function parameters only)
         if(t.isValue("const")) {
             this.isConst = true;
             t.next();
@@ -49,10 +44,16 @@ public:
    
         // Type
         parseType(this, t);
+
+        // Name
+        if(t.isKind(EToken.ID)) {
+            this.name = t.value(); 
+            t.next();
+        }
     }
 
     /**
-     * VAR ::= ['pub'] Id ':' Type [ '=' Expr ] 
+     * VAR ::= ['pub'] Type Id [ '=' Expr ] 
      */
     override void parse(Tokens t) {
         logParse("parseVar %s", t.debugValue());
@@ -60,13 +61,11 @@ public:
         t.consumeModifiers();
         this.isPublic = t.getAndResetPubModifier();
 
-        // Name
-        this.name = t.value(); t.next();
-
-        t.skip(EToken.COLON);
-
         // Type
         parseType(this, t);
+
+        // Name
+        this.name = t.value(); t.next();
 
         // Expression
         if(t.isKind(EToken.EQ)) {
