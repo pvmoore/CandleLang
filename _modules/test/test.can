@@ -52,11 +52,14 @@ func testVisibility() {
     aaa2 : AAA2;
     aaa2b: test2::AAA2;
 
+    // func
+
     // private 
     // struct 
     //zzz2: ZZZ2;                // Type 'ZZZ2' not found
     //zzz2b: test2::ZZZ2;        // Type 'ZZZ2' not found
 
+    // func
 
     // ################################################# test5 (qualified access)
     // public 
@@ -64,21 +67,24 @@ func testVisibility() {
     //aaa5: AAA5;               // Type 'AAA5' not found
     aaa5b: test5::AAA5;
     
+    // func
+
     // private 
     // struct
     // zzz5 : ZZZ5;
     // zzz5b : test5::ZZZ5;  
 
+    // func
 
-    // ################################################# test5 - nothing should be visible
-    //aaa3: AAA3;
-    //zzz3: ZZZ3;
-    //aaa3: test3::AAA3; // <---- fixme !!!!!!
-    //zzz3: test3::ZZZ3; // <---- fixme !!!!!!
+    // ################################################# test3 - nothing should be visible
+    // struct
+    //aaa3: AAA3;         // Type 'AAA3' not found
+    //zzz3: ZZZ3;         // Type 'ZZZ3' not found
+    //aaa3: test3::AAA3; // Syntax error. Expected module reference. Module 'test3' not found
+    //zzz3: test3::ZZZ3; // Syntax error. Expected module reference. Module 'test3' not found
 
-    // test4 - nothing should be visible
-    // test6 - nothing should be visible
-    // test7 - nothing should be visible
+    // func
+
 }
 
 // private local function

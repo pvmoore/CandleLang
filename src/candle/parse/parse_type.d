@@ -5,6 +5,7 @@ import candle.all;
 void parseType(Node parent, Tokens t) {
     logParse("parseType %s", t.debugValue());
     Module module_ = parent.getModule();
+    Candle candle = parent.getCandle();
     string value = t.value();
 
     Node type;
@@ -48,6 +49,9 @@ void parseType(Node parent, Tokens t) {
 
         if(isModuleName && !isModuleNameColonColon) {
             syntaxError(t, "'::' after module reference");
+        }
+        if(!isModuleName && isModuleNameColonColon) {
+            syntaxError(t, "module reference. Module '%s' not found".format(value));
         }
 
         if(isModuleNameColonColon) {

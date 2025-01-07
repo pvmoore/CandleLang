@@ -1,5 +1,7 @@
 # Candle Lang
 
+![Logo](/resources/logo-small.png)
+
 ## Todo
 
 Defining struct methods
