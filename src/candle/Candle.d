@@ -30,12 +30,14 @@ public:
     Module getOrCreateModule(Directory directory) {
         createModuleMutex.lock();  
         scope(exit) createModuleMutex.unlock(); 
-         
-        Module[] m = modules.values().find!(it=>it.directory == directory);
-        if(m.length > 0) {
-            return m[0];
+
+        Module[] ms = modules.values().find!(it=>it.directory == directory);
+        if(ms.length > 0) {
+            return ms[0];
         }
-        return makeNode!Module(this, directory);
+        Module m = makeNode!Module(this, directory);
+        this.modules[m.name] = m;
+        return m;
     }
 
     void readConfig(string filename) {
@@ -51,7 +53,7 @@ public:
         }
 
         try{
-            mainModule = makeNode!Module(this, mainDirectory);
+            mainModule = getOrCreateModule(mainDirectory);
 
             if(!resolveAllModules()) {
                 return false;

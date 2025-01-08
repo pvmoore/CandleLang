@@ -1,4 +1,6 @@
 {
+    unique-name: "test",
+    description: "Test project",
     /*
     test ===> test2 ===> test3
                     ---> test4
@@ -8,11 +10,9 @@
     */
     dependencies: {
         std: { directory: "_modules/std" },
-        stdio: { directory: "_modules/stdio" , unqualified-access: true},
+        stdio: { directory: "_modules/stdio", unqualified-access: true},
         vulkan: { directory: "_modules/vulkan", unqualified-access: true },
         test2: { directory : "_modules/test2", unqualified-access: true },
         test5: { directory : "_modules/test5" }
-    },
-    unique-name: "test",
-    description: "Test project"
+    }
 }

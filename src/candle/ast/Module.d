@@ -27,7 +27,6 @@ public:
         loadModuleJson5();
         addUnits();
         //dumpProperties();
-        candle.modules[name] = this;
     }
 
     Unit[] getUnits() { return unitsRange().array(); }
@@ -124,9 +123,9 @@ private:
      *   }
      * } 
      */
-    bool loadModuleJson5() {
+    void loadModuleJson5() {
         auto moduleFile = Filepath(directory, Filename("candle.json5"));
-        if(!moduleFile.exists()) return false;
+        if(!moduleFile.exists()) throw new Exception("Module not found: %s".format(directory));
 
         auto root = JSON5.fromFile(moduleFile.value);
         if(root.hasKey("unique-name")) {
@@ -148,8 +147,6 @@ private:
                 loadDependencyModule(dep);    
             }
         }
-
-        return true;
     }
     void loadDependencyModule(Dependency dep) {
         Module module_ = candle.getOrCreateModule(dep.directory);
