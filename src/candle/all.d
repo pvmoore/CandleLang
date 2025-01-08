@@ -5,6 +5,7 @@ public:
 import common;
 import resources.json5;
 
+import core.sync.mutex          : Mutex;
 import core.atomic              : atomicLoad, atomicOp;
 import core.memory              : GC;
 

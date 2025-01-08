@@ -2,5 +2,5 @@
     dependencies: {
         std: { directory: "_modules/std" }
     },
-    name: "test6"
+    unique-name: "test6"
 }

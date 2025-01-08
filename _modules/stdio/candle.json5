@@ -1,4 +1,4 @@
 {
-    name: "stdio",
+    unique-name: "stdio",
     header-name: "_stdio.h"
 } 

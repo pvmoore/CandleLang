@@ -132,7 +132,7 @@ private:
 
         // Add includes for all dependent Modules
         writeStmt("// Dependency Module headers\n");
-        foreach(p; module_.getExternalModules()) {
+        foreach(p; module_.getAllExternalModules()) {
             writeStmt("#include \"%s\"\n\n", p.headerName);
         }
 

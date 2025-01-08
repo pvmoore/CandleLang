@@ -8,7 +8,12 @@ struct ZZZ5 {
 }
 
 pub func foo_aaa5() {
+    // test6_alias is the local name of the test6 module
+    test6_alias::AAA6 a;
 
+    // Cannot directly use the unique name of the test6 module
+    //test6::AAA6 g;
+    AAA6 b;
 }
 
 func foo_zzz5() {

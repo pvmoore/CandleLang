@@ -13,6 +13,6 @@
         test2: { directory : "_modules/test2", unqualified-access: true },
         test5: { directory : "_modules/test5" }
     },
-    name: "test",
+    unique-name: "test",
     description: "Test project"
 }

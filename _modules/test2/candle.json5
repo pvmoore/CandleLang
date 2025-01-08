@@ -8,5 +8,5 @@
         test3: { directory : "_modules/test3", unqualified-access: true },
         test4: { directory : "_modules/test4" },
     },
-    name: "test2"
+    unique-name: "test2"
 }

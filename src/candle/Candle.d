@@ -23,6 +23,21 @@ public:
     bool hasErrors() { return errors.length > 0; }
     CandleError[] getErrors() { return errors; }
 
+    this() {
+        this.createModuleMutex = new Mutex();
+    }
+
+    Module getOrCreateModule(Directory directory) {
+        createModuleMutex.lock();  
+        scope(exit) createModuleMutex.unlock(); 
+         
+        Module[] m = modules.values().find!(it=>it.directory == directory);
+        if(m.length > 0) {
+            return m[0];
+        }
+        return makeNode!Module(this, directory);
+    }
+
     void readConfig(string filename) {
         // TODO
     }
@@ -93,6 +108,7 @@ public:
     }
 private:
     CandleError[] errors;
+    Mutex createModuleMutex;
 
     void logo() {
         log("\n══════════════════════");

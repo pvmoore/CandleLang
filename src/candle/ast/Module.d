@@ -36,20 +36,18 @@ public:
     Union[] getUnions(Visibility v) { return unitsRange().map!(it=>it.getUnions(v)).join; }
     Enum[] getEnums(Visibility v) { return unitsRange().map!(it=>it.getEnums(v)).join; }
 
-    Module[] getExternalModules() { return externalModules.values(); }
+    Module[] getAllExternalModules() { return allExternalModules.values(); }
+    Module[] getUnqualifiedExternalModules() { return unqualifiedExternalModules.values(); }
 
-    Module[] getUnqualifiedExternalModules() {
-        return getExternalModules().filter!(it=>dependencies[it.name].unqualified).array;
-    }
     Module getModule(string name) {
-        if(auto projPtr = name in externalModules) {
+        if(auto projPtr = name in allExternalModules) {
             return *projPtr;
         }
         throwIf(true, "Module dependency not found '%s'".format(name));
         return null;
     }
     bool isModuleName(string name) {
-        return (name in externalModules) !is null;
+        return (name in allExternalModules) !is null;
     }
 
     /** Return true if 'id' is a visible user defined struct/union/enum or alias */
@@ -84,7 +82,7 @@ public:
             }
         } 
         if(sameModule) {
-            foreach(m; externalModules.values()) {
+            foreach(m; allExternalModules.values()) {
                 if(Type t = m.getUDT(name, askingNode)) return t;
             }
         }
@@ -100,21 +98,22 @@ public:
     }
 private:
     struct Dependency {
-        string name;
+        string name;            // local name of the module
         Directory directory;
         bool unqualified;
 
         string toString() { return "Dependency('%s', %s%s)".format(name, directory, unqualified ? ", unqualified-access":""); }
     }
-    Dependency[string] dependencies;    // declared possible external Modules 
-    Module[string] externalModules;     // accessed external Modules
+    Dependency[string] dependencies;            // Declared possible external Modules 
+    Module[string] allExternalModules;          // All external Modules, key = dependency name
+    Module[string] unqualifiedExternalModules;  // external Modules with unqualified access, key = dependency name
 
     auto unitsRange() {
         return children.filter!(it=>it.isA!Unit).map!(it=>it.as!Unit);
     }
     /** 
      * {
-     *   name: "test",
+     *   unique-name: "test",
      *   description: "test",
      *   dependencies: {
      *     std: { 
@@ -130,8 +129,8 @@ private:
         if(!moduleFile.exists()) return false;
 
         auto root = JSON5.fromFile(moduleFile.value);
-        if(root.hasKey("name")) {
-            this.name = root["name"].toString();
+        if(root.hasKey("unique-name")) {
+            this.name = root["unique-name"].toString();
         }
         this.headerName = root.hasKey("header-name") ? root["header-name"].toString() : name ~ ".h";
 
@@ -153,16 +152,12 @@ private:
         return true;
     }
     void loadDependencyModule(Dependency dep) {
-        // Reuse Module if we already have it
-        Module module_;
-        auto pptr = dep.name in candle.modules;
-        if(pptr) {
-            module_ = *pptr;
-        } else {
-            // Create and load this Module
-            module_ = makeNode!Module(candle, dep.directory);
+        Module module_ = candle.getOrCreateModule(dep.directory);
+        allExternalModules[dep.name] = module_;
+
+        if(dep.unqualified) {
+            unqualifiedExternalModules[dep.name] = module_;
         }
-        externalModules[dep.name] = module_;
     }
     string[] unitFilenames() {
         import std.file;
@@ -198,7 +193,7 @@ private:
         }
 
         log("Module{\n" ~
-            "  name .......... %s\n".format(name) ~
+            "  unique-name ... %s\n".format(name) ~
             "  header-name ... %s\n".format(headerName) ~
             "  directory ..... %s\n".format(directory) ~
             "  dependencies:\n" ~

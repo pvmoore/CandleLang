@@ -47,19 +47,21 @@ func testVisibility() {
     //                 ---> test7
     
     // ################################################# test2 (unqualified access)
-    // public 
-    // struct 
+    // public struct 
     AAA2 aaa2;
     test2::AAA2 aaa2b;
 
-    // func
+    // public func
+    foo_aaa2();
+    test2::foo_aaa2();
 
-    // private 
-    // struct 
+    // private struct 
     //ZZZ2 zzz2;                // Type 'ZZZ2' not found
     //test2::ZZZ2 zzz2b;        // Type 'ZZZ2' not found
 
-    // func
+    // private func
+    //foo_zzz2();                 // Function 'foo_zzz2' not found
+    //test2::foo_zzz2();          // Function 'foo_zzz2' not found
 
     // ################################################# test5 (qualified access)
     // public 
