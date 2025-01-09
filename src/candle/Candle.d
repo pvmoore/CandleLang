@@ -2,6 +2,16 @@ module candle.Candle;
 
 import candle.all;
 
+enum CompileState {
+    NONE,
+    PREPARING,
+    PARSING,
+    RESOLVING,
+    CHECKING,
+    EMITTING,
+    BUILDING
+}
+
 final class Candle {
 public:
     // Static data
@@ -15,21 +25,24 @@ public:
     bool dumpAst;
     bool emitLineNumber;
 
-    // Generated data
+    // Dynamic data
     Module mainModule;
     Module[string] modules;
+    CompileState compileState;
     
     Module[] allModules() { return modules.values(); }
     bool hasErrors() { return errors.length > 0; }
     CandleError[] getErrors() { return errors; }
 
     this() {
-        this.createModuleMutex = new Mutex();
+        logo();
+    }
+    void readConfig(string filename) {
+        // TODO
     }
 
     Module getOrCreateModule(Directory directory) {
-        createModuleMutex.lock();  
-        scope(exit) createModuleMutex.unlock(); 
+        assert(compileState == compileState.PREPARING);
 
         Module[] ms = modules.values().find!(it=>it.directory == directory);
         if(ms.length > 0) {
@@ -39,12 +52,11 @@ public:
         this.modules[m.name] = m;
         return m;
     }
-
-    void readConfig(string filename) {
-        // TODO
-    }
     bool compile() {
-        logo();
+        this.compileState = CompileState.NONE;
+        this.mainModule = null;
+        this.modules.clear();
+
         ensureDirectoryExists(targetDirectory);
         ensureDirectoryExists(targetDirectory.add(Directory("build")));
 
@@ -53,23 +65,38 @@ public:
         }
 
         try{
+            //──────────────────────────────────────────────────────────────────────────────────────────────────
+            // Gather all Modules 
+            compileState = CompileState.PREPARING;
             mainModule = getOrCreateModule(mainDirectory);
 
+            //──────────────────────────────────────────────────────────────────────────────────────────────────    
+            compileState = CompileState.PARSING;
+            lexAndParseAllModules();
+
+            //──────────────────────────────────────────────────────────────────────────────────────────────────
+            compileState = CompileState.RESOLVING;
             if(!resolveAllModules()) {
                 return false;
             }
 
             writeAllUnitAsts(this);
 
+            //──────────────────────────────────────────────────────────────────────────────────────────────────
+            compileState = CompileState.CHECKING;
             checkAllModules();
             if(hasErrors()) return false;
 
             // After this point we should not get any more CandleErrors
 
+            //──────────────────────────────────────────────────────────────────────────────────────────────────
+            compileState = CompileState.EMITTING;
             emitAllModules();
 
             writeAllModuleASTs(this);
 
+            //──────────────────────────────────────────────────────────────────────────────────────────────────
+            compileState = CompileState.BUILDING;
             if(buildAllModules()) {
                 if(link()) {
                     log(ansiWrap("Success ", Ansi.GREEN) ~ Ansi.GREEN_BOLD ~ "✔✔✔" ~ Ansi.RESET);
@@ -85,6 +112,7 @@ public:
             log("Exception: %s", e);
             return false;
         }finally{
+            compileState = CompileState.NONE;
             writeAllUnitAsts(this);
         }
         return true;
@@ -110,7 +138,6 @@ public:
     }
 private:
     CandleError[] errors;
-    Mutex createModuleMutex;
 
     void logo() {
         log("\n══════════════════════");
@@ -122,6 +149,11 @@ private:
             dir.create();
         } else {
             // Clean it?
+        }
+    }
+    void lexAndParseAllModules() {
+        foreach(m; allModules()) {
+            m.lexAndParseUnits();
         }
     }
     bool resolveAllModules() {

@@ -50,9 +50,10 @@ func (type,type->type) foo = (a,b) { return 0; }
 ### Tuples
 
 ```rust
-struct(int,float,double) tuple;
+struct {int; float; double} tuple;
+struct {int a; float b; double c} tuple;
 
-func foo(void -> struct(int, float)) { 
+func foo(void -> struct(int; float)) { 
     return {1, 3.4}; 
 }
 ```

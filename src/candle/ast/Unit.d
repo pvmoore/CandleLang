@@ -22,7 +22,7 @@ public:
         this.filename = filename;
         this.name = Filename(filename).getBaseName();
     }
-    void process() {
+    void lexAndParse() {
         readSource();
         lexSource();
         parseTokens();

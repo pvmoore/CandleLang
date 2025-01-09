@@ -29,6 +29,12 @@ public:
         //dumpProperties();
     }
 
+    void lexAndParseUnits() {
+        foreach(u; getUnits()) {
+            u.lexAndParse();
+        }
+    }
+
     Unit[] getUnits() { return unitsRange().array(); }
     Alias[] getAliases(Visibility v) { return unitsRange().map!(it=>it.getAliases(v)).join; }
     Struct[] getStructs(Visibility v) { return unitsRange().map!(it=>it.getStructs(v)).join; }
@@ -172,7 +178,6 @@ private:
         foreach(filename; filenames) {
             Unit unit = makeNode!Unit(this, filename);
             add(unit);
-            unit.process();
         }
         //log("[%s] Declared types: %s", name, scannedTypes);
     }
