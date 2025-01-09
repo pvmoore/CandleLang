@@ -61,6 +61,22 @@ public:
                 }
                 break;
             }
+            case LITERAL_STRUCT: {
+                LiteralStruct ls = n.parent.as!LiteralStruct;
+                if(ls.isResolved()) {
+                    Struct st = ls.type().as!Struct;
+                    assert(st);
+                  
+                    int i = n.index();
+                    assert(i < ls.names.length);
+
+                    bool includePrivate = n.getModule() is st.getModule();
+                    auto var = st.getVar(ls.names[i], includePrivate);
+
+                    t = var.type();
+                }
+                break;
+            }
             default:
                 throwIf(true, "Handle Resolver.resolveTypeFromParent %s", n.parent.enode());
                 break;

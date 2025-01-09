@@ -8,7 +8,7 @@ import candle.all;
  *
  *  eg.
  *
- *  { name = 5, key = 7 }
+ *  { name: 5, key: 7 }
  *
  */
 final class LiteralStruct : Expr {
@@ -26,7 +26,7 @@ public:
     }
     /**
      * LITERAL ::= '{' EXPRS '}'
-     * EXPR    ::= name '=' Expr
+     * EXPR    ::= name ':' Expr
      * EXPRS   ::= [ EXPR { ',' EXPR } ]
      */
     override void parse(Tokens t) {
@@ -37,8 +37,8 @@ public:
             // name
             names ~= t.value(); t.next();
 
-            // =
-            t.skip(EToken.EQ);
+            // :
+            t.skip(EToken.COLON);
 
             // Expr
             parseExpr(this, t);
@@ -62,7 +62,17 @@ public:
      * - name must be visible
      */
     override void check() {
+        foreach(n; names) {
+            bool structIsExternal = getModule() !is struct_.getModule();
+            
+            if(!struct_.getVar(n, true)) {
+                getCandle().addError(new SemanticError(EError.LS_MNF, this, "Struct '%s' does not have a member named '%s'".format(struct_.name, n)));
+            }
 
+            if(structIsExternal) {
+                getCandle().addError(new SemanticError(EError.LS_MNV, this, "Struct '%s' member '%s' is not visible".format(struct_.name, n)));
+            }
+        }
     }
 private:
     Struct struct_;

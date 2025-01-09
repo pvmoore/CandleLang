@@ -24,7 +24,7 @@ void parseExprLhs(Node parent, Tokens t) {
     Module module_ = t.unit.module_;
 
     // Is it a built-in type?
-    if(isType(module_, t)) {
+    if(isType(module_, t, true)) {
         parseType(parent, t);
         return;
     }
@@ -88,6 +88,7 @@ void parseExprRhs(Node parent, Tokens t) {
                         Is is_ = parseAndReturnIs(t);
                         parent = attachAndRead(parent, is_, t, true);
                         break sw;
+                    case "xor": todo("xor not implemented"); return;  
                     case "and":
                     case "or": {
                         auto b = parseAndReturnBinary(t);

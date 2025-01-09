@@ -11,4 +11,7 @@ enum EError {
     CTNT,       // comparing type with non-type
     PANPUDT,    // public alias to non-public UDT
 
+    LS_MNF,     // Literal struct member not found
+    LS_MNV,     // Literal struct member not visible
+
 }

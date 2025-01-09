@@ -64,17 +64,23 @@ public:
             ensureDirectoryExists(targetDirectory.add(Directory("ast")));
         }
 
+        bool verbose = false;
+
         try{
             //──────────────────────────────────────────────────────────────────────────────────────────────────
             // Gather all Modules 
+            if(verbose) log("Preparing");
             compileState = CompileState.PREPARING;
             mainModule = getOrCreateModule(mainDirectory);
 
             //──────────────────────────────────────────────────────────────────────────────────────────────────    
+            if(verbose) log("Parsing");
             compileState = CompileState.PARSING;
             lexAndParseAllModules();
+            writeAllUnitAsts(this);
 
             //──────────────────────────────────────────────────────────────────────────────────────────────────
+            if(verbose) log("Resolving");
             compileState = CompileState.RESOLVING;
             if(!resolveAllModules()) {
                 return false;
@@ -83,6 +89,7 @@ public:
             writeAllUnitAsts(this);
 
             //──────────────────────────────────────────────────────────────────────────────────────────────────
+            if(verbose) log("Checking");
             compileState = CompileState.CHECKING;
             checkAllModules();
             if(hasErrors()) return false;
@@ -90,12 +97,14 @@ public:
             // After this point we should not get any more CandleErrors
 
             //──────────────────────────────────────────────────────────────────────────────────────────────────
+            if(verbose) log("Emitting");
             compileState = CompileState.EMITTING;
             emitAllModules();
 
             writeAllModuleASTs(this);
 
             //──────────────────────────────────────────────────────────────────────────────────────────────────
+            if(verbose) log("Building");
             compileState = CompileState.BUILDING;
             if(buildAllModules()) {
                 if(link()) {

@@ -3,12 +3,42 @@
 */
 
 func struct_() {
-    Local local;
-    Local local2 = {};
+    structInitialisation();
+    structGetMembers();
+    structSetMembers();
 
     // @sizeOf(S)
     // @offsetOf(S, field)
     // @alignOf(S, field)
+}
+
+func structInitialisation() {
+    Local local;
+    Local local2 = {};
+    Local local3 = {
+        a:        1,
+        b:        2.0,
+        inner:    { a: 3, b: 4 },   
+        innerPtr: null
+    };
+
+    // todo - implement me
+    //@assert(local is local2);
+}
+func structGetMembers() {
+    Local local = {
+        a: 3, b: 4.0, inner: { a: 5, b: 6 }, innerPtr: null
+    };
+
+    byte a = local.a;   @assert(a == 3);
+    float b = local.b;   @assert(b == 4.0);
+    Inner c = local.inner; @assert(c.a == 5 and c.b == 6);  
+    Inner* d = local.innerPtr;
+}
+func structSetMembers() {
+    Local local;
+
+    local.a = 1; @assert(local.a == 1);
 }
 
 // Must have at least 1 member
@@ -18,6 +48,7 @@ struct Local {
     byte a;
     float b;
     Inner inner;
+    Inner* innerPtr;
 }
 
 struct Inner {

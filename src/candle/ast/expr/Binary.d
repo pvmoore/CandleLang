@@ -24,8 +24,15 @@ public:
         return "Binary %s (%s)%s".format(stringOf(op), t, s);
     }
     override void resolve() {
-        if(isResolved()) return;
-        if(!left().isResolved() || !right.isResolved()) return;
+        //writefln("resolving Binary: '%s.can' line %s _type = %s", getUnit().name, coord.line+1, _type);
+
+        if(isResolved()) {
+            return;
+        }
+
+        if(!left().isResolved() || !right.isResolved()) {
+            return;
+        }
 
         if(isAssign(op)) {
             // Take the type of the left expr

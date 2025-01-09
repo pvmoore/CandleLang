@@ -53,17 +53,17 @@ void parseStmt(Node parent, Tokens t) {
             }
 
             // Type name [ = Expr ]
-            if(isType(module_, t)) {
+            if(isType(module_, t, false)) {
                 parseVar(parent, t);
                 return;
             }
 
             // It might still be a UDT
-            if(t.matches(EToken.ID, EToken.ID)) {
-                // Assume this is a var
-                parseVar(parent, t);
-                return;
-            }
+            // if(t.matches(EToken.ID, EToken.ID)) {
+            //     // Assume this is a var
+            //     parseVar(parent, t);
+            //     return;
+            // }
 
             // if(isType(module_, t)) {
             //     logParse("  isType %s", t.debugValue());
