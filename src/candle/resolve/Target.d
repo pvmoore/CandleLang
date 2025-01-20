@@ -7,6 +7,7 @@ public:
     // The target (either Var or Func)
     Var var;
     Func func;
+
     bool isInExternalModule;
 
     this(Var v) {
