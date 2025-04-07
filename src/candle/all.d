@@ -3,6 +3,7 @@ module candle.all;
 public:
 
 import common;
+import common.containers;
 import resources.json5;
 
 import core.sync.mutex          : Mutex;
