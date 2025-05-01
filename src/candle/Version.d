@@ -5,7 +5,7 @@ import candle.all;
 struct Version {
     static const int majorVersion = 0;
     static const int minorVersion = 1;
-    static string stringOf = format("%s.%s", majorVersion, minorVersion);
+    static const string stringOf  = format("%s.%s", majorVersion, minorVersion);
 }
 
 /*

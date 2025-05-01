@@ -4,6 +4,9 @@ public:
 
 import common;
 import common.containers;
+import common.io;
+import common.utils;
+
 import resources.json5;
 
 import core.sync.mutex          : Mutex;

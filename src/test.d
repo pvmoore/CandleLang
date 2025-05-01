@@ -4,6 +4,7 @@ import std.stdio : writefln;
 
 import candle;
 import common;
+import common.io;
 
 void main(string[] args) {
 
