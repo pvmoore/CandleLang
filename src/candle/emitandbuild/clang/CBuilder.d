@@ -1,21 +1,31 @@
-module candle.emitandbuild.BuildModule;
+module candle.emitandbuild.clang.CBuilder;
 
 import candle.all;
 import std.process : Config, execute, spawnProcess, wait;
 import std.string : strip;
 
 /**
- *  Build the Project.c file into an object file
+ *  Build all Project.c files into object files
  *
  *  https://learn.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=msvc-170
  */
-final class BuildModule {
+final class CBuilder {
 public:
-    this(Module module_) {
-        this.candle = module_.candle;
-        this.module_ = module_;
+    this(Candle candle) {
+        this.candle = candle;
     }
-    bool build() {
+    bool buildAllModules() {
+        
+        foreach(m; candle.allModules()) {
+            if(!build(m)) return false;
+        }
+
+        return true;
+    }
+private:
+    Candle candle;
+
+    bool build(Module module_) {
         auto args = [
             "cl",
             "/nologo",
@@ -86,7 +96,4 @@ public:
 
         return true;
     }
-private:
-    Candle candle;
-    Module module_;
 }

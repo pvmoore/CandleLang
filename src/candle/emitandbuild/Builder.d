@@ -1,6 +1,7 @@
 module candle.emitandbuild.Builder;
 
 import candle.all;
+import candle.emitandbuild.clang.CBuilder;
 
 final class Builder {
 public:
@@ -8,23 +9,17 @@ public:
 
     static bool buildAllModules(Candle candle) {
         logBuild("Build ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈");
-        foreach(p; candle.allModules()) {
-            if(!build(p)) return false;
-        }
-        return true;
-    }
-private:
-    shared static ulong totalNanos;
-
-    static bool build(Module module_) {
         StopWatch watch;
         watch.start();
 
-        auto builder = new BuildModule(module_);
-        bool result = builder.build();
+        auto moduleBuilder = new CBuilder(candle);
+        bool result = moduleBuilder.buildAllModules();
 
         watch.stop();
         atomicOp!"+="(totalNanos, watch.peek().total!"nsecs");
+
         return result;
     }
+private:
+    shared static ulong totalNanos;
 }

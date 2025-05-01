@@ -30,8 +30,6 @@ import candle.lex.Token;
 import candle.lex.Tokens;
 
 import candle.emitandbuild.Builder;
-import candle.emitandbuild.BuildModule;
-import candle.emitandbuild.EmitModule;
 import candle.emitandbuild.Emitter;
 
 import candle.parse.parse_expr;

@@ -1,8 +1,8 @@
-module candle.emitandbuild.EmitModule;
+module candle.emitandbuild.clang.CEmitModule;
 
 import candle.all;
 
-final class EmitModule {
+final class CEmitModule {
 public:
     this(Module module_) {
         this.candle = module_.candle;
