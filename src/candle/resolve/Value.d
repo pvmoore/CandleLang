@@ -66,20 +66,6 @@ struct Value {
             default: assert(false, "newKind is %s".format(newKind));
         }
     }
-private:
-    union Value_T {
-        bool b;
-        byte by;
-        ubyte uby;
-        short s;
-        ushort us;
-        int i;
-        uint ui;
-        long l;
-        ulong ul;
-        float f;
-        double d;
-    }
     bool asBool() {
         return value.ul != 0;
     }
@@ -114,6 +100,20 @@ private:
             case DOUBLE: return value.d;
             default: assert(false);
         } 
+    }
+private:
+    union Value_T {
+        bool b;
+        byte by;
+        ubyte uby;
+        short s;
+        ushort us;
+        int i;
+        uint ui;
+        long l;
+        ulong ul;
+        float f;
+        double d;
     }
     void set(bool b) {
         value.b = b;

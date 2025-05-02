@@ -1,4 +1,4 @@
-module candle.emitandbuild.clang.CBuilder;
+module candle.emitandbuild.clang.CLangBuilder;
 
 import candle.all;
 import std.process : Config, execute, spawnProcess, wait;
@@ -9,7 +9,7 @@ import std.string : strip;
  *
  *  https://learn.microsoft.com/en-us/cpp/build/reference/compiler-command-line-syntax?view=msvc-170
  */
-final class CBuilder {
+final class CLangBuilder {
 public:
     this(Candle candle) {
         this.candle = candle;

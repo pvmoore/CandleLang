@@ -1,7 +1,8 @@
 module candle.emitandbuild.Builder;
 
 import candle.all;
-import candle.emitandbuild.clang.CBuilder;
+import candle.emitandbuild.clang.CLangBuilder;
+import candle.emitandbuild.llvm.LLVMBuilder;
 
 final class Builder {
 public:
@@ -12,7 +13,7 @@ public:
         StopWatch watch;
         watch.start();
 
-        auto moduleBuilder = new CBuilder(candle);
+        auto moduleBuilder = new CLangBuilder(candle);
         bool result = moduleBuilder.buildAllModules();
 
         watch.stop();

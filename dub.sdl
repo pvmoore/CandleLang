@@ -20,3 +20,4 @@ configuration "library" {
 
 dependency "common" version="~master"
 dependency "resources" version="~master"
+dependency "llvm2x" version="~master"
